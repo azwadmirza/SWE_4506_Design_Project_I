@@ -1,0 +1,41 @@
+.customNavbar{
+  background-color: var(--customDarkBlue);
+  height: 65px !important;
+
+}
+
+
+.btn.customButton{
+  background-color: var(--customOrange) !important;
+  color: white !important;
+  height: 40px;
+}
+
+.customButton:hover{
+  background-color: var(--customGreen) !important;
+}
+
+.customCart{
+  border-color: transparent !important;
+  font-size:x-large;
+}
+
+.mobileIcons{
+  border-color: transparent !important;
+  font-size:x-large;
+  display:none;
+}
+
+
+.cart-badge {
+  right: auto;
+  top: auto !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+@media(max-width:767px){
+  .mobileIcons{
+    display:flex;
+  }
+}
