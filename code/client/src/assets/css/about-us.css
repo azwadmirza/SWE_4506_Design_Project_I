@@ -1,0 +1,45 @@
+.about-us{
+  top:0vh;
+  margin-top: 0vh;
+  height:100vh;
+  width:100%;
+}
+
+h1{
+  font-size: 1.5rem;
+}
+
+.cards{
+  margin-top:10vh;
+  display:flex;
+  width:100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.card{
+  width:100%;
+  margin-left:2%;
+  margin-right:2%;
+}
+
+.header{
+  background-color: var(--customOrange);
+  color:whitesmoke;
+}
+
+.header-pro{
+  background-color: var(--customGreen);
+  color:whitesmoke;
+  font-size:1.5rem
+}
+
+.title{
+  font-weight: bolder;
+  color: var(--customDarkGreen);
+}
+
+.icons{
+  color: var(--customDarkGreen);
+  font-size: 2rem;
+}

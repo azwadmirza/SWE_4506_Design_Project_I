@@ -1,0 +1,127 @@
+.custom-table tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+tr,td,th{
+  border: 2px solid black;
+  padding:5px 5px 5px 5px;
+}
+.medicine-cart-image{
+  width:100%;
+  border-radius: 50%;
+}
+
+ul{
+  list-style-type: disc;
+}
+
+.table-quantity{
+  width:75%;
+}
+
+.table-quantity tr{
+  border: none;
+}
+
+.cart-container{
+  height:100vh;
+}
+
+.cart{
+  max-height:500px;
+  overflow-y: scroll;
+}
+
+.cart-card{
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.label-margin{
+  margin-top: 2px;
+}
+
+.generic-name{
+  color:#666666;
+}
+
+.prescription-input{
+  margin-left: 2%;
+  width:100% !important;
+  margin-bottom: 2%;
+}
+
+.table-quantity td{
+  border: none;
+}
+
+.table-quantity buttons{
+  text-align: right;
+  float: right;
+}
+
+.add{
+  background-color: var(--customDarkGreen);
+  color:whitesmoke;
+  border-radius: 50%;
+}
+
+.sub{
+  margin-left: 2px;
+  background-color: #8B0000;
+  color:whitesmoke;
+  border-radius: 50%;
+}
+
+.custom-delete{
+  float:right;
+  border-radius: 50%;
+  background-color: #8B0000;
+  color: white;
+  font-weight: bolder;
+  border:none;
+}
+
+.medicine-details{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.table-header-initial{
+  background-color:var(--customDarkGreen);
+  color: whitesmoke;
+}
+
+.price{
+  color:red;
+}
+
+.price .cell1{
+  border-left:none;
+  border-right:none;
+}
+.price .cell2{
+  border-right:none;
+}
+
+.price tr{
+  border: 2 px solid black;
+}
+
+@media(max-width:577px){
+  .modal{
+    width:98% !important;
+    margin-right: 2%;
+    display: flex;
+  }
+}
+
+@media(max-width:392px){
+  .td-name,.td-value{
+    width:10% !important;
+  }
+
+  .table-quantity .buttons{
+    width:60% !important;
+  }
+}
