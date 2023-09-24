@@ -12,6 +12,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import ProfilePage from './features/profile/pages/profile';
+import ChangePassword from './features/profile/pages/change-password';
+import Sheets from './features/sheets/pages/sheets';
 
 
 function App() {
@@ -23,6 +26,9 @@ function App() {
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/about-us" element={<AboutUs/>}/>
           <Route path="/verify/:id" element={<Verification/>}/>
+          <Route path="/profile" element={<ProfilePage/>}/>
+          <Route path="/profile/change-password/:id" element={<ChangePassword/>}/>
+          <Route path="/sheets" element={<Sheets/>}/>
           </Routes>
 
       </BrowserRouter>

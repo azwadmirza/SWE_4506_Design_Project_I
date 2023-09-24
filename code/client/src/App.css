@@ -223,11 +223,7 @@ top: -3%;
 }
 
 .customNavbar{
-  background-color: var(--customDarkGreen);
+  background-color: var(--customDarkGreen) !important;
   height: 65px !important;
   font-size: 1.2rem;
-}
-
-.navbar-nav{
-  background-color: var(--customDarkGreen);
 }
