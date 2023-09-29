@@ -33,7 +33,7 @@
 
 .landing-content {
   width: 90%;
-  color: var(--customDarkGreen);
+  color: var(--customFont);
   font-size: 18px;
   text-align: justify;
 }

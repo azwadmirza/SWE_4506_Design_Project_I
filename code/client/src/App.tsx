@@ -14,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import ProfilePage from './features/profile/pages/profile';
 import ChangePassword from './features/profile/pages/change-password';
-import Sheets from './features/sheets/pages/sheets';
+import Data from './features/sheets/pages/sheets';
 
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
           <Route path="/verify/:id" element={<Verification/>}/>
           <Route path="/profile" element={<ProfilePage/>}/>
           <Route path="/profile/change-password/:id" element={<ChangePassword/>}/>
-          <Route path="/sheets" element={<Sheets/>}/>
+          <Route path="/data" element={<Data/>}/>
           </Routes>
 
       </BrowserRouter>

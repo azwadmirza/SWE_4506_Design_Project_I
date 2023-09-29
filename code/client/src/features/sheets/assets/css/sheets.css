@@ -6,13 +6,13 @@
   }
 
   .render-cells{
-    margin-top: 195px;
+    margin-top: 160px;
   }
 
   .header{
     margin-top: 65px;
     background-color: var(--customGreen) !important;
-    height: 65px !important;
+    height: 30px !important;
     font-size: 1.2rem;
   }
 
@@ -29,9 +29,9 @@
   }
 
   .value-display{
-    margin-top: 130px;
+    margin-top: 110px;
     background-color: var(--white) !important;
-    height: 65px !important;
+    height: 30px !important;
     color:black;
     font-size: 1.2rem;
   }

@@ -1,7 +1,7 @@
 const Loader = () => {
   return ( 
     <div
-        className="spinner-border text-primary"
+        className="spinner-border text-success"
         role="status"
         style={{ marginLeft: "50%", marginTop: "10%" }}
       >

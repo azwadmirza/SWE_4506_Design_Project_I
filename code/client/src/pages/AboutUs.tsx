@@ -95,6 +95,7 @@ const AboutUs = () => {
         </div>
       </Card.Body>
     </Card>
+    <br></br>
     </div>
   </div>  
   );

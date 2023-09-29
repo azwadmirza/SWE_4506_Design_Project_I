@@ -1,5 +1,5 @@
 type GridProps={
-  gridRows:JSX.Element[];
+  gridRows:JSX.Element[]|undefined;
 }
 
 const Grid = ({gridRows}:GridProps) => {
