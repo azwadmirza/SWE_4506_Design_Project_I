@@ -8,7 +8,7 @@ const Header = ({filename}:HeaderProps) => {
   return (
     <Navbar className='header fixed-top ' variant="dark" expand="lg">
     <Container fluid className='navbarContents px-0 px-lg-5 d-flex justify-content-between' >
-    <Navbar.Brand className='px-2' href="#">{filename}</Navbar.Brand>
+    <Navbar.Brand className='px-2'>{filename}</Navbar.Brand>
       <Navbar.Toggle className='px-2' aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
