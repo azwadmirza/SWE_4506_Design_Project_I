@@ -1,30 +1,30 @@
 import Cell from "../components/cell";
 
-export function renderGrid(){
+export function renderGrid(setCurrentCell:React.Dispatch<React.SetStateAction<string>>,setViewValue:React.Dispatch<React.SetStateAction<string>>){
     const numRows = 200;
     const numCols = 200;
 
   const gridRows = [];
-  const gridCells = [<Cell Key={`Index\\Columns`} type="row-header" />];
+  const gridCells = [<Cell Key={`Index\\Columns`} type="row-header index" setterCell={setCurrentCell} setViewValue={setViewValue}/>];
 
 
   for (let col = 0; col < numCols; col++) {
-    gridCells.push(<Cell type="column-header" Key={`${col+1}`} />);
+    gridCells.push(<Cell type="column-header" Key={`column-header ${col+1}`}  setterCell={setCurrentCell} setViewValue={setViewValue}/>);
   }
 
 
   gridRows.push(
-    <div key={`column-header`} className="grid-row">
+    <div key={`row-${0}`} className="grid-row">
       {gridCells}
     </div>
   );
 
-  for (let row = 0; row < numRows; row++) {
-    const gridCells = [<Cell Key={`${row+1}`} type="row-header" />];
+  for (let row = 1; row <= numRows; row++) {
+    const gridCells = [<Cell Key={`row-header ${row}`} type="row-header"  setterCell={setCurrentCell} setViewValue={setViewValue}/>];
 
 
     for (let col = 0; col < numCols; col++) {
-      gridCells.push(<Cell  Key={``} type="cell"/>);
+      gridCells.push(<Cell  Key={`${row}:${col+1}`} type="cell"  setterCell={setCurrentCell} setViewValue={setViewValue}/>);
     }
 
 
