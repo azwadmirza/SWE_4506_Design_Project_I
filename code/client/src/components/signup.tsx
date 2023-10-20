@@ -17,12 +17,9 @@ interface SignUpProps {
 }
 
 const SignUp = ({ changeState }: SignUpProps) => {
-  const [show, setShow] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
   const {
+    loading, 
     error,
-    userType,
-    setUserType,
     username,
     setUsername,
     email,
@@ -33,7 +30,8 @@ const SignUp = ({ changeState }: SignUpProps) => {
     changeConfirmPassword,
     errorPassword,
     errorConfirmPassword,
-    signup,
+    dsiable,
+    signup
   } = useSignUp();
   const [passwordVisibility, setPasswordVisibility] = useState<string>(
     "password"
@@ -42,7 +40,9 @@ const SignUp = ({ changeState }: SignUpProps) => {
     string
   >("password");
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    signup();
+  };
 
   return (
     <Card className="signup">
@@ -143,7 +143,7 @@ const SignUp = ({ changeState }: SignUpProps) => {
             name="submit"
             value="submit"
             disabled={
-              loading || errorConfirmPassword !== "" || errorPassword !== ""
+              loading || dsiable
             }
             id="buttonRegister"
           >
