@@ -11,14 +11,12 @@ import {
 import DOMPurify from "dompurify";
 import { useSignUp } from "../hooks/useSignUp";
 import "../assets/css/signup.css";
+import { LoadingProps } from "./login";
 
-interface SignUpProps {
-  changeState: React.Dispatch<React.SetStateAction<string>>;
-}
 
-const SignUp = ({ changeState }: SignUpProps) => {
+
+const SignUp = ({changeLoadingState}:LoadingProps) => {
   const {
-    loading, 
     error,
     username,
     setUsername,
@@ -30,9 +28,8 @@ const SignUp = ({ changeState }: SignUpProps) => {
     changeConfirmPassword,
     errorPassword,
     errorConfirmPassword,
-    dsiable,
     signup
-  } = useSignUp();
+  } = useSignUp(changeLoadingState);
   const [passwordVisibility, setPasswordVisibility] = useState<string>(
     "password"
   );
@@ -40,7 +37,8 @@ const SignUp = ({ changeState }: SignUpProps) => {
     string
   >("password");
 
-  const handleSubmit = () => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     signup();
   };
 
@@ -48,7 +46,7 @@ const SignUp = ({ changeState }: SignUpProps) => {
     <Card className="signup">
       <Card.Body>
         <h4>Sign Up</h4>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={(e) => handleSubmit(e)}>
           <div className="errorBox">{error}</div>
 
           <div className="inputbox">
@@ -143,7 +141,7 @@ const SignUp = ({ changeState }: SignUpProps) => {
             name="submit"
             value="submit"
             disabled={
-              loading || dsiable
+              errorPassword !== "" || errorConfirmPassword !== ""
             }
             id="buttonRegister"
           >
@@ -157,7 +155,7 @@ const SignUp = ({ changeState }: SignUpProps) => {
         <div className="login-link">
           <p>
             Already have an account?{" "}
-            <a onClick={() => changeState("Login")} className="link-to-login">Login</a>
+            <a href="/login" className="link-to-login">Login</a>
           </p>
         </div>
       </Card.Body>
