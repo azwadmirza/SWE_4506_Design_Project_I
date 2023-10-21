@@ -1,34 +1,17 @@
 import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
-import React, { useState } from "react";
+import { useDropDown } from "../hooks/useDropDown";
 
 type HeaderProps = {
   filename: string;
 };
 
 const Header = ({ filename }: HeaderProps) => {
-  const [showFileDropdown, setShowFileDropdown] = useState(false);
-  const [showEditDropdown, setShowEditDropdown] = useState(false);
-  const [showViewDropdown, setShowViewDropdown] = useState(false);
-
-  const toggleDropdown = (menuName: string) => {
-    setShowFileDropdown(false);
-    setShowEditDropdown(false);
-    setShowViewDropdown(false);
-
-    switch (menuName) {
-      case "file":
-        setShowFileDropdown(!showFileDropdown);
-        break;
-      case "edit":
-        setShowEditDropdown(!showEditDropdown);
-        break;
-      case "view":
-        setShowViewDropdown(!showViewDropdown);
-        break;
-      default:
-        break;
-    }
-  };
+  const { showFileDropdown,
+    showEditDropdown,
+    showViewDropdown,
+    toggleDropdown,
+    handleUploadClick,
+    handleFileInputChange } = useDropDown();
 
   return (
     <Navbar className="header fixed-top" variant="dark" expand="lg">
@@ -52,7 +35,13 @@ const Header = ({ filename }: HeaderProps) => {
                   onClick={() => toggleDropdown("file")}
                 >
                   <Dropdown.Menu>
-                    <Dropdown.Item>Open</Dropdown.Item>
+                    <Dropdown.Item onClick={handleUploadClick}>Open</Dropdown.Item>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      style={{ display: "none" }}
+                      onChange={handleFileInputChange}
+                    />
                     <Dropdown.Item>Save</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
