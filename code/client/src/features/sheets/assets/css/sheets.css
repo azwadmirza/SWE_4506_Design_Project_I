@@ -1,0 +1,58 @@
+
+.grid-container {
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+  }
+
+  .render-cells{
+    margin-top: 160px;
+  }
+
+  .header{
+    margin-top: 65px;
+    background-color: var(--customGreen) !important;
+    height: 30px !important;
+    font-size: 1.2rem;
+  }
+
+  .cell-name{
+    padding-right: 30px;
+    padding-left: 30px;
+    background-color: var(--customGreen) !important;
+    border-radius: 25px;
+  }
+
+  .input-field{
+    width: 80%;
+    display: flex;
+  }
+
+  .value-display{
+    margin-top: 110px;
+    background-color: var(--white) !important;
+    height: 30px !important;
+    color:black;
+    font-size: 1.2rem;
+    z-index: -50;
+  }
+
+  .option{
+    padding-right: 50px;
+    background-color: none !important;
+    cursor:pointer;
+  }
+  
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(200, 1fr); 
+    grid-gap: 1px; 
+    display: block;
+  }
+  
+
+  .grid-row {
+    display: flex;
+  }
+  

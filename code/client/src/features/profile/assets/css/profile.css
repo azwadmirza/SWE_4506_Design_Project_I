@@ -1,0 +1,94 @@
+.btn.btn-editProfile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20%;
+  --bs-btn-hover-bg: var(--customOrange)!important;
+  --bs-btn-hover-border-color : var(--customOrange)!important;
+}
+
+
+.btn.btn-save{
+  --bs-btn-bg: var(--customGreen) !important;
+  color: white !important;
+  align-items: center;
+  height: 20%;
+  width: 25%;
+  --bs-btn-hover-bg: var(--customOrange)!important;
+  --bs-btn-hover-border-color : var(--customOrange)!important;
+}
+.btn.btn-delete{
+  --bs-btn-bg: var(--customOrange) !important;
+  color: white !important;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+  --bs-btn-hover-bg: var(--customGreen)!important;
+  --bs-btn-hover-border-color : var(--customGreen)!important;
+}
+.btn.btn-delete-cart
+{
+  --bs-btn-bg: var(--customOrange) !important;
+  color: white !important;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+  --bs-btn-hover-bg: var(--customGreen)!important;
+  --bs-btn-hover-border-color : var(--customGreen)!important;
+}
+.btn.btn-delete-cart
+{
+  --bs-btn-bg: var(--customOrange) !important;
+  color: white !important;
+  align-items: center;
+  height: 20%;
+  width: 50%;
+  --bs-btn-hover-bg: var(--customGreen)!important;
+  --bs-btn-hover-border-color : var(--customGreen)!important;
+}
+.btn.btn-increase{
+  --bs-btn-bg: var(--customDarkBlue) !important;
+  color: white !important;
+  --bs-btn-hover-bg: var(--customOrange)!important;
+  --bs-btn-hover-border-color : var(--customOrange)!important;
+  --bs-btn-active-bg: var(--customOrange) !important;
+}
+.btn.btn-decrease{
+  --bs-btn-bg: var(--customGreen) !important;
+  color: white !important;
+  --bs-btn-hover-bg: var(--customOrange)!important;
+  --bs-btn-hover-border-color : var(--customOrange)!important;
+  --bs-btn-active-bg: var(--customOrange) !important;
+  color: white !important;
+  --bs-btn-hover-bg: var(--customOrange)!important;
+  --bs-btn-hover-border-color : var(--customOrange)!important;
+  --bs-btn-active-bg: var(--customOrange) !important;
+}
+.btn.btn-decrease{
+  --bs-btn-bg: var(--customGreen) !important;
+  color: white !important;
+  --bs-btn-hover-bg: var(--customOrange)!important;
+  --bs-btn-hover-border-color : var(--customOrange)!important;
+  --bs-btn-active-bg: var(--customOrange) !important;
+}
+
+.addressbox{
+  margin-left:2%;
+  width:100%;
+}
+
+.mobile-view{
+  margin-left: 3%;
+}
+
+
+@media(max-width:768px){
+  .mobile-view{
+    display: none;
+  }
+  .btn-editProfile{
+    margin-left: 5%;
+  }
+}
+
+

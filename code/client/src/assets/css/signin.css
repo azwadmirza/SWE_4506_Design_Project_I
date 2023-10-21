@@ -1,0 +1,12 @@
+.signin {
+  position: fixed;
+  min-height: 100vh !important;
+  height: 100% !important;
+  width: 100% !important;
+  top: 0% !important;
+  margin-top: 3% !important;
+  background-color: #DBE3D4 !important;
+  background: url("../../../public/Register.jpg") no-repeat;
+  background-position: center;
+  background-size: contain !important;
+}
