@@ -1,54 +1,55 @@
 import { useState } from "react";
 import CryptoJS from "crypto-js";
 import axios from "axios";
-export const useSignUp=()=>{
-  const [loading, setLoading] = useState<boolean>(true);
-  const [username, setUsername]=useState<string>();
-  const [error,setError]=useState<string>();
-  const [errorPassword,setErrorPassword]=useState<string>();
-  const [errorConfirmPassword,setErrorConfirmPassword]=useState<string>();
-  const [email,setEmail]=useState<string>();
-  const [password,setPassword]=useState<string>();
-  const [confirmPassword,setConfirmPassword]=useState<string>();
-  const [submitPassword,setSubmitPassword]=useState<string>();
-  const [dsiable,setDisable]=useState<boolean>(true);
 
-  const changePassword=(input:string)=>{
-    if(input!==confirmPassword){
-      setErrorPassword("Password not match");
-      setDisable(true);
+export const useSignUp = (changeLoadingState:React.Dispatch<React.SetStateAction<boolean>>) => {
+  const [username, setUsername] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [errorPassword, setErrorPassword] = useState<string>("");
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const changePassword = (input: string) => {
+    if (input !== confirmPassword) {
+      setErrorConfirmPassword("Password not match");
     }
-    else{
+    else {
       setErrorPassword("");
+
     }
     setPassword(input);
-    setSubmitPassword(CryptoJS.SHA512(input).toString());
   }
 
-  const changeConfirmPassword=(input:string)=>{
-    if(input!==password){
+  const changeConfirmPassword = (input: string) => {
+    if (input !== password) {
       setErrorConfirmPassword("Password not match");
-      setDisable(true);
     }
-    else{
+    else {
       setErrorConfirmPassword("");
+
     }
     setConfirmPassword(input);
   }
 
-  const signup=async()=>{
-      axios.post("/api/signup",{
-        username:username,
-        email:email,
-        password:submitPassword,
-      }).then((res)=>{
-        if(res.data.error){
-          setError(res.data.error);
-        }else{
-          window.location.href="/login";
-        }
-      })
+  const signup = async () => {
+    changeLoadingState(true);
+    axios.post("http://127.0.0.1:8000/api/register/", {
+      username: username,
+      email: email,
+      password: CryptoJS.SHA512(password).toString(),
+    },{
+      withCredentials: true
+    }).then((res) => {
+      if (res.data.error) {
+        setError(res.data.error);
+      } else {
+        window.location.href = "/login";
+      }
+      changeLoadingState(false);
+    })
   }
 
-  return {loading,error,username,setUsername,email,setEmail,password,changePassword,confirmPassword,changeConfirmPassword,errorPassword,errorConfirmPassword,dsiable,signup};
+  return { error, username, setUsername, email, setEmail, password, changePassword, confirmPassword, changeConfirmPassword, errorPassword, errorConfirmPassword, signup };
 }
