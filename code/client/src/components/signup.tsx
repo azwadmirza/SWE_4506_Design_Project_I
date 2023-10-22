@@ -73,6 +73,9 @@ const SignUp = ({changeLoadingState}:LoadingProps) => {
             />
             <label htmlFor="">Email</label>
           </div>
+          <div id="errorPassword" className="errorBox">
+            {errorPassword}
+          </div>
           <div className="inputbox">
             {(passwordVisibility === "password" && (
               <IonIcon
@@ -98,8 +101,8 @@ const SignUp = ({changeLoadingState}:LoadingProps) => {
             />
             <label htmlFor="">Password</label>
           </div>
-          <div id="errorPassword" className="errorBox">
-            {errorPassword}
+          <div id="errorConfirmPassword" className="errorBox">
+            {errorConfirmPassword}
           </div>
           <div className="inputbox">
             {(confirmPasswordVisibility === "password" && (
@@ -132,9 +135,7 @@ const SignUp = ({changeLoadingState}:LoadingProps) => {
               Agree to all the <a href="/terms">terms and conditions</a>
             </label>
           </div>
-          <div id="errorConfirmPassword" className="errorBox">
-            {errorConfirmPassword}
-          </div>
+          
           <button
             type="submit"
             className="custom-button"
