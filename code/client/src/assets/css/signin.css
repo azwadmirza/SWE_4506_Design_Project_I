@@ -9,4 +9,5 @@
   background: url("../../../public/Register.jpg") no-repeat;
   background-position: center;
   background-size: contain !important;
+  overflow-y: scroll !important;
 }

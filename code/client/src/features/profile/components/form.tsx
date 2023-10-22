@@ -2,15 +2,20 @@ import {  useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Loader from "../../../partials/loader";
-import useForm from "../hooks/useForm";
-import { callOutline, clipboardOutline, codeWorkingOutline, mailUnreadOutline, personCircleOutline } from "ionicons/icons";
+import { mailUnreadOutline, personCircleOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import ConfirmPasswordModal from "./confirm-password-modal";
-
-const ProfileForm = () => {
+interface IProfile{
+  email:string,
+  username:string,
+  setUsername:React.Dispatch<React.SetStateAction<string>>,
+  password:string,
+  setPassword:React.Dispatch<React.SetStateAction<string>>,
+  error:string|undefined
+}
+const ProfileForm = ({email,username,setUsername,password,setPassword,error}:IProfile) => {
   const [isDisabled,turnOnEdit]=useState<boolean>(true);
-  const email="mirzaazwad8@gmail.com";
-  const {username,setUsername,password,setPassword,phone,setPhoneNumber,isLoading,error}=useForm(email);
+  
   const [passwordVisibility,setPasswordVisibility]=useState("password");
   const [show,setShow]=useState(false);
 
@@ -18,8 +23,7 @@ const ProfileForm = () => {
     e.preventDefault();
   }
 
-  if(!isLoading){ 
-    return (
+  return (
       <div>
         <div className="profileInfo d-flex justify-content-between">
           <h4 className="InfoHeader mb-4">Personal Information</h4>
@@ -43,7 +47,6 @@ const ProfileForm = () => {
               id="username"
               onChange={(e)=>setUsername(e.target.value)}
               />
-              <label htmlFor="username">Name</label>
           </div>
         <div className="inputbox">
           <IonIcon icon={mailUnreadOutline}></IonIcon>
@@ -51,7 +54,7 @@ const ProfileForm = () => {
         </div>
         {!isDisabled &&(<a href={"profile/change-password/" + "1234"} style={{marginLeft:"75%"}}>Change Password</a>)} 
         {!isDisabled && (
-          <Button className="btn btn-outline-dark btn-save" disabled={isLoading}>
+          <Button className="btn btn-outline-dark btn-save">
             Save
           </Button>
         )}
@@ -59,11 +62,5 @@ const ProfileForm = () => {
       <ConfirmPasswordModal show={show} handleClose={()=>setShow(false)} handleSubmit={handleSubmit} error={error} passwordVisibility={{passwordVisibility,setPasswordVisibility}} password={{password:password,setPassword:setPassword}}/>
       </div>
     );
-  }
-  else{
-    return (
-      <Loader/>
-    );
-  }
 };
 export default ProfileForm;

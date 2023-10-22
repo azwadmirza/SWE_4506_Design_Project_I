@@ -16,6 +16,9 @@
     "@react-google-maps/api": "^2.19.2",
     "@types/crypto-js": "^4.1.2",
     "@types/dompurify": "^3.0.2",
+    "@types/jquery": "^3.5.24",
+    "@types/node": "^20.8.7",
+    "@types/zepto": "^1.0.35",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.1",
     "crypto-js": "^4.1.1",
@@ -27,7 +30,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
     "react18-input-otp": "^1.1.4",
-    "use-places-autocomplete": "^4.0.1"
+    "use-places-autocomplete": "^4.0.1",
+    "zepto-browserify": "^1.1.6-1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

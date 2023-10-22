@@ -4,25 +4,25 @@ import { mailOutline, lockClosedOutline, logoGoogle, lockOpenOutline } from "ion
 import { useLogin } from "../hooks/useLogin";
 import '../assets/css/login.css';
 import { useState } from "react";
+import Loader from "../partials/loader";
 
-interface LoginProps{
-  changeState:React.Dispatch<React.SetStateAction<string>>
+export interface LoadingProps{
+  changeLoadingState:React.Dispatch<React.SetStateAction<boolean>>
 }
+const Login = ({changeLoadingState}:LoadingProps) => {
 
-const Login = ({changeState}:LoginProps) => {
-
-  const {error,email,setEmail,password,changePassword,login}=useLogin();
+  const {error,email,setEmail,password,setPassword,remember,setRemember,login}=useLogin(changeLoadingState);
   const [passwordVisibility,setPasswordVisibility]=useState("password");
 
-  const handleSubmit=async()=>{
-
-  }
-
-  return (
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    login();
+  };
+    return (
       <Card className="login">
         <Card.Body>
           <h4>Login</h4>
-          <Form className="form-value" onSubmit={handleSubmit}>
+          <Form className="form-value" onSubmit={(e)=>handleSubmit(e)}>
             <div id="confirmErrorPassword" className="errorBox">
               {error}
             </div>
@@ -44,12 +44,12 @@ const Login = ({changeState}:LoginProps) => {
                   onClick={() => setPasswordVisibility("password")}
                 ></IonIcon>
               ))}
-              <input type={passwordVisibility} id="password" name="password" required value={password} onChange={(e)=>changePassword(e.target.value)} />
+              <input type={passwordVisibility} id="password" name="password" required value={password} onChange={(e)=>setPassword(e.target.value)} />
               <label htmlFor="password">Password</label>
             </div>
             <div className="remember">
               <label htmlFor="remember_me">
-                <input type="checkbox" id="remember_me"/>
+                <input type="checkbox" id="remember_me" onChange={()=>setRemember(!remember)}/>
                 Remember Me!
               </label>
             </div>
@@ -60,7 +60,7 @@ const Login = ({changeState}:LoginProps) => {
             <button name="google" className="custom-button full-width">Continue with <IonIcon icon={logoGoogle}></IonIcon></button>
             <div className="register-link">
               <p>
-                Don't have an account? <a onClick={()=>changeState("SignUp")}  className="link-to-register">Register</a>
+                Don't have an account? <a href="/signup"  className="link-to-register">Register</a>
               </p>
             </div>
           </Form>
