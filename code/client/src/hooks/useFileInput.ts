@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 export const useFileInput = () => {
 
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -19,19 +20,44 @@ export const useFileInput = () => {
         }
     };
 
-    const handleFileInputChange = (
+    const handleFileInputChange = async (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => {
+      ) => {
         const file = event.target.files && event.target.files[0];
         if (file) {
             const type = file.type;
             if (allowedFormats.includes(type)) {
-                setSelectedFile(file.name);
-                setErrorMsg("");
-            } else {
+                try {
+                  // Use FormData to create a multipart form for file upload
+                  const formData = new FormData();
+                  formData.append("file", file);
+        
+                  // Make a POST request to your Django API endpoint for file uploads
+                  const response = await axios.post("http://127.0.0.1:8000/file/upload/", formData, {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  });
+        
+                  const data = response.data; 
+                  if (data.file_url) {
+                    setSelectedFile(file.name);
+                    setErrorMsg("");
+                    console.log("File uploaded to Cloudinary. URL:", data.file_url);
+                  } else {
+                    setErrorMsg(data.error);
+                    setSelectedFile(null);
+                    console.error("File upload error:", data.error);
+                  }
+                } catch (error) {
+                  setErrorMsg("File upload error");
+                  setSelectedFile(null);
+                  console.error("File upload error:", error);
+                }
+              } else {
                 setErrorMsg("Invalid file format");
                 setSelectedFile(null);
-            }
+              }
         }
     };
     useEffect(() => {

@@ -1,7 +1,31 @@
 
 from pathlib import Path
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
+          
+cloud_name = config('CLOUDINARY_CLOUD_NAME')
+api_key = config('CLOUDINARY_API_KEY')
+api_secret = config('CLOUDINARY_API_SECRET')
+
+cloudinary.config(
+    cloud_name=cloud_name,
+    api_key=api_key,
+    api_secret=api_secret
+)
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
 
 DB_HOST = config('HOST')
 DB_NAME = config('DB_NAME')
@@ -29,6 +53,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'gateway',
+    'file_controller',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +74,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
