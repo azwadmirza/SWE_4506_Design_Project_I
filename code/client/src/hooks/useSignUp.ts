@@ -12,6 +12,36 @@ export const useSignUp = (changeLoadingState:React.Dispatch<React.SetStateAction
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const changePassword = (input: string) => {
+    if(input.length < 8){
+      setErrorPassword("Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, 1 symbol and 1 number");
+    }
+    else{
+      setErrorPassword("");
+    }
+    var numberpresent = false;
+    var symbolpresent = false;
+    var uppercaseletterpresent = false;
+    var lowercaseletterpresent = false;
+    for(var i = 0; i < input.length; i++){
+      if(input[i] >= '0' && input[i] <= '9'){
+        numberpresent = true;
+      }
+      else if(input[i] >= 'a' && input[i] <= 'z'){
+        lowercaseletterpresent = true;
+      }
+      else if(input[i] >= 'A' && input[i] <= 'Z'){
+        uppercaseletterpresent = true;
+      }
+      else{
+        symbolpresent = true;
+      }
+    }
+    if(!(numberpresent && symbolpresent && uppercaseletterpresent && lowercaseletterpresent)){
+      setErrorPassword("Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, 1 symbol and 1 number");
+    }
+    else{
+      setErrorPassword("");
+    }
     if (input !== confirmPassword) {
       setErrorConfirmPassword("Password not match");
     }
