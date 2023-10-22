@@ -45,7 +45,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV='D:\Resources\Third Year\Fifth Semester\SWE4506_DP-I\SWE_4506_Design_Project_I_Development\code\serverenv'
+VIRTUAL_ENV='D:\github repository\SWE_4506_Design_Project_I_Development\code\serverenv'
 if ([ "$OSTYPE" = "cygwin" ] || [ "$OSTYPE" = "msys" ]) && $(command -v cygpath &> /dev/null) ; then
     VIRTUAL_ENV=$(cygpath -u "$VIRTUAL_ENV")
 fi
