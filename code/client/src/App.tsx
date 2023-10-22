@@ -23,7 +23,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing/>}/>
-          <Route path="/signin" element={<SignIn/>}/>
+          <Route path="/login" element={<SignIn location='login'/>}/>
+          <Route path="/signup" element={<SignIn location='signup'/>}/>
           <Route path="/about-us" element={<AboutUs/>}/>
           <Route path="/verify/:id" element={<Verification/>}/>
           <Route path="/profile" element={<ProfilePage/>}/>
