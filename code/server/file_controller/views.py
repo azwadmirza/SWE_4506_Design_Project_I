@@ -1,13 +1,11 @@
-from cloudinary.uploader import upload
 from rest_framework import generics
-from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework import status
 from .models import FileMetadata
 from .serializers import FileMetadataSerializer
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
-from .models import FileMetadata
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 
@@ -15,31 +13,22 @@ class FileUploadView(generics.CreateAPIView):
     permission_classes=[]
     queryset = FileMetadata.objects.all()  # Provide a queryset
     serializer_class = FileMetadataSerializer
-    parser_classes = (FileUploadParser,)
-    print("Ami Pagla -1")
-
-    def post(self, request, *args, **kwargs):
+    def post(self, request, format=None):
         file_serializer = FileMetadataSerializer(data=request.data)
-        print("Ami Pagla 0")
+        
 
         if file_serializer.is_valid():
             try:
-                # Upload the file to Cloudinary
-                print("Ami Pagla 1")
-                uploaded_file = upload(request.data['file'])
+                # Get the file name from the request data
+                file_name= request.data.get("file_name")  # Access the file name
 
-                # Get the Cloudinary URL
-                file_url = uploaded_file['url']
+                cloudinary_url = request.data.get("cloudinary_url")
 
-                # Save the file metadata
-                print("Ami Pagla 2")
-                file_serializer.save(file_url=file_url, file_name=request.data['file'].name)
-                print("Ami Pagla 3")
+                file_serializer.save(file_name=file_name, cloudinary_url=cloudinary_url)
 
-                # Return a success response with the Cloudinary URL
-                return Response({'file_url': file_url}, status=status.HTTP_201_CREATED)
+                return Response({'file_url': cloudinary_url}, status=status.HTTP_201_CREATED)
             except Exception as e:
-                return Response({'error': 'File upload to Cloudinary failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'error': 'File upload to Mongo failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

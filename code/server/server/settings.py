@@ -1,22 +1,10 @@
 
 from pathlib import Path
 from decouple import config
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
-          
-cloud_name = config('CLOUDINARY_CLOUD_NAME')
-api_key = config('CLOUDINARY_API_KEY')
-api_secret = config('CLOUDINARY_API_SECRET')
-
-cloudinary.config(
-    cloud_name=cloud_name,
-    api_key=api_key,
-    api_secret=api_secret
-)
 
 CORS_ALLOW_ALL_ORIGINS = True
+
 
 CORS_ALLOW_METHODS = [
     "DELETE",
@@ -62,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'user_profile'
+    'user_profile',
+    'file_controller'
     
 ]
 
@@ -94,7 +83,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     'Content-Type',
     'Authorization',
-
+    'Content-Disposition',
 ]
 
 

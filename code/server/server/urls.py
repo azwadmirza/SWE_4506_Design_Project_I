@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('gateway.urls')),
     path('api/profile/', include('user_profile.urls')),
+    path('api/file/', include('file_controller.urls')),
 ]
