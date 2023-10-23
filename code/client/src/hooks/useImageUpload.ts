@@ -13,10 +13,9 @@ export const useImageUpload=(defaultImageURL:string|undefined)=>{
       formData.append("file", image);
       formData.append("upload_preset", "med_guard");
       await axios.post(
-        "https://api.cloudinary.com/v1_1/dzerdaaku/image/upload",
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       ).then((res)=>{
-        console.log(res);
         setErrorImage("");
         setImageURL(res.data.url);
         return res.data;
@@ -25,6 +24,7 @@ export const useImageUpload=(defaultImageURL:string|undefined)=>{
         setErrorImage(error.response.data.message);
         console.log(error);
       })
+      await axios.put('http://127.0.0.1:8000/api/user/image',{imageURL});
     }
     else{
       setErrorImage("Image has not been added");

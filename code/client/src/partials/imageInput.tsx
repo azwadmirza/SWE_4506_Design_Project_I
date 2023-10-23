@@ -1,7 +1,7 @@
-import { useState } from "react";
 import Loader from "./loader";
 import '../assets/css/profile-picture.css';
 import UploadImage from "../components/uploadImage";
+import { useImageInput } from "../hooks/useImageInput";
 
 type ImageInputProps={
   imageURL:string|undefined,
@@ -10,15 +10,7 @@ type ImageInputProps={
 }
 
 const ImageInput=({imageURL,setImage,upload_image}:ImageInputProps)=>{
-  const [locked,setLocked]=useState(false);
-  const [show, setShow] = useState(false);
-
-  const handleSubmit=async()=>{
-    setShow(false);
-    setLocked(true);
-    await upload_image();
-    setLocked(false);
-  }
+  const {locked,show, setShow,handleSubmit}=useImageInput(upload_image);
 
   if(locked===false){
     return (

@@ -1,7 +1,6 @@
 import './App.css';
 import {
   BrowserRouter,
-  Navigate,
   Route,
   Routes,
 } from "react-router-dom";
@@ -33,15 +32,19 @@ function App() {
           <>
           <Route path="/login" element={<SignIn location='login'/>}/>
           <Route path="/signup" element={<SignIn location='signup'/>}/>
+          <Route path="/forgot-password" element={<SignIn location='signup'/>}/>
           <Route path="/about-us" element={<AboutUs/>}/>
           </>
           )}
           {accessToken &&( 
           <>
-          {verification===false && <Route path="/verification" element={<Verification/>}/>}
-          <Route path="/profile" element={<ProfilePage/>}/>
-          <Route path="/profile/change-password/:id" element={<ChangePassword/>}/>
-          <Route path="/data" element={<Data/>}/>
+          {(verification===false && <Route path="/verification" element={<Verification/>}/>) || (
+            <>
+              <Route path="/profile" element={<ProfilePage/>}/>
+              <Route path="/profile/change-password" element={<ChangePassword/>}/>
+              <Route path="/data" element={<Data/>}/>
+            </>
+          )}
           </>
           )}
           <Route path='*' element={<Error404/>}/>

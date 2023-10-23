@@ -5,7 +5,6 @@ import {
   mailOutline,
   lockClosedOutline,
   personCircleOutline,
-  logoGoogle,
   lockOpenOutline,
 } from "ionicons/icons";
 import DOMPurify from "dompurify";
@@ -150,9 +149,6 @@ const SignUp = ({changeLoadingState}:LoadingProps) => {
           </button>
         </Form>
         <hr />
-        <button name="google" className="custom-button full-width">
-          Continue with <IonIcon icon={logoGoogle}></IonIcon>
-        </button>
         <div className="login-link">
           <p>
             Already have an account?{" "}
