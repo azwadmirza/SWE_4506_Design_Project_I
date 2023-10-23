@@ -30,11 +30,8 @@ export const useFileInput = () => {
       const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
       if (allowedFormats.includes(type)) {
         try {
-<<<<<<< Updated upstream
-=======
           const parsedCSV = await parseCSV(file);
           localStorage.setItem("parsedCSV", JSON.stringify(parsedCSV));
->>>>>>> Stashed changes
           const formData = new FormData();
           formData.append("file", file);
           formData.append("upload_preset", "datanalytica");
