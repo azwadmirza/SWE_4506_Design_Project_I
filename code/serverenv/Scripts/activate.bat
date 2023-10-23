@@ -1,4 +1,4 @@
-@set "VIRTUAL_ENV=D:\Resources\Third Year\Fifth Semester\SWE4506_DP-I\SWE_4506_Design_Project_I_Development\code\serverenv"
+@set "VIRTUAL_ENV=D:\github repository\SWE_4506_Design_Project_I_Development\code\serverenv"
 
 @set "VIRTUAL_ENV_PROMPT="
 @if NOT DEFINED VIRTUAL_ENV_PROMPT (

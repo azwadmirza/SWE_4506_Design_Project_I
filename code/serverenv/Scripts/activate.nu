@@ -32,7 +32,7 @@ export-env {
       }
     }
 
-    let virtual_env = 'D:\Resources\Third Year\Fifth Semester\SWE4506_DP-I\SWE_4506_Design_Project_I_Development\code\serverenv'
+    let virtual_env = 'D:\github repository\SWE_4506_Design_Project_I_Development\code\serverenv'
     let bin = 'Scripts'
 
     let is_windows = ($nu.os-info.family) == 'windows'
