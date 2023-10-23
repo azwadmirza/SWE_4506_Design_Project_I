@@ -11,12 +11,18 @@ def MinMaxNorm(request):
     if request.method == 'POST':
         try:
             uploaded_file = request.FILES.get('file')
+            # uploaded_file = 'https://res.cloudinary.com/djbspykue/raw/upload/v1698084298/toaj3jthlluphpmy7nwn.csv'
 
             if uploaded_file:
                 df = pd.read_csv(uploaded_file)
                 request_data = json.loads(request.POST.get('json_data', '{}'))
                 #print(request_data)
-
+                
+                for column in df.columns:
+                    dtype = df[column].dtype
+                    print(f"Column '{column}' has data type: {dtype}")
+                
+                
                 dropColumns = request_data.get('drop_columns', [])
                 #print(dropColumns)
                 df = df[[col for col in df if col not in dropColumns] + dropColumns]
