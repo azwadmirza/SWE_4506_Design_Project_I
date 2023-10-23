@@ -1,6 +1,10 @@
 import { useState } from "react";
 import CryptoJS from "crypto-js";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAccessTokens } from "../contexts/auth/slice";
+import { useAppDispatch } from "../contexts/auth/hooks";
 
 export const useSignUp = (changeLoadingState:React.Dispatch<React.SetStateAction<boolean>>) => {
   const [username, setUsername] = useState<string>("");
@@ -10,6 +14,8 @@ export const useSignUp = (changeLoadingState:React.Dispatch<React.SetStateAction
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const navigate=useNavigate();
+  const dispatch=useAppDispatch();
 
   const changePassword = (input: string) => {
     if(input.length < 8){
@@ -72,11 +78,15 @@ export const useSignUp = (changeLoadingState:React.Dispatch<React.SetStateAction
     },{
       withCredentials: true
     }).then((res) => {
-      if (res.data.error) {
-        setError(res.data.error);
-      } else {
-        window.location.href = "/verification";
-      }
+        dispatch(setAccessTokens({ access_token: res.data.access, verification: res.data.verification, user_id: res.data.user_id }));
+        navigate("/verification");
+      }).catch((err)=>{
+        if(err.response.status===400){
+          setError("Email already exists");
+        }
+        else{
+          setError("Something went wrong, please try again later");
+        }
       changeLoadingState(false);
     })
   }
