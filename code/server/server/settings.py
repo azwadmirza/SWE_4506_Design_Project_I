@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'gateway',
+    'normalization',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
