@@ -7,12 +7,12 @@ from django.conf import settings
 from random import randint
 from django.core.mail import send_mail
 from .models import user,otp
-from .serializers import userSerializer  # Corrected import
+from .serializers import userSerializer  
 
 class RegistrationView(APIView):
     permission_classes = []
     def post(self, request):
-        serializer = userSerializer(data=request.data)  # Use the UserSerializer
+        serializer = userSerializer(data=request.data)  
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
