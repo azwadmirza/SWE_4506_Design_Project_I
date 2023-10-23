@@ -10,6 +10,7 @@ DB_PASSWORD = config('DB_PASSWORD')
 SECRET_KEY = config('SECRET_KEY')
 AUTH = config('AUTH')
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -151,7 +152,12 @@ PASSWORD_HASHERS = [
 ]
 
 
-
+EMAIL_BACKEND=config('EMAIL_BACKEND')
+EMAIL_HOST= config('EMAIL_HOST')
+EMAIL_PORT= config('EMAIL_PORT')
+EMAIL_USE_TLS= True
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
 
 LANGUAGE_CODE = 'en-us'
