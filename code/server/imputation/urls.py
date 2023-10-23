@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # path('min-max/', views.MinMaxNorm, name='MinMaxNorm')
+    path('constImputation/', views.constImputation, name='constImputation')
 ]

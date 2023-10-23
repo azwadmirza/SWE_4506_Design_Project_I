@@ -44,7 +44,7 @@ def MinMaxNorm(request):
 
                 final_json = final_df.to_json(orient='records')
 
-                scaled_csv_filename = 'D:\csv dump\scaled_data.csv'  # Choose a filename and path.
+                scaled_csv_filename = 'C:\csv dump\scaled_data.csv'  # Choose a filename and path.
                 final_df.to_csv(scaled_csv_filename, index=False)
 
                 return JsonResponse({'message': 'File uploaded, processed, and scaled successfully.', 'scaledData': final_json})
