@@ -11,19 +11,13 @@ def MinMaxNorm(request):
     if request.method == 'POST':
         try:
             uploaded_file = request.FILES.get('file')
-            # uploaded_file = 'https://res.cloudinary.com/djbspykue/raw/upload/v1698084298/toaj3jthlluphpmy7nwn.csv'
 
             if uploaded_file:
                 df = pd.read_csv(uploaded_file)
                 #request_data = json.loads(request.POST.get('json_data', '{}'))
                 #print(request_data)
-                
-                for column in df.columns:
-                    dtype = df[column].dtype
-                    print(f"Column '{column}' has data type: {dtype}")
-                
-                
-                dropColumns = request_data.get('drop_columns', [])
+
+                #dropColumns = request_data.get('drop_columns', [])
                 #print(dropColumns)
                 original_columns = df.columns.tolist()
                 
@@ -45,7 +39,7 @@ def MinMaxNorm(request):
 
                 final_json = final_df.to_json(orient='records')
 
-                scaled_csv_filename = 'C:\csv dump\scaled_data.csv'  # Choose a filename and path.
+                scaled_csv_filename = 'C:\\csv dump\\scaled_data.csv'
                 final_df.to_csv(scaled_csv_filename, index=False)
 
                 return JsonResponse({'message': 'File uploaded, processed, and scaled successfully.', 'scaledData': final_json})
