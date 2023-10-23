@@ -6,17 +6,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
 import { cloudUpload } from "ionicons/icons";
 import "../assets/css/navbar.css";
+import { useAppDispatch } from "../contexts/auth/hooks";
+import { clearTokens } from "../contexts/auth/slice";
 
 
 const NavbarUser = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch=useAppDispatch();
   const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('verification');
-    localStorage.removeItem('user_id');
-    return navigate("/");
+    dispatch(clearTokens());
+    navigate("/");
   };
   
 

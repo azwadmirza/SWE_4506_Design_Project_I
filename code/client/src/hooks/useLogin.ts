@@ -2,6 +2,9 @@ import { useState } from "react";
 import CryptoJS from "crypto-js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAccessTokens, setRefreshToken } from "../contexts/auth/slice";
+import { useAppDispatch } from "../contexts/auth/hooks";
 
 export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<boolean>>)=>{
 
@@ -10,7 +13,7 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
   const [password,setPassword]=useState<string>("");
   const [remember,setRemember]=useState<boolean>(false);
   const navigate=useNavigate();
-
+  const dispatch=useAppDispatch();
 
   const login=async()=>{
     changeLoadingState(true);
@@ -20,11 +23,9 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
     },{
       withCredentials: true
     }).then((res) => {
-      localStorage.setItem("access_token",res.data.access);
-      localStorage.setItem("user_id",res.data.user_id);
-      localStorage.setItem("verification",res.data.verification);
+      dispatch(setAccessTokens({ access_token: res.data.access, verification: res.data.verification, user_id: res.data.user_id }));
       if(remember===true){
-        localStorage.setItem("refresh_token",res.data.refresh);
+        dispatch(setRefreshToken(res.data.refresh));
       }
       
       if(res.data.verification===false){

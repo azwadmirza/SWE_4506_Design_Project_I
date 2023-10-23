@@ -36,7 +36,7 @@ const EmailVerification = () => {
       <div><p className="p3">Didn't receive the code?</p></div>
       <div className="d-flex mx-auto w-100">
             <div className="w-50">
-            <button className='custom-button full-width' disabled={isDisabled} onClick={resend} >Resend</button>
+            <button className='custom-button full-width' disabled={isDisabled} onClick={()=>resend()} >Resend</button>
             </div>
             <div className="w-50">
             <button className='custom-button full-width' disabled={isLocked} style={{marginLeft:'2%'}} onClick={handleSubmit}>Submit</button>

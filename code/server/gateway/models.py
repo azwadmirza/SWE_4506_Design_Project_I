@@ -29,5 +29,5 @@ class user(AbstractBaseUser, PermissionsMixin):
     
 class otp(models.Model):
     email=models.CharField(max_length=30)
-    otp=models.CharField(max_length=6)
+    code=models.CharField(max_length=6)
     time=models.DateTimeField(auto_now_add=True)
