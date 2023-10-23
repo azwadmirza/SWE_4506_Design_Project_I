@@ -5,28 +5,11 @@ import OTPValidityTimer from '../../../partials/OTPTimer';
 import { IonIcon } from '@ionic/react';
 import { mailUnreadOutline } from 'ionicons/icons';
 import '../assets/css/email-verification.css';
+import { useOTP } from '../hooks/useOTP';
 
 
 const EmailVerification = () => {
-  const [otp,setOTP]=useState("");
-  const [isDisabled,setIsDisabled]=useState(true);
-  const [isLocked,setisLocked]=useState(false);
-  const [error,setError]=useState(true);
-
-
-
-  const handleSubmit = async() =>{
-    
-  }
-
-
-  const resend = () =>{
-    window.location.reload();
-  }
-
-  const handleTimerExpire = async() =>{
-
-  }
+  const {otp,setOTP,isDisabled,isLocked,error,handleSubmit,resend,handleTimerExpire}=useOTP();
   return ( 
     <Card>
     <div className="email-verification">

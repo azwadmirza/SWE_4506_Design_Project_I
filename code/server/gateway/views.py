@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import authenticate, login
+from django.conf import settings
 from random import randint
 from django.core.mail import send_mail
 from .models import user,otp
@@ -24,19 +25,23 @@ class VerifyEmail(APIView):
     permission_classes = []
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
-        searcheduser = user.objects.get(id=id)
-        otp_code=randint(100000,999999)
-        otp.objects.delete(email=searcheduser.email)
-        otp.objects.create(email=searcheduser.email,otp=otp_code)
-        send_mail(
-            "Verify Your Email: DataAnalytica",
-            "Your OTP is "+str(otp_code)+"\n\nRegards,\nDataAnalytica Team",
-            "from@example.com",
-            ["to@example.com"],
-            fail_silently=False,
-        )
+        try:
+            print(id)
+            searcheduser = user.objects.get(id=id)
+        except user.DoesNotExist:
+            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         if searcheduser is not None:
-            return Response({'otp':otp_code,'email':searcheduser.email},status=status.HTTP_200_OK)
+            otp_code=randint(100000,999999)
+            otp.objects.filter(id=id).delete()
+            otp.objects.create(email=searcheduser.email,otp=otp_code)
+            send_mail(
+                "Verify Your Email: DataAnalytica",
+                "Your OTP is "+str(otp_code)+"\n\nRegards,\nDataAnalytica Team",
+                settings.EMAIL_HOST_USER,
+                [searcheduser.email,],
+                fail_silently=False,
+            )
+            return Response({'success':True},status=status.HTTP_200_OK)
         else:
             return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         
