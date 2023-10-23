@@ -1,4 +1,4 @@
 Lib/site-packages
-Scripts
+Scripts/*
 share
 pyvenv.cfg
