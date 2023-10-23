@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('encoding/', views.OneHotEncoding, name='OneHotEncoding')
+    path('one_hot_encoding/', views.OneHotEncoding, name='OneHotEncoding')
 ]
