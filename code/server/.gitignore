@@ -1,12 +1,2 @@
 .env
-file_controller/__pycache__
-file_controller/migrations/__pycache__
-gateway/__pycache__
-gateway/migrations/__pycache__
-normalization/__pycache__
-normalization/migrations/__pycache__
-server/__pycache__
-server/migrations/__pycache__
-user_profile/__pycache__
-user_profile/migrations/__pycache__
-
+**/__pycache__
