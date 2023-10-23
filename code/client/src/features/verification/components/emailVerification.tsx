@@ -1,18 +1,13 @@
 import Card from 'react-bootstrap/Card';
 import OtpInput from 'react18-input-otp';
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 import OTPValidityTimer from '../../../partials/OTPTimer';
 import { IonIcon } from '@ionic/react';
 import { mailUnreadOutline } from 'ionicons/icons';
 import '../assets/css/email-verification.css';
 
-interface EmailVerificationProps{
-  id:string|undefined;
-}
 
-const EmailVerification = ({id}:EmailVerificationProps) => {
-  const navigate=useNavigate();
+const EmailVerification = () => {
   const [otp,setOTP]=useState("");
   const [isDisabled,setIsDisabled]=useState(true);
   const [isLocked,setisLocked]=useState(false);
@@ -38,7 +33,7 @@ const EmailVerification = ({id}:EmailVerificationProps) => {
     <Card.Header><h2>Email Verification <IonIcon icon={mailUnreadOutline}></IonIcon></h2></Card.Header>
     <Card.Body>
       <p className="p2">
-        An OTP has been sent to your entered email <span className='email-display'>{id}</span>
+        An OTP has been sent to your entered email <span className='email-display'>{localStorage.getItem('email')}</span>
       </p>
       <p className="errorBox">{error}</p>
       <div className="otpElements">
