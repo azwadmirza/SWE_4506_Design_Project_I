@@ -22,13 +22,11 @@ def Imputation(request):
                     else:
                         mean_value = df[column].mean()
                         df[column].fillna(mean_value, inplace=True)
-                    
-
+                        
                 final_json = df.to_json(orient='records')
 
                 imputed_csv_filename = 'C:\\csv dump\\imputed_data.csv'
                 df.to_csv(imputed_csv_filename, index=False)
-
                 return JsonResponse({'message': 'File uploaded, processed, and mode imputed successfully.', 'imputedData': final_json})
             else:
                 return JsonResponse({'message': 'No file was uploaded.'}, status=400)
