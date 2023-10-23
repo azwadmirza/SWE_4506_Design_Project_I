@@ -1,10 +1,9 @@
 import { Card, Form } from "react-bootstrap";
 import { IonIcon } from "@ionic/react";
-import { mailOutline, lockClosedOutline, logoGoogle, lockOpenOutline } from "ionicons/icons";
+import { mailOutline, lockClosedOutline, lockOpenOutline } from "ionicons/icons";
 import { useLogin } from "../hooks/useLogin";
 import '../assets/css/login.css';
 import { useState } from "react";
-import Loader from "../partials/loader";
 
 export interface LoadingProps{
   changeLoadingState:React.Dispatch<React.SetStateAction<boolean>>
@@ -53,11 +52,15 @@ const Login = ({changeLoadingState}:LoadingProps) => {
                 Remember Me!
               </label>
             </div>
+            <div className="forgot_password">
+              <label htmlFor="forgot_password">
+                <a href="/forgot-password" className="link-to-forgot-password">Forgot Password?</a>
+              </label>
+            </div>
             <button type="submit" name="submit" id="submit" className="custom-button">
               LOGIN
             </button>
             <hr/>
-            <button name="google" className="custom-button full-width">Continue with <IonIcon icon={logoGoogle}></IonIcon></button>
             <div className="register-link">
               <p>
                 Don't have an account? <a href="/signup"  className="link-to-register">Register</a>
