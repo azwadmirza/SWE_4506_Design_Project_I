@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import pandas as pd
+import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from sklearn.preprocessing import MinMaxScaler
@@ -13,9 +14,13 @@ def MinMaxNorm(request):
 
             if uploaded_file:
                 df = pd.read_csv(uploaded_file)
+                request_data = json.loads(request.POST.get('json_data', '{}'))
+                #print(request_data)
 
-                # Assuming the data frame has multiple features to be normalized.
-                dropColumns = ['price', 'mainroad', 'guestroom', 'basement', 'hotwater', 'airconditioning', 'prefarea', 'furnishingstatus']
+                dropColumns = request_data.get('drop_columns', [])
+                #print(dropColumns)
+                df = df[[col for col in df if col not in dropColumns] + dropColumns]
+
                 features = df.drop(columns=dropColumns)
 
                 scaler = MinMaxScaler()
@@ -26,14 +31,17 @@ def MinMaxNorm(request):
 
                 scaled_df = pd.DataFrame(data=scaled_data, columns=features.columns)
 
-                scaled_df = scaled_df.round(5)
+                final_df = pd.concat([df[dropColumns], scaled_df], axis=1)
 
-                scaled_json = scaled_df.to_json(orient='records')
+                # Round the values to 5 decimal points.
+                final_df = final_df.round(5)
+
+                final_json = final_df.to_json(orient='records')
 
                 scaled_csv_filename = 'D:\csv dump\scaled_data.csv'  # Choose a filename and path.
-                scaled_df.to_csv(scaled_csv_filename, index=False)
+                final_df.to_csv(scaled_csv_filename, index=False)
 
-                return JsonResponse({'message': 'File uploaded, processed, and scaled successfully.', 'scaledData': scaled_json})
+                return JsonResponse({'message': 'File uploaded, processed, and scaled successfully.', 'scaledData': final_json})
             else:
                 return JsonResponse({'message': 'No file was uploaded.'}, status=400)
         except Exception as e:
