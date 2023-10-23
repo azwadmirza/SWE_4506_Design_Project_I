@@ -3,9 +3,27 @@ import '../assets/css/landing.css';
 import { arrowForwardCircleOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const Landing = () => {
+interface ILanding{
+  access_token:string|null,
+  refresh_token:string|null,
+  verification:boolean|null
+}
+
+const Landing = ({access_token,refresh_token,verification}:ILanding) => {
   const navigate=useNavigate();
+  useEffect(()=>{
+    if(access_token){
+      if(verification){
+        navigate('/profile');
+      }
+      else{
+        navigate('/verification')
+      }
+    }
+  },[])
+  
   return ( 
   <div className="landing">
     <NavbarLanding/>

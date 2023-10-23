@@ -6,14 +6,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
 import { cloudUpload } from "ionicons/icons";
 import "../assets/css/navbar.css";
-import { useFileInput } from "../hooks/useFileInput";
 
 
 const NavbarUser = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { handleUploadClick, handleFileInputChange }=useFileInput();
   const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('verification');
+    localStorage.removeItem('user_id');
     return navigate("/");
   };
   
@@ -58,18 +60,6 @@ const NavbarUser = () => {
             </Nav.Link>
           </Nav>
           <div>
-            <Button
-              className="customCart bg-transparent me-3"
-              onClick={handleUploadClick}
-            >
-              <IonIcon icon={cloudUpload}>Upload Dataset</IonIcon>
-            </Button>
-            <input
-              type="file"
-              id="fileInput"
-              style={{ display: "none" }}
-              onChange={handleFileInputChange}
-            />
           </div>
           <div className="customLogOut d-none d-lg-flex justify-content-end">
             <Button className="btn customButton" onClick={handleLogout}>

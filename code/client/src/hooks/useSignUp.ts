@@ -75,7 +75,7 @@ export const useSignUp = (changeLoadingState:React.Dispatch<React.SetStateAction
       if (res.data.error) {
         setError(res.data.error);
       } else {
-        window.location.href = "/login";
+        window.location.href = "/verification";
       }
       changeLoadingState(false);
     })
