@@ -7,15 +7,14 @@ from sklearn.preprocessing import MinMaxScaler
 from io import BytesIO
 
 @csrf_exempt
-def MinMaxNorm(request):
+def constImputation(request):
     if request.method == 'POST':
         try:
             uploaded_file = request.FILES.get('file')
-            # uploaded_file = 'https://res.cloudinary.com/djbspykue/raw/upload/v1698084298/toaj3jthlluphpmy7nwn.csv'
 
             if uploaded_file:
                 df = pd.read_csv(uploaded_file)
-                #request_data = json.loads(request.POST.get('json_data', '{}'))
+                request_data = json.loads(request.POST.get('json_data', '{}'))
                 #print(request_data)
                 
                 for column in df.columns:
@@ -25,22 +24,21 @@ def MinMaxNorm(request):
                 
                 dropColumns = request_data.get('drop_columns', [])
                 #print(dropColumns)
-                original_columns = df.columns.tolist()
-                
-                dropColumns = [column for column in df.columns if df[column].dtype == 'object']
-
                 df = df[[col for col in df if col not in dropColumns] + dropColumns]
 
-                numeric_columns = [column for column in df.columns if column not in dropColumns]
+                features = df.drop(columns=dropColumns)
+
                 scaler = MinMaxScaler()
-                scaled_data = scaler.fit_transform(df[numeric_columns])
 
-                scaled_df = pd.DataFrame(scaled_data, columns=numeric_columns)
+                scaler.fit(features)
 
-                final_df = pd.concat([scaled_df, df[dropColumns]], axis=1)
+                scaled_data = scaler.transform(features)
 
-                final_df = final_df[original_columns]
+                scaled_df = pd.DataFrame(data=scaled_data, columns=features.columns)
 
+                final_df = pd.concat([df[dropColumns], scaled_df], axis=1)
+
+                # Round the values to 5 decimal points.
                 final_df = final_df.round(5)
 
                 final_json = final_df.to_json(orient='records')
