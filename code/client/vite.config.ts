@@ -7,5 +7,6 @@ export default ({ mode }) => {
   const config = {
     plugins: [react()],
   };
+
   return defineConfig(config);
 };

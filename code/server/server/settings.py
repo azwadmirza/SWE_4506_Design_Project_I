@@ -3,6 +3,18 @@ from pathlib import Path
 from decouple import config
 
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
 DB_HOST = config('HOST')
 DB_NAME = config('DB_NAME')
 DB_USER = config('DB_USER')
@@ -40,7 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'user_profile'
+    'user_profile',
+    'file_controller'
     
 ]
 
@@ -54,6 +67,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -70,7 +85,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     'Content-Type',
     'Authorization',
-
+    'Content-Disposition',
 ]
 
 
