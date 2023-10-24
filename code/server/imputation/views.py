@@ -3,50 +3,30 @@ import pandas as pd
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from sklearn.preprocessing import MinMaxScaler
 from io import BytesIO
 
 @csrf_exempt
-def constImputation(request):
+def Imputation(request):
     if request.method == 'POST':
         try:
             uploaded_file = request.FILES.get('file')
 
             if uploaded_file:
                 df = pd.read_csv(uploaded_file)
-                request_data = json.loads(request.POST.get('json_data', '{}'))
-                #print(request_data)
-                
+                threshold = 10
                 for column in df.columns:
                     dtype = df[column].dtype
-                    print(f"Column '{column}' has data type: {dtype}")
-                
-                
-                dropColumns = request_data.get('drop_columns', [])
-                #print(dropColumns)
-                df = df[[col for col in df if col not in dropColumns] + dropColumns]
-
-                features = df.drop(columns=dropColumns)
-
-                scaler = MinMaxScaler()
-
-                scaler.fit(features)
-
-                scaled_data = scaler.transform(features)
-
-                scaled_df = pd.DataFrame(data=scaled_data, columns=features.columns)
-
-                final_df = pd.concat([df[dropColumns], scaled_df], axis=1)
-
-                # Round the values to 5 decimal points.
-                final_df = final_df.round(5)
-
-                final_json = final_df.to_json(orient='records')
-
-                scaled_csv_filename = 'C:\csv dump\scaled_data.csv'  # Choose a filename and path.
-                final_df.to_csv(scaled_csv_filename, index=False)
-
-                return JsonResponse({'message': 'File uploaded, processed, and scaled successfully.', 'scaledData': final_json})
+                    if dtype == 'object' or df[column].nunique()<=threshold:
+                        mode_value = df[column].mode().iloc[0]
+                        df[column].fillna(mode_value, inplace=True)  
+                    else:
+                        mean_value = df[column].mean()
+                        df[column].fillna(mean_value, inplace=True)
+                        
+                final_json = df.to_json(orient='records')
+                imputed_csv_filename = 'C:\\csv dump\\imputed_data.csv'
+                df.to_csv(imputed_csv_filename, index=False)
+                return JsonResponse({'message': 'File uploaded, processed, and mode imputed successfully.', 'imputedData': final_json})
             else:
                 return JsonResponse({'message': 'No file was uploaded.'}, status=400)
         except Exception as e:
