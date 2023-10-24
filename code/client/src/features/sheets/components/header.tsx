@@ -1,17 +1,15 @@
-import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
+import { Navbar, Container, Nav, Dropdown, Button, Modal } from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
-
+import FileInput from "../../../partials/fileInput";
 type HeaderProps = {
   filename: string;
 };
 
 const Header = ({ filename }: HeaderProps) => {
   const { showFileDropdown,
-    showEditDropdown,
-    showViewDropdown,
     toggleDropdown,
-    handleUploadClick,
-    handleFileInputChange } = useDropDown();
+    showFileUpload,
+    setShowFileUpload } = useDropDown();
 
   return (
     <Navbar className="header fixed-top" variant="dark" expand="lg">
@@ -20,6 +18,7 @@ const Header = ({ filename }: HeaderProps) => {
         className="navbarContents px-0 px-lg-5 d-flex justify-content-between"
       >
         <Navbar.Brand className="px-2">{filename}</Navbar.Brand>
+        
         <Navbar.Toggle className="px-2" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -29,59 +28,25 @@ const Header = ({ filename }: HeaderProps) => {
           >
             <div className="option" onClick={() => toggleDropdown("file")}>
               File
+              <FileInput showFileInput={showFileUpload} setShowFileInput={setShowFileUpload}/>
               {showFileDropdown && (
                 <Dropdown
                   show={showFileDropdown}
                   onClick={() => toggleDropdown("file")}
                 >
                   <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleUploadClick}>Open</Dropdown.Item>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      style={{ display: "none" }}
-                      onChange={handleFileInputChange}
-                    />
+                    <Dropdown.Item onClick={()=>{
+                      setShowFileUpload(!showFileUpload);
+                    }}>Open</Dropdown.Item>
                     <Dropdown.Item>Save</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               )}
             </div>
-            <div className="option" onClick={() => toggleDropdown("edit")}>
-              Edit
-              {showEditDropdown && (
-                <Dropdown
-                  show={showEditDropdown}
-                  onClick={() => toggleDropdown("edit")}
-                >
-                  <Dropdown.Menu>
-                    <Dropdown.Item>Open</Dropdown.Item>
-                    <Dropdown.Item>Save</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
-            </div>
-            <div className="option" onClick={() => toggleDropdown("view")}>
-              View
-              {showViewDropdown && (
-                <Dropdown
-                  show={showViewDropdown}
-                  onClick={() => toggleDropdown("view")}
-                >
-                  <Dropdown.Menu>
-                    <Dropdown.Item>Open</Dropdown.Item>
-                    <Dropdown.Item>Save</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
-            </div>
-            <div className="option">Insert</div>
             <div className="option">Format</div>
-            <div className="option">Data</div>
-            <div className="option">Tools</div>
-            <div className="option">Help</div>
           </Nav>
         </Navbar.Collapse>
+        
       </Container>
     </Navbar>
   );
