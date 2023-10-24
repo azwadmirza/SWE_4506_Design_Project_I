@@ -17,7 +17,6 @@ export const useFile = () => {
     const dispatch=useAppDispatch();
     const allowedFormats = [
         "text/csv",
-        "text/tsv",
         "text/plain",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/json",
@@ -88,7 +87,8 @@ export const useFile = () => {
                         setErrorMsg("");
                         console.log("File uploaded to Cloudinary. URL:", data.secure_url);
                         await axios.post("http://127.0.0.1:5000/get_visualization",{
-                            url:data.secure_url
+                            url:data.secure_url,
+                            delimiter:delimiter
                         }).then( (res) => {
                             dispatch(setHTML(res.data.cloudinary_link));
                         }).catch((err) => {
