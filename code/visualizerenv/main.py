@@ -42,7 +42,6 @@ async def fetch_url(data: RequestData):
             report.save(f.name)
             response = upload(f.name, public_id='report.html', resource_type='auto')
             cloudinary_link=response["secure_url"]
-        os.unlink(f.name)
         return {"cloudinary_link": cloudinary_link}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

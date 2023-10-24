@@ -70,7 +70,7 @@ export const useFile = () => {
                     formData.append("file", file);
                     formData.append("upload_preset", "datanalytica");
                     const parsedFile = await parseFile(file);
-                    dispatch(setFile(file));
+                    dispatch(setFile(file.name));
                     dispatch(setData(parsedFile !== null ? parsedFile : []));
 
                     const response = await axios.post(
@@ -87,6 +87,13 @@ export const useFile = () => {
                         setSelectedFile(file.name);
                         setErrorMsg("");
                         console.log("File uploaded to Cloudinary. URL:", data.secure_url);
+                        await axios.post("http://127.0.0.1:5000/get_visualization",{
+                            url:data.secure_url
+                        }).then( (res) => {
+                            dispatch(setHTML(res.data.cloudinary_link));
+                        }).catch((err) => {
+                            console.log(err);
+                        })
                         const fileData = new FormData();
                         try {
                             fileData.append("file_name", file.name);
@@ -106,35 +113,16 @@ export const useFile = () => {
                             if (dataRes.file_url) {
                                 setSelectedFile(file.name);
                                 setErrorMsg("");
-                                console.log(
-                                    "File uploaded to Cloudinary and Saved to Mongo. File URL:",
-                                    dataRes.file_url
-                                );
-                                setShow(false);
                             } else {
                                 setErrorMsg(data.error);
                                 setSelectedFile(null);
-                                console.error("File upload error:", data.error);
                             }
                         } catch (error) {
                             setErrorMsg("File Backend Request error");
                             setSelectedFile(null);
-                            console.error("File Backend Request error:", error);
                         }
 
-                        await axios.post("http://127.0.0.1:5000/get_visualization",{
-                            url:data.secure_url
-                        }).then((res) => {
-                            console.log(res);
-                            axios.get(res.data.cloudinary_link).then((res) => {
-                                console.log(res.data);
-                                dispatch(setHTML(res.data));
-                            }).catch((err) => {
-                                console.log(err);
-                            })
-                        }).catch((err) => {
-                            console.log(err);
-                        })
+                        
                     } else {
                         setErrorMsg("Cloudinary upload error");
                         setSelectedFile(null);

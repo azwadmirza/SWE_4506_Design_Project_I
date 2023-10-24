@@ -8,34 +8,25 @@ import Loader from "../../../partials/loader";
 import { Provider } from "react-redux";
 import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Button } from "react-bootstrap";
 import VisualizationHeader from "./visualization-header";
-import Visualization from "./visualization";
 
 
 const Data = () => {
-
+    const html=useAppSelector((state)=>state.file.html);
     const file = useAppSelector((state) => state.file.file);
     const data = useAppSelector((state) => state.file.data);
     const { currentCell, gridRows, viewValue, setViewValue, loading } = useSheets(data);
-    const [visualization, setShowVisualization] = useState(false);
     if (gridRows) {
         return (
             <Provider store={store}>
                 <div className="sheets">
                     <NavbarUser />
-                    <Header filename={`${file !== null ? file.name : ""}`} />
+                    <Header filename={`${file !== null ? file : ""}`} />
                     {currentCell !== "" && (<ValueDisplay currentCell={currentCell} value={viewValue} setValue={setViewValue} />)}
-                    <VisualizationHeader setShowVisualization={setShowVisualization} />
+                    {html && (<VisualizationHeader />)}
                     <div className="render-cells">
                         {!loading ? (
-                            !visualization ? (
-                                <RenderCells gridRows={gridRows} />
-                            ) : (
-                                <Visualization />
-                            )
+                            <RenderCells gridRows={gridRows} />
                         ) : (
                             <Loader />
                         )}
