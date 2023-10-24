@@ -8,30 +8,44 @@ import Loader from "../../../partials/loader";
 import { Provider } from "react-redux";
 import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Button } from "react-bootstrap";
+import VisualizationHeader from "./visualization-header";
+import Visualization from "./visualization";
 
 
 const Data = () => {
-    
-    const file=useAppSelector((state)=>state.file.file);
-    const data=useAppSelector((state)=>state.file.data);
-    const {currentCell,gridRows,viewValue,setViewValue,loading}=useSheets(data);
-    if(gridRows){
-        return ( 
+
+    const file = useAppSelector((state) => state.file.file);
+    const data = useAppSelector((state) => state.file.data);
+    const { currentCell, gridRows, viewValue, setViewValue, loading } = useSheets(data);
+    const [visualization, setShowVisualization] = useState(false);
+    if (gridRows) {
+        return (
             <Provider store={store}>
                 <div className="sheets">
-                <NavbarUser/>
-                <Header filename={`${file!==null?file.name:""}`}/>
-                {currentCell!=="" && (<ValueDisplay currentCell={currentCell} value={viewValue} setValue={setViewValue}/>)}
-                <div className="render-cells">
-                {(!loading && <RenderCells gridRows={gridRows}/>)||(loading && <Loader/>)}
+                    <NavbarUser />
+                    <Header filename={`${file !== null ? file.name : ""}`} />
+                    {currentCell !== "" && (<ValueDisplay currentCell={currentCell} value={viewValue} setValue={setViewValue} />)}
+                    <VisualizationHeader setShowVisualization={setShowVisualization} />
+                    <div className="render-cells">
+                        {!loading ? (
+                            !visualization ? (
+                                <RenderCells gridRows={gridRows} />
+                            ) : (
+                                <Visualization />
+                            )
+                        ) : (
+                            <Loader />
+                        )}
+                    </div>
                 </div>
-            </div>
             </Provider>
-         );
+        );
     }
-    else{
-        return (<Loader/>)
+    else {
+        return (<Loader />)
     }
 }
 

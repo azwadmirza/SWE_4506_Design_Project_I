@@ -1,8 +1,6 @@
-import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
+import { Navbar, Container, Nav, Dropdown, Button, Modal } from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
-import { useEffect } from "react";
-
 type HeaderProps = {
   filename: string;
 };
@@ -20,6 +18,7 @@ const Header = ({ filename }: HeaderProps) => {
         className="navbarContents px-0 px-lg-5 d-flex justify-content-between"
       >
         <Navbar.Brand className="px-2">{filename}</Navbar.Brand>
+        
         <Navbar.Toggle className="px-2" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -44,19 +43,10 @@ const Header = ({ filename }: HeaderProps) => {
                 </Dropdown>
               )}
             </div>
-            {/* <div className="option" onClick={() => toggleDropdown("edit")}>
-              Edit
-            </div>
-            <div className="option" onClick={() => toggleDropdown("view")}>
-              View
-            </div>
-            <div className="option">Insert</div> */}
             <div className="option">Format</div>
-            {/* <div className="option">Data</div>
-            <div className="option">Tools</div>
-            <div className="option">Help</div> */}
           </Nav>
         </Navbar.Collapse>
+        
       </Container>
     </Navbar>
   );

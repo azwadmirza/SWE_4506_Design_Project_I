@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setFile } from "../contexts/file/slice";
+import { setData, setFile, setHTML } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { parseTSV } from "../features/sheets/utils/tsvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
@@ -10,7 +10,7 @@ import axios from "axios";
 import { parseTxt } from "../features/sheets/utils/txtParser";
 export const useFile = () => {
     const [loading,setLoading]=useState<boolean>(false);
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFileInformation] = useState<File | null>(null);
     const [delimiter, setDelimiter] = useState<string>("");
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -60,7 +60,6 @@ export const useFile = () => {
             return;
         }
         if (file) {
-            console.log(file)
             console.log("File selected:", file.name);
             const type = file.type;
             const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
@@ -71,6 +70,7 @@ export const useFile = () => {
                     formData.append("file", file);
                     formData.append("upload_preset", "datanalytica");
                     const parsedFile = await parseFile(file);
+                    dispatch(setFile(file));
                     dispatch(setData(parsedFile !== null ? parsedFile : []));
 
                     const response = await axios.post(
@@ -121,6 +121,20 @@ export const useFile = () => {
                             setSelectedFile(null);
                             console.error("File Backend Request error:", error);
                         }
+
+                        await axios.post("http://127.0.0.1:5000/get_visualization",{
+                            url:data.secure_url
+                        }).then((res) => {
+                            console.log(res);
+                            axios.get(res.data.cloudinary_link).then((res) => {
+                                console.log(res.data);
+                                dispatch(setHTML(res.data));
+                            }).catch((err) => {
+                                console.log(err);
+                            })
+                        }).catch((err) => {
+                            console.log(err);
+                        })
                     } else {
                         setErrorMsg("Cloudinary upload error");
                         setSelectedFile(null);
@@ -139,5 +153,5 @@ export const useFile = () => {
         }
     }
 
-    return {loading, file,setFile, delimiter, setDelimiter, selectedFile, errorMsg, FileInputSubmit}
+    return {loading, file,setFileInformation, delimiter, setDelimiter, selectedFile, errorMsg, FileInputSubmit}
 }

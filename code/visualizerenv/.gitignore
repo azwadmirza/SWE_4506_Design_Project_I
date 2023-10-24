@@ -3,3 +3,5 @@ share
 Scripts
 etc
 Include
+.env
+visualization/*

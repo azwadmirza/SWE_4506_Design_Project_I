@@ -12,7 +12,7 @@ type FileInputProps = {
 
 const FileInput = ({ showFileInput, setShowFileInput }: FileInputProps) => {
 
-    const { loading,file,setFile, delimiter, setDelimiter, errorMsg, FileInputSubmit } = useFile();
+    const { loading,file,setFileInformation, delimiter, setDelimiter, errorMsg, FileInputSubmit } = useFile();
     if(!loading){
         return (
             <Modal show={showFileInput} onHide={() => setShowFileInput(false)} className="w-100 d-flex"
@@ -31,7 +31,7 @@ const FileInput = ({ showFileInput, setShowFileInput }: FileInputProps) => {
                             accept=".csv, .tsv, .txt, .xlsx, .json"
                             id="fileUpload" className="form-control" onChange={(e) => {
                                 if (e.target.files !== null) {
-                                    setFile(e.target.files[0])
+                                    setFileInformation(e.target.files[0])
                                 }
                             }} />
                     </div>
