@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { parseCSV } from "../features/sheets/utils/csvParser";
+import { parseXLSX } from "../features/sheets/utils/xlsxParser";
+import { parseJSON } from "../features/sheets/utils/jsonParser";
+import { useAppDispatch } from "../contexts/file/hooks";
+import { setData, setFile } from "../contexts/file/slice";
+import { fileAdapter } from "../features/sheets/utils/adapter";
+
 
 export const useFileInput = () => {
-
+  const dispatch=useAppDispatch();
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const allowedFormats = [
@@ -20,6 +26,25 @@ export const useFileInput = () => {
     }
   };
 
+  const parseFile = async (file: File) => {
+    const type = file.type;
+    if (type==="text/csv") {
+      const parsedCSV = await parseCSV(file);
+      return parsedCSV;
+    }
+    else if(type=== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
+      const parsedXLSX = await fileAdapter(file,parseXLSX);
+      return parsedXLSX;
+    }
+    else if(type==="application/json"){
+      const parsedJSON = await fileAdapter(file,parseJSON);
+      return parsedJSON;
+    }
+    else {
+      return null;
+    }
+  }
+
   const handleFileInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -32,11 +57,12 @@ export const useFileInput = () => {
       const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
       if (allowedFormats.includes(type)) {
         try {
-          const parsedCSV = await parseCSV(file);
-          console.log("Parsed CSV:", parsedCSV);
           const formData = new FormData();
           formData.append("file", file);
           formData.append("upload_preset", "datanalytica");
+          const parsedFile = await parseFile(file);
+          dispatch(setFile(file));
+          dispatch(setData(parsedFile!==null?parsedFile:[]));
 
           const response = await axios.post(
             `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
@@ -56,7 +82,7 @@ export const useFileInput = () => {
             try {
               fileData.append("file_name", file.name);
               fileData.append("cloudinary_url", data.secure_url);
-              fileData.append("parsedCSV",JSON.stringify(parsedCSV));
+              fileData.append("parsedCSV",JSON.stringify(parsedFile));
 
               const response = await axios.post(
                 `${address}/api/file/upload/`,
@@ -89,7 +115,6 @@ export const useFileInput = () => {
             setErrorMsg("Cloudinary upload error");
             setSelectedFile(null);
             console.error("Cloudinary upload error:", data.error);
-            console.log(parsedCSV);
           }
         } catch (error) {
           setErrorMsg("File upload error");
