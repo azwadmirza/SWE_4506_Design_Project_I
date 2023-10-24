@@ -51,6 +51,11 @@
     background-position: center;
     background-size: cover !important;
   }
+
+  .landing-content{
+    color:yellowgreen !important;
+  }
+
   .landing-container{
     width:100%;
   }

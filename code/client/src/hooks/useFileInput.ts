@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { parseCSV } from "../features/sheets/utils/csvParser";
 
 export const useFileInput = () => {
 
@@ -24,12 +25,15 @@ export const useFileInput = () => {
   ) => {
     const file = event.target.files && event.target.files[0];
     if (file) {
-    
+      
+      console.log("File selected:", file.name);
       const type = file.type;
       const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
       const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
       if (allowedFormats.includes(type)) {
         try {
+          const parsedCSV = await parseCSV(file);
+          console.log("Parsed CSV:", parsedCSV);
           const formData = new FormData();
           formData.append("file", file);
           formData.append("upload_preset", "datanalytica");
@@ -52,6 +56,7 @@ export const useFileInput = () => {
             try {
               fileData.append("file_name", file.name);
               fileData.append("cloudinary_url", data.secure_url);
+              fileData.append("parsedCSV",JSON.stringify(parsedCSV));
 
               const response = await axios.post(
                 `${address}/api/file/upload/`,
@@ -84,6 +89,7 @@ export const useFileInput = () => {
             setErrorMsg("Cloudinary upload error");
             setSelectedFile(null);
             console.error("Cloudinary upload error:", data.error);
+            console.log(parsedCSV);
           }
         } catch (error) {
           setErrorMsg("File upload error");

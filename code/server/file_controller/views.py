@@ -8,6 +8,8 @@ from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
+import pandas as pd
+import json
 
 class FileUploadView(generics.CreateAPIView):
     permission_classes=[]
@@ -19,12 +21,21 @@ class FileUploadView(generics.CreateAPIView):
 
         if file_serializer.is_valid():
             try:
-                # Get the file name from the request data
-                file_name= request.data.get("file_name")  # Access the file name
+   
+                file_name= request.data.get("file_name")  
 
                 cloudinary_url = request.data.get("cloudinary_url")
 
-                file_serializer.save(file_name=file_name, cloudinary_url=cloudinary_url)
+                file_content = request.data.get("parsedCSV")
+
+                csv_data = json.loads(file_content)
+                file_df = pd.DataFrame(csv_data[1:], columns=csv_data[0])
+                print(file_df)
+                file_df.describe()
+                final_json = file_df.to_json(orient='records')
+
+                file_serializer.save(file_name=file_name, cloudinary_url=cloudinary_url, modified_file=final_json)
+                print("serializer saved")
 
                 return Response({'file_url': cloudinary_url}, status=status.HTTP_201_CREATED)
             except Exception as e:
