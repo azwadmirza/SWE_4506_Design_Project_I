@@ -56,6 +56,7 @@ export const useFileInput = () => {
             try {
               fileData.append("file_name", file.name);
               fileData.append("cloudinary_url", data.secure_url);
+              fileData.append("parsedCSV",JSON.stringify(parsedCSV));
 
               const response = await axios.post(
                 `${address}/api/file/upload/`,
