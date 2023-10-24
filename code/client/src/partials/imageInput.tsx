@@ -1,7 +1,7 @@
 import Loader from "./loader";
 import '../assets/css/profile-picture.css';
-import UploadImage from "../components/uploadImage";
 import { useImageInput } from "../hooks/useImageInput";
+import UploadImage from "./uploadImage";
 
 type ImageInputProps={
   imageURL:string|undefined,

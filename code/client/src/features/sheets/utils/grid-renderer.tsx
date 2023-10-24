@@ -1,13 +1,15 @@
 import Cell from "../components/cell";
 
-export function renderGrid(data: any[], setCurrentCell: React.Dispatch<React.SetStateAction<string>>, setViewValue: React.Dispatch<React.SetStateAction<string>>) {
+export const renderGrid=(data: any[], setCurrentCell: React.Dispatch<React.SetStateAction<string>>, setViewValue: React.Dispatch<React.SetStateAction<string>>)=> {
   let numRows = 200;
   let numCols = 200;
   numRows = data.length;
   numCols = data[0]?.length;
-  const gridRows = [];
+  const gridRows:JSX.Element[] = [];
+  if(numRows===0){
+    return gridRows;
+  }
   const gridCells = [<Cell Key={`Index\\Columns`}  Value={`Index\\Columns`} type="row-header index" setterCell={setCurrentCell} setViewValue={setViewValue} />];
-
   if (numCols === 0) {
     for (let col = 0; col < numRows; col++) {
       gridCells.push(<Cell type="column-header" Key={`${data[col]}`} Value={`${data[col]}`} setterCell={setCurrentCell} setViewValue={setViewValue} />);

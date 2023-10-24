@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useFileInput } from "../../../hooks/useFileInput";
 
 export const useDropDown=()=>{
     const [showFileDropdown, setShowFileDropdown] = useState(false);
     const [showEditDropdown, setShowEditDropdown] = useState(false);
     const [showViewDropdown, setShowViewDropdown] = useState(false);
-    const { handleUploadClick, handleFileInputChange } = useFileInput();
+    const [showFileUpload,setShowFileUpload]=useState(false);
 
     const toggleDropdown = (menuName: string) => {
         setShowFileDropdown(false);
@@ -32,7 +31,7 @@ export const useDropDown=()=>{
         showEditDropdown,
         showViewDropdown,
         toggleDropdown,
-        handleUploadClick,
-        handleFileInputChange,
+        showFileUpload,
+        setShowFileUpload
         };
 }
