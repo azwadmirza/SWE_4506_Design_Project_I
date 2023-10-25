@@ -5,25 +5,112 @@ import { useNavigate, useParams } from "react-router-dom";
 import NavbarUser from "../../../partials/navbarUser";
 import { IonIcon } from "@ionic/react";
 import { lockClosedOutline, lockOpenOutline } from "ionicons/icons";
+import axios from "axios";
+import { useAppSelector } from "../../../contexts/auth/hooks";
+import CryptoJS from "crypto-js";
 
 const ChangePassword = () => {
   const [currentPasswordVisibility, setCurrentPasswordVisibility] = useState(
     "password"
   );
-  const [NewPasswordVisibility, setNewPasswordVisibility] = useState("password");
-  const [
-    confirmNewPasswordVisibility,
-    setConfirmNewPasswordVisibility,
-  ] = useState("password");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [current_password, setCurrentPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorNewPassword, setErrorNewPassword] = useState("");
-  const [errorCurrentPassword, setErrorCurrentPassword] = useState("");
+  const [passwordVisibility, setPasswordVisibility] = useState<string>(
+    "password"
+  );
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState<
+    string
+  >("password");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
-  const [disableButton, setDisableButton] = useState(true);
+  const navigate=useNavigate();
+  const [isDisabled, setIsDisabled] =useState(false);
+  const changePassword = (input: string) => {
+    if(input.length < 8){
+      setErrorPassword("Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, 1 symbol and 1 number");
+    }
+    else{
+      setErrorPassword("");
+    }
+    var numberpresent = false;
+    var symbolpresent = false;
+    var uppercaseletterpresent = false;
+    var lowercaseletterpresent = false;
+    for(var i = 0; i < input.length; i++){
+      if(input[i] >= '0' && input[i] <= '9'){
+        numberpresent = true;
+      }
+      else if(input[i] >= 'a' && input[i] <= 'z'){
+        lowercaseletterpresent = true;
+      }
+      else if(input[i] >= 'A' && input[i] <= 'Z'){
+        uppercaseletterpresent = true;
+      }
+      else{
+        symbolpresent = true;
+      }
+    }
+    if(!(numberpresent && symbolpresent && uppercaseletterpresent && lowercaseletterpresent)){
+      setErrorPassword("Password must be at least 8 characters, contain at least 1 uppercase letter, 1 lowercase letter, 1 symbol and 1 number");
+    }
+    else{
+      setErrorPassword("");
+    }
+    if (input !== confirmPassword) {
+      setErrorConfirmPassword("Password not match");
+    }
+    else {
+      setErrorPassword("");
+
+    }
+    setPassword(input);
+  }
+
+  const changeConfirmPassword = (input: string) => {
+    if (input !== password) {
+      setErrorConfirmPassword("Password not match");
+    }
+    else {
+      setErrorConfirmPassword("");
+
+    }
+    setConfirmPassword(input);
+  }
+
+  const userId=useAppSelector((state) => state.auth.user_id);
+  const [errorCurrentPassword, setErrorCurrentPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsDisabled(true);
+    if (password !== confirmPassword) {
+      setErrorPassword("New passwords do not match");
+      setErrorConfirmPassword("New passwords do not match");
+      return;
+    } else {
+      setErrorPassword("");
+      setErrorConfirmPassword("");
+    }
+    await axios.post("http://127.0.0.1:8000/api/change/", {
+        current_password: CryptoJS.SHA512(current_password).toString(),
+        new_password: CryptoJS.SHA512(password).toString(),
+        id: userId, 
+      })
+      .then(()=>{
+        navigate("/profile");
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 401) {
+          setErrorCurrentPassword("Current password is incorrect");
+        } else if (error.response.status === 404) {
+          setErrorCurrentPassword("User not found");
+        } else {
+          setErrorCurrentPassword("Something went wrong");
+        }
+      });
 
   };
 
@@ -31,13 +118,6 @@ const ChangePassword = () => {
     setCurrentPassword(e);
   };
 
-  const passwordChange = (e: string) => {
-    setNewPassword(e);
-  };
-
-  const confirmPasswordChange = (e: string) => {
-    setConfirmPassword(e);
-  };
 
   return (
     <div className="change-password-bg">
@@ -67,47 +147,47 @@ const ChangePassword = () => {
               ))}
                   <input
                     type={currentPasswordVisibility}
-                    value={currentPassword}
+                    value={current_password}
                     onChange={(e) => changeCurrentPassword(e.target.value)}
                   />
                   <label htmlFor="">Current Password</label>
               </div>
               <div className="inputbox">
-              {(NewPasswordVisibility === "password" && (
+              {(passwordVisibility === "password" && (
               <IonIcon
                 icon={lockClosedOutline}
-                onClick={() => setNewPasswordVisibility("text")}
+                onClick={() => setPasswordVisibility("text")}
               ></IonIcon>
             )) ||
-              (NewPasswordVisibility === "text" && (
+              (passwordVisibility === "text" && (
                 <IonIcon
                   icon={lockOpenOutline}
-                  onClick={() => setNewPasswordVisibility("password")}
+                  onClick={() => setPasswordVisibility("password")}
                 ></IonIcon>
               ))}
                   <input
-                    type={NewPasswordVisibility}
-                    onChange={(e) => passwordChange(e.target.value)}
-                    value={newPassword}
+                    type={passwordVisibility}
+                    onChange={(e) => changePassword(e.target.value)}
+                    value={password}
                   />
                   <label htmlFor="">New Password</label>
               </div>
               <div className="inputbox">
-              {(confirmNewPasswordVisibility === "password" && (
+              {(confirmPasswordVisibility === "password" && (
               <IonIcon
                 icon={lockClosedOutline}
-                onClick={() => setConfirmNewPasswordVisibility("text")}
+                onClick={() => setConfirmPasswordVisibility("text")}
               ></IonIcon>
             )) ||
-              (confirmNewPasswordVisibility === "text" && (
+              (confirmPasswordVisibility === "text" && (
                 <IonIcon
                   icon={lockOpenOutline}
-                  onClick={() => setConfirmNewPasswordVisibility("password")}
+                  onClick={() => setConfirmPasswordVisibility("password")}
                 ></IonIcon>
               ))}
                   <input
-                    type={confirmNewPasswordVisibility}
-                    onChange={(e) => confirmPasswordChange(e.target.value)}
+                    type={confirmPasswordVisibility}
+                    onChange={(e) => changeConfirmPassword(e.target.value)}
                     value={confirmPassword}
                   />
                 <label htmlFor="">Confirm New Password</label>
@@ -115,7 +195,7 @@ const ChangePassword = () => {
               <div className="d-flex justify-content-between">
                 <button
                   type="submit"
-                  disabled={disableButton}
+                  disabled={isDisabled}
                   className="custom-button"
                 >
                   Confirm

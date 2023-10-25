@@ -16,4 +16,5 @@ urlpatterns = [
     path('forgot/otp/',views.ForgotPassword.as_view(),name='otp-verification-forgot'),
     path('forgot/otp/verify/',views.ForgotPasswordVerify.as_view(),name='otp-verification-forgot-verify'),
     path('forgot/update/',views.ForgotPasswordUpdate.as_view(),name='otp-verification-forgot-update'),
+    path('change/',views.ChangePassword.as_view(),name='change-update'),
 ]

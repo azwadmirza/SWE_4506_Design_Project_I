@@ -67,6 +67,28 @@ class ForgotPasswordVerify(APIView):
         else:
             return Response({'message': 'OTP is invalid'}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+class ChangePassword(APIView):
+    permission_classes = []
+    def post(self, request, *args, **kwargs):
+        current_password = request.data['current_password']
+        new_password = request.data['new_password']
+        id = request.data['id']
+        
+        try:
+            searcheduser = user.objects.get(id=id)
+        except user.DoesNotExist:
+            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if searcheduser.check_password(current_password):
+            searcheduser.set_password(new_password)
+            searcheduser.save()
+            return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Current password is incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
 class VerifyEmail(APIView):
     permission_classes = []
     def post(self, request, *args, **kwargs):
