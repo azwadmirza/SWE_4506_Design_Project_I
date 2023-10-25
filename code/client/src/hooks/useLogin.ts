@@ -32,7 +32,7 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
         navigate("/verification");
       }
       else{
-        navigate("/profile");
+        navigate("/data");
       }
       setError("");
     }).catch((err)=>{

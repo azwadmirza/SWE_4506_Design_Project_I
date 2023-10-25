@@ -1,12 +1,13 @@
 import Cell from "../components/cell";
 
-export const renderGrid=(data: any[], setCurrentCell: React.Dispatch<React.SetStateAction<string>>, setViewValue: React.Dispatch<React.SetStateAction<string>>)=> {
+export const renderGrid=async(data: any[], setCurrentCell: React.Dispatch<React.SetStateAction<string>>, setViewValue: React.Dispatch<React.SetStateAction<string>>,setLoading:React.Dispatch<React.SetStateAction<boolean>>)=> {
   let numRows = 200;
   let numCols = 200;
   numRows = data.length;
   numCols = data[0]?.length;
   const gridRows:JSX.Element[] = [];
   if(numRows===0){
+    setLoading(false);
     return gridRows;
   }
   const gridCells = [<Cell Key={`Index\\Columns`}  Value={`Index\\Columns`} type="row-header index" setterCell={setCurrentCell} setViewValue={setViewValue} />];
@@ -19,7 +20,7 @@ export const renderGrid=(data: any[], setCurrentCell: React.Dispatch<React.SetSt
         {gridCells}
       </div>
     );
-    console.log(gridRows);
+    setLoading(false);
     return gridRows;
   }
   for (let col = 0; col < numCols; col++) {
@@ -48,5 +49,6 @@ export const renderGrid=(data: any[], setCurrentCell: React.Dispatch<React.SetSt
       </div>
     );
   }
+  setLoading(false);
   return gridRows;
 }

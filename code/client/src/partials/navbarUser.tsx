@@ -16,6 +16,8 @@ const NavbarUser = () => {
   const dispatch=useAppDispatch();
   const handleLogout = () => {
     dispatch(clearTokens());
+    localStorage.clear();
+    window.location.reload();
     navigate("/");
   };
   

@@ -7,10 +7,12 @@ from .serializers import FileMetadataSerializer
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.decorators import authentication_classes
 import pandas as pd
 import json
 
+@authentication_classes([JWTAuthentication])
 class FileUploadView(generics.CreateAPIView):
     permission_classes=[]
     queryset = FileMetadata.objects.all()  # Provide a queryset
@@ -44,7 +46,7 @@ class FileUploadView(generics.CreateAPIView):
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
+@authentication_classes([JWTAuthentication])
 class FileDownloadView(generics.RetrieveAPIView):
     queryset = FileMetadata.objects.all()
     serializer_class = FileMetadataSerializer

@@ -24,7 +24,6 @@ const fileSlice = createSlice({
         },
         setData: (state, action: PayloadAction<any[]>) => {
             state.data = action.payload;
-            // Update localStorage
             localStorage.setItem('data', JSON.stringify(action.payload));
         },
         setHTML: (state, action: PayloadAction<string | null>) => {
