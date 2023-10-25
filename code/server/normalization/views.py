@@ -9,6 +9,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, JSONParser
+import openpyxl
 
 class MinMaxNorm(APIView):
     parser_classes = (MultiPartParser, JSONParser)
