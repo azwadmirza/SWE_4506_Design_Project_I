@@ -6,10 +6,10 @@ interface FileState {
     html: string | null;
 }
 
-// Initialize the state from localStorage if available
+
 const initialState: FileState = {
     file: localStorage.getItem('file') || null,
-    data: JSON.parse(localStorage.getItem('data') || '[]'), // Parse as JSON
+    data: JSON.parse(localStorage.getItem('data') || '[]'), 
     html: localStorage.getItem('html') || null,
 };
 

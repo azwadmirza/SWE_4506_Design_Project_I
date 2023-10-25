@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { useAppSelector } from "../contexts/auth/hooks";
-import DOMPurify from "dompurify";
 
 
 export const useImageUpload=(image:File|undefined,setImageURL:React.Dispatch<React.SetStateAction<string>>)=>{

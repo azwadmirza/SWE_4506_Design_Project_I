@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import NavbarUser from '../../../partials/navbarUser';
 import ImageInput from '../../../partials/imageInput';
-import { useImageUpload } from '../../../hooks/useImageUpload';
 import Loader from '../../../partials/loader';
 import '../assets/css/profile.css';
 import ProfileForm from '../components/form';
