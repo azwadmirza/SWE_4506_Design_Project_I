@@ -18,8 +18,6 @@ const NavbarLanding = () => {
             <Nav.Link as={Link} to="/about-us" active={location.pathname === '/about-us'}>About Us</Nav.Link>
             <Nav.Link as={Link} to="/login" active={location.pathname === '/login' || location.pathname === '/register'}>Sign In</Nav.Link>
           </Nav>
-          <div>
-          </div>
         </Navbar.Collapse>
 
       </Container>

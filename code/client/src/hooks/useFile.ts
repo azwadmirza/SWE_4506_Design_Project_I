@@ -47,128 +47,87 @@ export const useFile = () => {
     }
   };
 
-  const FileInputSubmit = async (
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    setLoading(true);
-    if (file?.type === "text/plain" && delimiter === "") {
-      setErrorMsg("Please enter a delimiter for txt files");
-      setLoading(false);
-      return;
-    }
-    if (file) {
-      console.log("File selected:", file.name);
-      const type = file.type;
-      const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-      const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-      if (allowedFormats.includes(type)) {
+
+      async function uploadToCloudinary(formData:FormData) {
+        const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+        return await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+      
+      async function uploadToBackend(file:any, parsedFile:any[] | null, address:string) {
+        const fileData = new FormData();
+        fileData.append("file_name", file.name);
+        fileData.append("cloudinary_url", file.secure_url);
+        fileData.append("parsedCSV", JSON.stringify(parsedFile));
+      
+        return await axios.post(`${address}/api/file/upload/`, fileData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+      
+      async function getVisualizationData(file:any, delimiter:string) {
+        return await axios.post("http://127.0.0.1:5000/get_visualization", {
+          url: file.secure_url,
+          delimiter,
+        });
+      }
+      
+      const FileInputSubmit = async (setShow: React.Dispatch<React.SetStateAction<boolean>>) => {
         try {
+          setLoading(true);
+      
+          if (!file) {
+            setLoading(false);
+            return;
+          }
+      
+          const type = file.type;
+          const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
+      
+          if (!allowedFormats.includes(type)) {
+            setErrorMsg("Invalid file format");
+            setSelectedFile(null);
+            setLoading(false);
+            return;
+          }
+      
+          if (file.type === "text/plain" && delimiter === "") {
+            setErrorMsg("Please enter a delimiter for txt files");
+            setLoading(false);
+            return;
+          }
+      
+          console.log("File selected:", file.name);
+      
           const formData = new FormData();
           formData.append("file", file);
           formData.append("upload_preset", "datanalytica");
+      
           const parsedFile = await parseFile(file);
+      
           dispatch(setFile(file.name));
           dispatch(setData(parsedFile !== null ? parsedFile : []));
-
-          const response = await axios.post(
-            `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          const data = response.data;
+      
+          const cloudinaryResponse = await uploadToCloudinary(formData);
+          const data = cloudinaryResponse.data;
+      
           if (data.secure_url) {
             setSelectedFile(file.name);
             setErrorMsg("");
             console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-            await axios
-              .post("http://127.0.0.1:5000/get_visualization", {
-                url: data.secure_url,
-                delimiter: delimiter,
-              })
-              .then((res) => {
-                dispatch(setHTML(res.data.cloudinary_link));
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            const fileData = new FormData();
-            try {
-              fileData.append("file_name", file.name);
-              fileData.append("cloudinary_url", data.secure_url);
-              fileData.append("parsedCSV", JSON.stringify(parsedFile));
-
-              const response = await axios.post(
-                `${address}/api/file/upload/`,
-                fileData,
-                {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                  },
-                }
-              );
-              const dataRes = response.data;
-              if (dataRes.file_url) {
-                setSelectedFile(file.name);
-                setErrorMsg("");
-                const tempData = new FormData();
-                tempData.append("file", file);
-                const imputationRes = await axios.post(
-                  `${address}/api/imputation/imputation/`,
-                  tempData,
-                  {
-                    headers: {
-                      "Content-Type": "multipart/form-data",
-                    },
-                  }
-                );
-                if (imputationRes.data.imputedData) {
-                  //   console.log(result.imputedData);
-                  const tempNormalizationData = new FormData();
-                  tempNormalizationData.append("parsedJSON", JSON.stringify(imputationRes.data.imputedData));
-                  const normalizationRes = await axios.post(
-                    `${address}/api/norm/min-max/`,
-                    tempNormalizationData,
-                    {
-                      headers: {
-                        "Content-Type": "multipart/form-data",
-                      },
-                    }
-                  );
-                  if (normalizationRes.data.scaledData) {
-                    // console.log(normalizationRes.data.scaledData);
-                    const oneHotEncodingRes = await axios.post(
-                      `${address}/api/one_hot_encoding/one_hot_encoding/`,
-                      tempData,
-                      {
-                        headers: {
-                          "Content-Type": "multipart/form-data",
-                        },
-                      }
-                    );
-                    if (oneHotEncodingRes.data.encodedData) {
-                      console.log(oneHotEncodingRes.data.encodedData);
-                    } else {
-                      setErrorMsg("One Hot Encoding Failed");
-                      setSelectedFile(null);
-                    }
-                  } else {
-                    setErrorMsg("Normalization Failed");
-                    setSelectedFile(null);
-                  }
-                } else {
-                  setErrorMsg("Imputation Failed");
-                  setSelectedFile(null);
-                }
-              } else {
-                setErrorMsg(data.error);
-                setSelectedFile(null);
-              }
-            } catch (error) {
-              setErrorMsg("File Backend Request error");
+      
+            const visualizationResponse = await getVisualizationData(data, delimiter);
+            dispatch(setHTML(visualizationResponse.data.cloudinary_link));
+      
+            const backendResponse = await uploadToBackend(data, parsedFile, address);
+            const dataRes = backendResponse.data;
+            setShow(false);
+            if (dataRes.file_url) {
+              setSelectedFile(file.name);
+              setErrorMsg("");
+            } else {
+              setErrorMsg(data.error);
               setSelectedFile(null);
             }
           } else {
@@ -180,23 +139,13 @@ export const useFile = () => {
           setErrorMsg("File upload error");
           setSelectedFile(null);
           console.error("File upload error:", error);
+          
+        } finally {
+          setLoading(false);
+          window.location.reload();
         }
-      } else {
-        setErrorMsg("Invalid file format");
-        setSelectedFile(null);
-      }
-      setLoading(false);
-    }
-  };
+      };
+      
 
-  return {
-    loading,
-    file,
-    setFileInformation,
-    delimiter,
-    setDelimiter,
-    selectedFile,
-    errorMsg,
-    FileInputSubmit,
-  };
-};
+    return {loading, file,setFileInformation, delimiter, setDelimiter, selectedFile, errorMsg, FileInputSubmit}
+}

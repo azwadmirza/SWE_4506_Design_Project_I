@@ -39,7 +39,7 @@ const Landing = ({access_token,refresh_token,verification}:ILanding) => {
           <div className="get-started">
             <button
               className="custom-button"
-              onClick={() => navigate("/signin")}
+              onClick={() => navigate("/login")}
             >
               <span>Get Started</span>
               <IonIcon
