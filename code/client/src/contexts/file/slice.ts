@@ -6,10 +6,10 @@ interface FileState {
     html: string | null;
 }
 
-// Initialize the state from localStorage if available
+
 const initialState: FileState = {
     file: localStorage.getItem('file') || null,
-    data: JSON.parse(localStorage.getItem('data') || '[]'), // Parse as JSON
+    data: JSON.parse(localStorage.getItem('data') || '[]'), 
     html: localStorage.getItem('html') || null,
 };
 
@@ -24,7 +24,6 @@ const fileSlice = createSlice({
         },
         setData: (state, action: PayloadAction<any[]>) => {
             state.data = action.payload;
-            // Update localStorage
             localStorage.setItem('data', JSON.stringify(action.payload));
         },
         setHTML: (state, action: PayloadAction<string | null>) => {

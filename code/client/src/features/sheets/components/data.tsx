@@ -14,22 +14,17 @@ import VisualizationHeader from "./visualization-header";
 const Data = () => {
     const html=useAppSelector((state)=>state.file.html);
     const file = useAppSelector((state) => state.file.file);
-    const data = useAppSelector((state) => state.file.data);
-    const { currentCell, gridRows, viewValue, setViewValue, loading } = useSheets(data);
-    if (gridRows) {
+    const { currentCell, gridRows, viewValue, setViewValue, loading } = useSheets();
+    if (!loading) {
         return (
             <Provider store={store}>
                 <div className="sheets">
                     <NavbarUser />
                     <Header filename={`${file !== null ? file : ""}`} />
                     {currentCell !== "" && (<ValueDisplay currentCell={currentCell} value={viewValue} setValue={setViewValue} />)}
-                    {html && (<VisualizationHeader />)}
+                    {html && (<VisualizationHeader html={html} />)}
                     <div className="render-cells">
-                        {!loading ? (
-                            <RenderCells gridRows={gridRows} />
-                        ) : (
-                            <Loader />
-                        )}
+                    <RenderCells gridRows={gridRows} />
                     </div>
                 </div>
             </Provider>
