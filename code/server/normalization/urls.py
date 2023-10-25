@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from .views import MinMaxNorm
+
 
 urlpatterns = [
-    path('min-max/', views.MinMaxNorm, name='MinMaxNorm')
+    path('min-max/', MinMaxNorm.as_view(), name='MinMaxNorm')
 ]

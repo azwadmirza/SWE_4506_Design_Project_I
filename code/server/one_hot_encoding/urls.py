@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import OneHotEncoding
 
 urlpatterns = [
-    path('one_hot_encoding/', views.OneHotEncoding, name='OneHotEncoding')
+    path('one_hot_encoding/', OneHotEncoding.as_view(), name='OneHotEncoding')
 ]

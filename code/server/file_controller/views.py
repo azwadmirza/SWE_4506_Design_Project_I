@@ -30,12 +30,12 @@ class FileUploadView(generics.CreateAPIView):
 
                 csv_data = json.loads(file_content)
                 file_df = pd.DataFrame(csv_data[1:], columns=csv_data[0])
-                print(file_df)
+                # print(file_df)
                 file_df.describe()
                 final_json = file_df.to_json(orient='records')
 
                 file_serializer.save(file_name=file_name, cloudinary_url=cloudinary_url, modified_file=final_json)
-                print("serializer saved")
+                # print("serializer saved")
 
                 return Response({'file_url': cloudinary_url}, status=status.HTTP_201_CREATED)
             except Exception as e:

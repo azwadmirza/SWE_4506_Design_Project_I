@@ -9,10 +9,27 @@ from io import BytesIO
 def Imputation(request):
     if request.method == 'POST':
         try:
-            uploaded_file = request.FILES.get('file')
+            uploaded_data = None
+            df = None
+            if request.FILES.get('file'):
+                uploaded_data = request.FILES.get('file')
+                if(uploaded_data.name.endswith(".csv")):
+                    df = pd.read_csv(uploaded_data)
+                elif(uploaded_data.name.endswith(".xlsx")):
+                    df=pd.read_excel(uploaded_data)
+                elif(uploaded_data.name.endswith(".txt")):
+                    df=pd.read_csv(uploaded_data, sep=request.data['delimiter'])
+                elif(uploaded_data.name.endswith(".json")):
+                    df=pd.read_json(uploaded_data)
+                else:
+                    print("Hello World")
+                    return JsonResponse({'message': 'Invalid File Format'}, status=405)
+            if uploaded_data is None and 'jsonResponse' in request.data:
+                uploaded_data = request.data['jsonResponse']
+                
 
-            if uploaded_file:
-                df = pd.read_csv(uploaded_file)
+            if uploaded_data is not None and df is not None:
+                # df = pd.read_csv(uploaded_file)
                 threshold = 10
                 for column in df.columns:
                     dtype = df[column].dtype
