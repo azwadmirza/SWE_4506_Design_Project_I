@@ -12,5 +12,8 @@ urlpatterns = [
     path('refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),
     path('verify-token/', TokenVerifyView.as_view(), name='token_verify'),
     path('otp/<int:id>/',views.VerifyEmail.as_view(),name='otp-send'),
-    path('otp/verify/',views.VerifyEmail.as_view(),name='otp-verification')
+    path('otp/verify/',views.VerifyEmail.as_view(),name='otp-verification'),
+    path('forgot/otp/',views.ForgotPassword.as_view(),name='otp-verification-forgot'),
+    path('forgot/otp/verify/',views.ForgotPasswordVerify.as_view(),name='otp-verification-forgot-verify'),
+    path('forgot/update/',views.ForgotPasswordUpdate.as_view(),name='otp-verification-forgot-update'),
 ]

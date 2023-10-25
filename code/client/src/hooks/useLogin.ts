@@ -34,13 +34,8 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
         navigate("/data");
       }
       setError("");
-    }).catch((err)=>{
-      if(err.response.status==401){
-        setError("Invalid password or email");
-      }
-      else{
-        setError("Server error");
-      }
+    }).catch(()=>{
+      setError("Invalid password or email");
       changeLoadingState(false);
     })
   }

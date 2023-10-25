@@ -17,6 +17,7 @@ import ChangePassword from './features/profile/pages/change-password';
 import Error404 from './partials/error404';
 import { useAppSelector } from './contexts/auth/hooks';
 import Sheets from './features/sheets/pages/sheets';
+import ForgotPassword from './features/forgot-password/pages/forgot-password';
 
 function App() {
   const accessToken = useAppSelector((state) => state.auth.access_token);
@@ -32,7 +33,7 @@ function App() {
           <>
           <Route path="/login" element={<SignIn location='login'/>}/>
           <Route path="/signup" element={<SignIn location='signup'/>}/>
-          <Route path="/forgot-password" element={<SignIn location='signup'/>}/>
+          <Route path="/forgot-password" element={<ForgotPassword/>}/>
           <Route path="/about-us" element={<AboutUs/>}/>
           </>
           )}
