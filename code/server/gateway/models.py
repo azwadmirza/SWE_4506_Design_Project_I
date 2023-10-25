@@ -18,7 +18,7 @@ class user(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     password = models.CharField(max_length=128)
     verified=models.BooleanField(default=False)
-    image=models.ImageField(upload_to='images/',default='/profilePicture.png')
+    image=models.URLField(max_length=200)
     objects = userManager()
 
     USERNAME_FIELD = 'email'
