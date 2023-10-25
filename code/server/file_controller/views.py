@@ -1,6 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.views import APIView
 from rest_framework import status
 from .models import FileMetadata
 from .serializers import FileMetadataSerializer
@@ -44,6 +45,18 @@ class FileUploadView(generics.CreateAPIView):
                 return Response({'error': 'File upload to Mongo failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@authentication_classes([JWTAuthentication])
+class GetAllFiles(APIView):
+    queryset = FileMetadata.objects.all()
+    serializer_class = FileMetadataSerializer
+    def get(self,request,*args,**kwargs):
+        try:
+            files = FileMetadata.objects.all()
+            serializer = FileMetadataSerializer(files, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({'error': 'File upload to Mongo failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @authentication_classes([JWTAuthentication])
