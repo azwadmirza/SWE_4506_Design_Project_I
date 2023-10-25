@@ -36,6 +36,10 @@ const authSlice = createSlice({
             localStorage.setItem('verification', action.payload.verification !== null ? action.payload.verification.toString() : "");
             localStorage.setItem('user_id', action.payload.user_id !== null ? action.payload.user_id : "");
         },
+        setAccessToken: (state, action: PayloadAction<string | null>) => {
+            state.access_token = action.payload;
+            localStorage.setItem('access_token', action.payload !== null ? action.payload : "");
+        },
         setRefreshToken: (state, action: PayloadAction<string | null>) => {
             state.refresh_token = action.payload;
             localStorage.setItem('refresh_token', action.payload !== null ? action.payload : "");
@@ -53,6 +57,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { setAccessTokens,setRefreshToken, clearTokens } = authSlice.actions;
+export const { setAccessTokens,setRefreshToken, clearTokens,setAccessToken } = authSlice.actions;
 
 export default authSlice.reducer;

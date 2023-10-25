@@ -3,22 +3,20 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { IonIcon } from "@ionic/react";
-import { cloudUpload } from "ionicons/icons";
 import "../assets/css/navbar.css";
 import { useAppDispatch } from "../contexts/auth/hooks";
 import { clearTokens } from "../contexts/auth/slice";
-import { useFileInput } from "../hooks/useFileInput";
 
 
 const NavbarUser = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch=useAppDispatch();
-  const { handleFileInputChange }=useFileInput();
   const handleLogout = () => {
     dispatch(clearTokens());
+    localStorage.clear();
     navigate("/");
+    window.location.reload();
   };
   
 
@@ -33,14 +31,11 @@ const NavbarUser = () => {
             DataAnalytica.io
           </Link>
         </Navbar.Brand>
-        <Button className="mobileIcons bg-transparent me-3">
-          <IonIcon icon={cloudUpload}>Upload Dataset</IonIcon>
-        </Button>
         <Navbar.Toggle className="px-2" aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
             className="me-auto my-2 my-lg-0 px-2"
-            style={{ maxHeight: "150px" }}
+            style={{ maxHeight: "150px",zIndex:20 }}
             navbarScroll
           >
             <Nav.Link
@@ -62,14 +57,6 @@ const NavbarUser = () => {
             </Nav.Link>
           </Nav>
           <div>
-          </div>
-          <div>
-            <input
-              type="file"
-              id="fileInput"
-              style={{ display: "none" }}
-              onChange={handleFileInputChange}
-            />
           </div>
           <div className="customLogOut d-none d-lg-flex justify-content-end">
             <Button className="btn customButton" onClick={handleLogout}>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import CryptoJS from "crypto-js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { setAccessTokens, setRefreshToken } from "../contexts/auth/slice";
 import { useAppDispatch } from "../contexts/auth/hooks";
 
@@ -32,16 +31,11 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
         navigate("/verification");
       }
       else{
-        navigate("/profile");
+        navigate("/data");
       }
       setError("");
-    }).catch((err)=>{
-      if(err.response.status==401){
-        setError("Invalid password or email");
-      }
-      else{
-        setError("Server error");
-      }
+    }).catch(()=>{
+      setError("Invalid password or email");
       changeLoadingState(false);
     })
   }
