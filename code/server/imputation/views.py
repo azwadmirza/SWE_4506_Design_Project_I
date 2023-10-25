@@ -4,10 +4,17 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from io import BytesIO
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 
-@csrf_exempt
-def Imputation(request):
-    if request.method == 'POST':
+
+class Imputation(APIView):
+    parser_classes = (MultiPartParser, JSONParser)
+    permission_classes=[]
+    
+    def post( self, request):
         try:
             uploaded_data = None
             df = None
@@ -24,9 +31,18 @@ def Imputation(request):
                 else:
                     print("Hello World")
                     return JsonResponse({'message': 'Invalid File Format'}, status=405)
-            if uploaded_data is None and 'jsonResponse' in request.data:
-                uploaded_data = request.data['jsonResponse']
-                
+            elif request.data.get("parsedJSON"):
+
+                uploaded_data = request.data.get("parsedJSON")
+                try:
+                    data_list = json.loads(uploaded_data)
+                    # print(data_list)
+                    df = pd.read_json(data_list, orient='records')
+                    print(df)
+                except json.JSONDecodeError as e:
+                    return JsonResponse({'message': 'Error decoding JSON: ' + str(e)}, status=400)
+                except Exception as e:
+                    return JsonResponse({'message': 'Error processing JSON data: ' + str(e)}, status=500)
 
             if uploaded_data is not None and df is not None:
                 # df = pd.read_csv(uploaded_file)
@@ -48,4 +64,3 @@ def Imputation(request):
                 return JsonResponse({'message': 'No file was uploaded.'}, status=400)
         except Exception as e:
             return JsonResponse({'message': str(e)}, status=500)
-    return JsonResponse({'message': 'Invalid request method.'}, status=405)

@@ -117,8 +117,8 @@ export const useFile = () => {
             setErrorMsg("");
             console.log("File uploaded to Cloudinary. URL:", data.secure_url);
       
-            const visualizationResponse = await getVisualizationData(data, delimiter);
-            dispatch(setHTML(visualizationResponse.data.cloudinary_link));
+            // const visualizationResponse = await getVisualizationData(data, delimiter);
+            // dispatch(setHTML(visualizationResponse.data.cloudinary_link));
       
             const backendResponse = await uploadToBackend(data, parsedFile, address);
             const dataRes = backendResponse.data;
@@ -126,6 +126,56 @@ export const useFile = () => {
             if (dataRes.file_url) {
               setSelectedFile(file.name);
               setErrorMsg("");
+              const tempData = new FormData();
+                tempData.append("file", file);
+                const imputationRes = await axios.post(
+                  `${address}/api/imputation/imputation/`,
+                  tempData,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                );
+                if (imputationRes.data.imputedData) {
+                  //   console.log(result.imputedData);
+                  const tempNormalizationData = new FormData();
+                  tempNormalizationData.append("parsedJSON", JSON.stringify(imputationRes.data.imputedData));
+                  const normalizationRes = await axios.post(
+                    `${address}/api/norm/min-max/`,
+                    tempNormalizationData,
+                    {
+                      headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
+                    }
+                  );
+                  if (normalizationRes.data.scaledData) {
+                    const tempOneData = new FormData();
+                    tempOneData.append("parsedJSON", JSON.stringify(normalizationRes.data.scaledData));
+                    const oneHotEncodingRes = await axios.post(
+                      `${address}/api/one_hot_encoding/one_hot_encoding/`,
+                      tempOneData,
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                        },
+                      }
+                    );
+                    if (oneHotEncodingRes.data.encodedData) {
+                      console.log(oneHotEncodingRes.data.encodedData);
+                    } else {
+                      setErrorMsg("One Hot Encoding Failed");
+                      setSelectedFile(null);
+                    }
+                  } else {
+                    setErrorMsg("Normalization Failed");
+                    setSelectedFile(null);
+                  }
+                } else {
+                  setErrorMsg("Imputation Failed");
+                  setSelectedFile(null);
+                }
             } else {
               setErrorMsg(data.error);
               setSelectedFile(null);
@@ -139,7 +189,6 @@ export const useFile = () => {
           setErrorMsg("File upload error");
           setSelectedFile(null);
           console.error("File upload error:", error);
-          
         } finally {
           setLoading(false);
           window.location.reload();
