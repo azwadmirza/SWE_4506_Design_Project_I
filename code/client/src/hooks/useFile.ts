@@ -50,7 +50,7 @@ export const useFile = () => {
 
       async function uploadToCloudinary(formData:FormData) {
         const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-        return await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, formData, {
+        return axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -61,16 +61,16 @@ export const useFile = () => {
         fileData.append("cloudinary_url", file.secure_url);
         fileData.append("parsedCSV", JSON.stringify(parsedFile));
       
-        return await axios.post(`${address}/api/file/upload/`, fileData, {
+        return axios.post(`${address}/api/file/upload/`, fileData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
       
       async function getVisualizationData(file:any, delimiter:string) {
-        return await axios.post("http://127.0.0.1:5000/get_visualization", {
+        return axios.post("http://127.0.0.1:5000/get_visualization", {
           url: file.secure_url,
-          delimiter,
-        });
+          delimiter:delimiter,
+        })
       }
       
       const FileInputSubmit = async (setShow: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -116,9 +116,8 @@ export const useFile = () => {
             setSelectedFile(file.name);
             setErrorMsg("");
             console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-      
-            // const visualizationResponse = await getVisualizationData(data, delimiter);
-            // dispatch(setHTML(visualizationResponse.data.cloudinary_link));
+            const visualizationResponse = await getVisualizationData(data, delimiter);
+            dispatch(setHTML(visualizationResponse.data.cloudinary_link));
       
             const backendResponse = await uploadToBackend(data, parsedFile, address);
             const dataRes = backendResponse.data;
