@@ -12,7 +12,6 @@ from rest_framework.permissions import IsAuthenticated
 import openpyxl
 
 
-
 class OneHotEncoding(APIView):
     parser_classes = (MultiPartParser, JSONParser)
     permission_classes=[]
