@@ -9,51 +9,48 @@ import { parseJSON } from "../features/sheets/utils/jsonParser";
 import axios from "axios";
 import { parseTxt } from "../features/sheets/utils/txtParser";
 export const useFile = () => {
-    const [loading,setLoading]=useState<boolean>(false);
-    const [file, setFileInformation] = useState<File | null>(null);
-    const [delimiter, setDelimiter] = useState<string>("");
-    const [selectedFile, setSelectedFile] = useState<string | null>(null);
-    const [errorMsg, setErrorMsg] = useState<string | null>(null);
-    const dispatch=useAppDispatch();
-    const allowedFormats = [
-        "text/csv",
-        "text/plain",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/json",
-    ];
+  const [loading, setLoading] = useState<boolean>(false);
+  const [file, setFileInformation] = useState<File | null>(null);
+  const [delimiter, setDelimiter] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const allowedFormats = [
+    "text/csv",
+    "text/plain",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/json",
+  ];
 
-
-    const parseFile = async (file: File) => {
-        const type = file.type;
-        if (type==="text/csv") {
-          const parsedCSV = await parseCSV(file);
-          return parsedCSV;
-        }
-        else if(type==="text/plain"){
-            const parsedTxt=await parseTxt(file,delimiter);
-            return parsedTxt;
-        }
-        else if (type==="text/tsv") {
-          const parsedTSV = await parseTSV(file);
-          return parsedTSV;
-        }
-        else if(type=== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
-          const parsedXLSX = await fileAdapter(file,parseXLSX);
-          return parsedXLSX;
-        }
-        else if(type==="application/json"){
-          const parsedJSON = await fileAdapter(file,parseJSON);
-          return parsedJSON;
-        }
-        else {
-          return null;
-        }
-      }
+  const parseFile = async (file: File) => {
+    const type = file.type;
+    if (type === "text/csv") {
+      const parsedCSV = await parseCSV(file);
+      return parsedCSV;
+    } else if (type === "text/plain") {
+      const parsedTxt = await parseTxt(file, delimiter);
+      return parsedTxt;
+    } else if (type === "text/tsv") {
+      const parsedTSV = await parseTSV(file);
+      return parsedTSV;
+    } else if (
+      type ===
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      const parsedXLSX = await fileAdapter(file, parseXLSX);
+      return parsedXLSX;
+    } else if (type === "application/json") {
+      const parsedJSON = await fileAdapter(file, parseJSON);
+      return parsedJSON;
+    } else {
+      return null;
+    }
+  };
 
 
       async function uploadToCloudinary(formData:FormData) {
         const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-        return await axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, formData, {
+        return axios.post(`https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -64,16 +61,16 @@ export const useFile = () => {
         fileData.append("cloudinary_url", file.secure_url);
         fileData.append("parsedCSV", JSON.stringify(parsedFile));
       
-        return await axios.post(`${address}/api/file/upload/`, fileData, {
+        return axios.post(`${address}/api/file/upload/`, fileData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
       
       async function getVisualizationData(file:any, delimiter:string) {
-        return await axios.post("http://127.0.0.1:5000/get_visualization", {
+        return axios.post("http://127.0.0.1:5000/get_visualization", {
           url: file.secure_url,
-          delimiter,
-        });
+          delimiter:delimiter,
+        })
       }
       
       const FileInputSubmit = async (setShow: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -119,7 +116,6 @@ export const useFile = () => {
             setSelectedFile(file.name);
             setErrorMsg("");
             console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-      
             const visualizationResponse = await getVisualizationData(data, delimiter);
             dispatch(setHTML(visualizationResponse.data.cloudinary_link));
       
@@ -129,6 +125,56 @@ export const useFile = () => {
             if (dataRes.file_url) {
               setSelectedFile(file.name);
               setErrorMsg("");
+              const tempData = new FormData();
+                tempData.append("file", file);
+                const imputationRes = await axios.post(
+                  `${address}/api/imputation/imputation/`,
+                  tempData,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                );
+                if (imputationRes.data.imputedData) {
+                  //   console.log(result.imputedData);
+                  const tempNormalizationData = new FormData();
+                  tempNormalizationData.append("parsedJSON", JSON.stringify(imputationRes.data.imputedData));
+                  const normalizationRes = await axios.post(
+                    `${address}/api/norm/min-max/`,
+                    tempNormalizationData,
+                    {
+                      headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
+                    }
+                  );
+                  if (normalizationRes.data.scaledData) {
+                    const tempOneData = new FormData();
+                    tempOneData.append("parsedJSON", JSON.stringify(normalizationRes.data.scaledData));
+                    const oneHotEncodingRes = await axios.post(
+                      `${address}/api/one_hot_encoding/one_hot_encoding/`,
+                      tempOneData,
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                        },
+                      }
+                    );
+                    if (oneHotEncodingRes.data.encodedData) {
+                      console.log(oneHotEncodingRes.data.encodedData);
+                    } else {
+                      setErrorMsg("One Hot Encoding Failed");
+                      setSelectedFile(null);
+                    }
+                  } else {
+                    setErrorMsg("Normalization Failed");
+                    setSelectedFile(null);
+                  }
+                } else {
+                  setErrorMsg("Imputation Failed");
+                  setSelectedFile(null);
+                }
             } else {
               setErrorMsg(data.error);
               setSelectedFile(null);
@@ -142,7 +188,6 @@ export const useFile = () => {
           setErrorMsg("File upload error");
           setSelectedFile(null);
           console.error("File upload error:", error);
-          
         } finally {
           setLoading(false);
           window.location.reload();

@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import Imputation
 
 urlpatterns = [
-    path('imputation/', views.Imputation, name='Imputation')
+    path('imputation/', Imputation.as_view(), name='Imputation')
 ]
