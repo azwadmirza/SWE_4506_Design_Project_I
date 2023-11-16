@@ -72,6 +72,68 @@ export const useFile = () => {
           delimiter:delimiter,
         })
       }
+
+      async function performImputation(file:any,address:string) {
+        const tempData = new FormData();
+        tempData.append("file", file);
+        const imputationRes = await axios.post(
+          `${address}/api/imputation/imputation/`,
+          tempData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      
+        if (imputationRes.data.imputedData) {
+          return imputationRes.data.imputedData;
+        } else {
+          throw new Error("Imputation Failed");
+        }
+      }
+
+      async function performNormalization(file: any, address:string) {
+        const tempData = new FormData();
+        tempData.append("parsedJSON", JSON.stringify(file));
+        const normalizationRes = await axios.post(
+          `${address}/api/norm/min-max/`,
+          tempData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      
+        if (normalizationRes.data.scaledData) {
+          return normalizationRes.data.scaledData;
+        } else {
+          throw new Error("Normalization Failed");
+        }
+      }
+
+      async function performOneHotEncoding(file:any, address: string) {
+        const tempData = new FormData();
+        tempData.append("parsedJSON", JSON.stringify(file));
+        const oneHotEncodingRes = await axios.post(
+          `${address}/api/one_hot_encoding/one_hot_encoding/`,
+          tempData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      
+        if (oneHotEncodingRes.data.encodedData) {
+          return oneHotEncodingRes.data.encodedData;
+        } else {
+          throw new Error("One Hot Encoding Failed");
+        }
+      }
+      
+
       
       const FileInputSubmit = async (setShow: React.Dispatch<React.SetStateAction<boolean>>) => {
         try {
@@ -125,56 +187,14 @@ export const useFile = () => {
             if (dataRes.file_url) {
               setSelectedFile(file.name);
               setErrorMsg("");
-              const tempData = new FormData();
-                tempData.append("file", file);
-                const imputationRes = await axios.post(
-                  `${address}/api/imputation/imputation/`,
-                  tempData,
-                  {
-                    headers: {
-                      "Content-Type": "multipart/form-data",
-                    },
-                  }
-                );
-                if (imputationRes.data.imputedData) {
-                  //   console.log(result.imputedData);
-                  const tempNormalizationData = new FormData();
-                  tempNormalizationData.append("parsedJSON", JSON.stringify(imputationRes.data.imputedData));
-                  const normalizationRes = await axios.post(
-                    `${address}/api/norm/min-max/`,
-                    tempNormalizationData,
-                    {
-                      headers: {
-                        "Content-Type": "multipart/form-data",
-                      },
-                    }
-                  );
-                  if (normalizationRes.data.scaledData) {
-                    const tempOneData = new FormData();
-                    tempOneData.append("parsedJSON", JSON.stringify(normalizationRes.data.scaledData));
-                    const oneHotEncodingRes = await axios.post(
-                      `${address}/api/one_hot_encoding/one_hot_encoding/`,
-                      tempOneData,
-                      {
-                        headers: {
-                          "Content-Type": "multipart/form-data",
-                        },
-                      }
-                    );
-                    if (oneHotEncodingRes.data.encodedData) {
-                      console.log(oneHotEncodingRes.data.encodedData);
-                    } else {
-                      setErrorMsg("One Hot Encoding Failed");
-                      setSelectedFile(null);
-                    }
-                  } else {
-                    setErrorMsg("Normalization Failed");
-                    setSelectedFile(null);
-                  }
-                } else {
-                  setErrorMsg("Imputation Failed");
-                  setSelectedFile(null);
-                }
+
+              const imputedData = await performImputation(file, address);
+              
+              const scaledData = await performNormalization(imputedData, address);
+
+              await performOneHotEncoding(scaledData, address);
+
+              // console.log("Backend processes completed successfully");
             } else {
               setErrorMsg(data.error);
               setSelectedFile(null);
