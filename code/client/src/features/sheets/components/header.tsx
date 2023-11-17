@@ -1,6 +1,9 @@
 import { Navbar, Container, Nav, Dropdown} from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
+import { useSheets } from "../hooks/useSheets";
+import { useEffect } from "react";
+
 type HeaderProps = {
   filename: string;
 };
@@ -10,6 +13,24 @@ const Header = ({ filename }: HeaderProps) => {
     toggleDropdown,
     showFileUpload,
     setShowFileUpload } = useDropDown();
+    
+    const { saveTrigger, setSaveTrigger } = useSheets(); 
+
+    // const handleSave = () => {
+    //   console.log("Began Saving");
+    //   setSaveTrigger(true);
+    // };
+    const handleSave = () => {
+      console.log("Began Saving");
+      setSaveTrigger(true);
+    };
+  
+    useEffect(() => {
+      if (saveTrigger) {
+        handleSave();
+      }
+    }, [setSaveTrigger]);
+
 
   return (
     <Navbar className="header fixed-top" variant="dark" expand="lg">
@@ -35,7 +56,7 @@ const Header = ({ filename }: HeaderProps) => {
                     <Dropdown.Item onClick={()=>{
                       setShowFileUpload(!showFileUpload);
                     }}>Open</Dropdown.Item>
-                    <Dropdown.Item>Save</Dropdown.Item>
+                    <Dropdown.Item onClick={handleSave}>Save</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               )}
