@@ -116,8 +116,8 @@ export const useFile = () => {
             setSelectedFile(file.name);
             setErrorMsg("");
             console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-            const visualizationResponse = await getVisualizationData(data, delimiter);
-            dispatch(setHTML(visualizationResponse.data.cloudinary_link));
+            // const visualizationResponse = await getVisualizationData(data, delimiter);
+            // dispatch(setHTML(visualizationResponse.data.cloudinary_link));
       
             const backendResponse = await uploadToBackend(data, parsedFile, address);
             const dataRes = backendResponse.data;
