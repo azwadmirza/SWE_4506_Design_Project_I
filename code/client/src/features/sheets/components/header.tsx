@@ -1,36 +1,25 @@
 import { Navbar, Container, Nav, Dropdown} from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
-import { useSheets } from "../hooks/useSheets";
-import { useEffect } from "react";
+import { useAppSelector} from "../../../contexts/file/hooks";
 
 type HeaderProps = {
   filename: string;
 };
 
 const Header = ({ filename }: HeaderProps) => {
+  const jsonData = useAppSelector((state)=> state.file.data)
   const { showFileDropdown,
     toggleDropdown,
     showFileUpload,
     setShowFileUpload } = useDropDown();
     
-    const { saveTrigger, setSaveTrigger } = useSheets(); 
 
-    // const handleSave = () => {
-    //   console.log("Began Saving");
-    //   setSaveTrigger(true);
-    // };
+
     const handleSave = () => {
       console.log("Began Saving");
-      setSaveTrigger(true);
+      console.log(jsonData);
     };
-  
-    useEffect(() => {
-      if (saveTrigger) {
-        handleSave();
-      }
-    }, [setSaveTrigger]);
-
 
   return (
     <Navbar className="header fixed-top" variant="dark" expand="lg">

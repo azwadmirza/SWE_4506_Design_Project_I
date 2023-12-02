@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { renderGrid } from "../utils/grid-renderer";
-import { useAppSelector } from "../../../contexts/file/hooks";
-import { createJsonData } from "../utils/save-data";
+import { useAppSelector,useAppDispatch } from "../../../contexts/file/hooks";
+// import { createJsonData } from "../utils/save-data";
 import React from "react";
+import { updateData } from "../../../contexts/file/slice";
+
 
 export const useSheets = () => {
+  const dispatch=useAppDispatch();
+  const jsonData = useAppSelector((state)=> state.file.data)
   const [currentCell, setCurrentCell] = useState<string>("");
   const [viewValue, setViewValue] = useState<string>("");
   const [gridRows, setGridRows] = useState<JSX.Element[]>([]);
@@ -17,7 +21,7 @@ export const useSheets = () => {
   };
 
   const onCellChange = async (Key: string, Value: string) => {
-    console.log(`Cell changed - Key: ${Key}, Value: ${Value}`);
+    // console.log(`Cell changed - Key: ${Key}, Value: ${Value}`);
     const updatedGridRows = gridRows.map((row) => {
       return {
         ...row,
@@ -32,18 +36,12 @@ export const useSheets = () => {
       };
     });
     updateGrid(updatedGridRows);
-    console.log("updated Grid that does update");
-    console.log(updatedGridRows)
+    dispatch(updateData({ key: Key, value: Value }))
     setSaveTrigger(true);
   };
   
-
-  const save = async () => {
-    const jsonData = createJsonData(gridRows);
-    console.log("jsonData that does update");
-    console.log(jsonData);
-    console.log("gridRows does update on Cell Change but not on using the File Save button")
-    console.log(gridRows);
+  
+  const save = () => {
     setSaveTrigger(false);
   };
 
@@ -56,19 +54,20 @@ export const useSheets = () => {
       onCellChange
     );
     setGridRows(newGridRows);
-    console.log("rendering grid");
   };
 
   useEffect(() => {
     if (saveTrigger) {
       save();
     }
-  }, [saveTrigger]);
+  }, [saveTrigger,gridRows,jsonData]);
 
   useEffect(() => {
+
     setLoading(true);
     render();
   }, []);
+
 
   return {
     currentCell,
@@ -80,5 +79,6 @@ export const useSheets = () => {
     onCellChange,
     saveTrigger,
     setSaveTrigger,
+    jsonData,
   };
 };

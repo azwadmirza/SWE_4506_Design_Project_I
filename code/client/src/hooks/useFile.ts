@@ -73,12 +73,12 @@ export const useFile = () => {
     });
   }
 
-  async function getVisualizationData(file: any, delimiter: string) {
-    return axios.post("http://127.0.0.1:5000/get_visualization", {
-      url: file.secure_url,
-      delimiter: delimiter,
-    });
-  }
+  // async function getVisualizationData(file: any, delimiter: string) {
+  //   return axios.post("http://127.0.0.1:5000/get_visualization", {
+  //     url: file.secure_url,
+  //     delimiter: delimiter,
+  //   });
+  // }
 
   async function performImputation(file: any, address: string) {
     const tempData = new FormData();
@@ -185,11 +185,11 @@ export const useFile = () => {
         setSelectedFile(file.name);
         setErrorMsg("");
         console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-        const visualizationResponse = await getVisualizationData(
-          data,
-          delimiter
-        );
-        dispatch(setHTML(visualizationResponse.data.cloudinary_link));
+        // const visualizationResponse = await getVisualizationData(
+        //   data,
+        //   delimiter
+        // );
+        // dispatch(setHTML(visualizationResponse.data.cloudinary_link));
 
         const backendResponse = await uploadToBackend(
           data,

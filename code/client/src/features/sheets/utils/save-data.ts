@@ -1,4 +1,4 @@
-export const createJsonData = async (gridRows: JSX.Element[]): any[][] => {
+export const createJsonData = (gridRows: JSX.Element[]): any[][] => {
     const jsonData: any[][] = [];
   
     for (const rowElement of gridRows) {
