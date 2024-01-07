@@ -1,0 +1,60 @@
+.custom-tabs-list {
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    top: 91%;
+    left: 2%;
+    overflow: hidden;
+    display: flex;
+    background-color: #ffffff; /* Excel-like background color */
+    border-bottom: 1px solid #A9A9A9; /* Excel-like border color */
+  }
+  
+  .custom-tab {
+    text-align: center;
+    padding: 10px 20px; /* Increased padding for a bigger look */
+    margin: 0;
+    border: 1px solid #ffffff; /* Excel-like border color */
+    background-color: #93C47D; /* Excel-like background color */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px; /* Increased font size for a bigger look */
+    border-radius: 5px; /* Rounded edges */
+  }
+  
+  .custom-tab:hover {
+    background-color: #B6D7A8; /* Slightly darker color on hover */
+  }
+  
+  
+  .content {
+    flex: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 20px; /* Increase padding for a more appealing look */
+    max-height: 50vh; /* Set the maximum height for the content */
+    display: none;
+    text-align: center; /* Center the content horizontally */
+  }
+  
+  .show-content {
+    flex: 0.5;
+    display: block;
+    position: absolute;
+    overflow: auto;
+    top: 20%; /* Center the content vertically */
+    left: 2%; /* Center the content horizontally */
+    right: 2%;
+    bottom: 10%;
+    padding: 20px; /* Increase padding for a more appealing look */
+    z-index: 1;
+    background-color: #fff; /* Add a background color to the content area */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    
+  }
+
+
+  
+
+  
