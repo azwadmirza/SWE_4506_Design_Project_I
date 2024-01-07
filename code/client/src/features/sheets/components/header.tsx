@@ -1,15 +1,25 @@
 import { Navbar, Container, Nav, Dropdown} from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
+import { useAppSelector} from "../../../contexts/file/hooks";
+
 type HeaderProps = {
   filename: string;
 };
 
 const Header = ({ filename }: HeaderProps) => {
+  const jsonData = useAppSelector((state)=> state.file.data)
   const { showFileDropdown,
     toggleDropdown,
     showFileUpload,
     setShowFileUpload } = useDropDown();
+    
+
+
+    const handleSave = () => {
+      console.log("Began Saving");
+      console.log(jsonData);
+    };
 
   return (
     <Navbar className="header fixed-top" variant="dark" expand="lg">
@@ -35,7 +45,7 @@ const Header = ({ filename }: HeaderProps) => {
                     <Dropdown.Item onClick={()=>{
                       setShowFileUpload(!showFileUpload);
                     }}>Open</Dropdown.Item>
-                    <Dropdown.Item>Save</Dropdown.Item>
+                    <Dropdown.Item onClick={handleSave}>Save</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               )}
