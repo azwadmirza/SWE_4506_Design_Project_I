@@ -8,23 +8,19 @@ import Loader from "../../../partials/loader";
 import { Provider } from "react-redux";
 import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
-import VisualizationHeader from "./visualization-header";
 
 
 const Data = () => {
-    const html=useAppSelector((state)=>state.file.html);
     const file = useAppSelector((state) => state.file.file);
-    const { currentCell, gridRows, viewValue, setViewValue, loading } = useSheets();
+    const { currentCell, gridRows, viewValue, setViewValue, loading, onCellChange  } = useSheets();
     if (!loading) {
         return (
             <Provider store={store}>
                 <div className="sheets">
-                    <NavbarUser />
                     <Header filename={`${file !== null ? file : ""}`} />
                     {currentCell !== "" && (<ValueDisplay currentCell={currentCell} value={viewValue} setValue={setViewValue} />)}
-                    {html && (<VisualizationHeader html={html} />)}
                     <div className="render-cells">
-                    <RenderCells gridRows={gridRows} />
+                        <RenderCells gridRows={gridRows} onCellChange={onCellChange} />
                     </div>
                 </div>
             </Provider>

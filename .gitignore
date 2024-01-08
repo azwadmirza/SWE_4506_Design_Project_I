@@ -1,3 +1,6 @@
 
 *.pyc
 *.pyc
+code/.env
+code/serverenv/.env
+code/visualizerenv/pyvenv.cfg
