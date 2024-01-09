@@ -9,7 +9,6 @@ const Sheets = () => {
         <Provider store={store}>
             <NavbarUser/>
             <Tabs/>
-            {/* <Data/> */}
         </Provider>
      );
 }
