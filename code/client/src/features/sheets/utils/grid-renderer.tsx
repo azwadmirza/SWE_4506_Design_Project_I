@@ -1,19 +1,48 @@
 import Cell from "../components/cell";
 
-export const renderGrid=async(data: any[], setCurrentCell: React.Dispatch<React.SetStateAction<string>>, setViewValue: React.Dispatch<React.SetStateAction<string>>,setLoading:React.Dispatch<React.SetStateAction<boolean>>)=> {
+const createCell = (
+  type: string,
+  Key: string,
+  Value: string,
+  onCellChange: (value: string) => void,
+  setCurrentCell: React.Dispatch<React.SetStateAction<string>>,
+  setViewValue: React.Dispatch<React.SetStateAction<string>>
+) => (
+  <Cell
+    type={type}
+    Key={Key}
+    Value={Value}
+    setterCell={setCurrentCell}
+    setViewValue={setViewValue}
+    onCellChange={(value) => onCellChange(value)}
+  />
+);
+
+export const renderGrid = async (
+  data: any[],
+  setCurrentCell: React.Dispatch<React.SetStateAction<string>>,
+  setViewValue: React.Dispatch<React.SetStateAction<string>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  onCellChange: (Key: string, Value: string) => void
+) => {
   let numRows = 200;
   let numCols = 200;
   numRows = data.length;
   numCols = data[0]?.length;
-  const gridRows:JSX.Element[] = [];
-  if(numRows===0){
+  const gridRows: JSX.Element[] = [];
+  if (numRows === 0) {
     setLoading(false);
     return gridRows;
   }
-  const gridCells = [<Cell Key={`Index\\Columns`}  Value={`Index\\Columns`} type="row-header index" setterCell={setCurrentCell} setViewValue={setViewValue} />];
+
+  const gridCells = [
+    createCell("row-header index", "Index\\Columns", "Index\\Columns", (value) => onCellChange("Index\\Columns", value), setCurrentCell, setViewValue),
+  ];
+
   if (numCols === 0) {
     for (let col = 0; col < numRows; col++) {
-      gridCells.push(<Cell type="column-header" Key={`${data[col]}`} Value={`${data[col]}`} setterCell={setCurrentCell} setViewValue={setViewValue} />);
+      const cellKey = `${col}`;
+      gridCells.push(createCell("column-header", `${data[col]}`, `${data[col]}`, (value) => onCellChange(cellKey, value), setCurrentCell, setViewValue));
     }
     gridRows.push(
       <div key={`row-${0}`} className="grid-row">
@@ -23,10 +52,11 @@ export const renderGrid=async(data: any[], setCurrentCell: React.Dispatch<React.
     setLoading(false);
     return gridRows;
   }
-  for (let col = 0; col < numCols; col++) {
-    gridCells.push(<Cell type="column-header" Key={`${data[0][col]}`} Value={`${data[0][col]}`} setterCell={setCurrentCell} setViewValue={setViewValue} />);
-  }
 
+  for (let col = 0; col < numCols; col++) {
+    const cellKey = `${data[0][col]}`;
+    gridCells.push(createCell("column-header", `${data[0][col]}`, `${data[0][col]}`, (value) => onCellChange(cellKey, value), setCurrentCell, setViewValue));
+  }
 
   gridRows.push(
     <div key={`row-${0}`} className="grid-row">
@@ -35,13 +65,14 @@ export const renderGrid=async(data: any[], setCurrentCell: React.Dispatch<React.
   );
 
   for (let row = 1; row < numRows; row++) {
-    const gridCells = [<Cell Key={`${row}`} Value={`${row}`} type="row-header" setterCell={setCurrentCell} setViewValue={setViewValue} />];
-
+    const gridCells = [
+      createCell("row-header", `${row}`, `${row}`, (value) => onCellChange(`${row}`, value), setCurrentCell, setViewValue),
+    ];
 
     for (let col = 0; col < numCols; col++) {
-      gridCells.push(<Cell Key={`${row}:${data[0][col]}`} Value={`${data[row][col]}`} type="cell" setterCell={setCurrentCell} setViewValue={setViewValue} />);
+      const cellKey = `${row}:${data[0][col]}`;
+      gridCells.push(createCell("cell", `${row}:${data[0][col]}`, `${data[row][col]}`, (value) => onCellChange(cellKey, value), setCurrentCell, setViewValue));
     }
-
 
     gridRows.push(
       <div key={`row-${row}`} className="grid-row">
@@ -51,4 +82,4 @@ export const renderGrid=async(data: any[], setCurrentCell: React.Dispatch<React.
   }
   setLoading(false);
   return gridRows;
-}
+};

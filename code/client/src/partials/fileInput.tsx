@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import { useFile } from "../hooks/useFile";
 import Loader from "./loader";
 
+
 type FileInputProps = {
     showFileInput: boolean,
     setShowFileInput: React.Dispatch<React.SetStateAction<boolean>>
