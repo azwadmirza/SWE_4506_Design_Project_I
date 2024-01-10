@@ -1,5 +1,3 @@
-// import NavbarUser from "../../../partials/navbarUser";
-import RenderCells from "../components/render-cells";
 import "../assets/css/sheets.css";
 import Header from "../components/header";
 import ValueDisplay from "../components/value-display";
@@ -8,6 +6,7 @@ import Loader from "../../../partials/loader";
 import { Provider } from "react-redux";
 import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
+import Charts from "../../visualization/components/charts";
 
 const Visualization = () => {
   const file = useAppSelector((state) => state.file.file);
@@ -33,7 +32,7 @@ const Visualization = () => {
           )}
           <div className="render-cells">
             <h1>Visulation</h1>
-            <p>Here is where the Visualization will go</p>
+            <Charts />
           </div>
         </div>
       </Provider>

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setFile, setHTML } from "../contexts/file/slice";
+import { setData, setFile } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
-import { parseTSV } from "../features/sheets/utils/tsvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
 import { parseJSON } from "../features/sheets/utils/jsonParser";
@@ -30,9 +29,6 @@ export const useFile = () => {
     } else if (type === "text/plain") {
       const parsedTxt = await parseTxt(file, delimiter);
       return parsedTxt;
-    } else if (type === "text/tsv") {
-      const parsedTSV = await parseTSV(file);
-      return parsedTSV;
     } else if (
       type ===
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -71,73 +67,6 @@ export const useFile = () => {
     return axios.post(`${address}/api/file/upload/`, fileData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-  }
-
-  // async function getVisualizationData(file: any, delimiter: string) {
-  //   return axios.post("http://127.0.0.1:5000/get_visualization", {
-  //     url: file.secure_url,
-  //     delimiter: delimiter,
-  //   });
-  // }
-
-  async function performImputation(file: any, address: string) {
-    const tempData = new FormData();
-    tempData.append("file", file);
-    const imputationRes = await axios.post(
-      `${address}/api/imputation/imputation/`,
-      tempData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    if (imputationRes.data.imputedData) {
-      return imputationRes.data.imputedData;
-    } else {
-      throw new Error("Imputation Failed");
-    }
-  }
-
-  async function performNormalization(file: any, address: string) {
-    const tempData = new FormData();
-    tempData.append("parsedJSON", JSON.stringify(file));
-    const normalizationRes = await axios.post(
-      `${address}/api/norm/min-max/`,
-      tempData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    if (normalizationRes.data.scaledData) {
-      return normalizationRes.data.scaledData;
-    } else {
-      throw new Error("Normalization Failed");
-    }
-  }
-
-  async function performOneHotEncoding(file: any, address: string) {
-    const tempData = new FormData();
-    tempData.append("parsedJSON", JSON.stringify(file));
-    const oneHotEncodingRes = await axios.post(
-      `${address}/api/one_hot_encoding/one_hot_encoding/`,
-      tempData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    if (oneHotEncodingRes.data.encodedData) {
-      return oneHotEncodingRes.data.encodedData;
-    } else {
-      throw new Error("One Hot Encoding Failed");
-    }
   }
 
   const FileInputSubmit = async (
@@ -185,11 +114,6 @@ export const useFile = () => {
         setSelectedFile(file.name);
         setErrorMsg("");
         console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-        // const visualizationResponse = await getVisualizationData(
-        //   data,
-        //   delimiter
-        // );
-        // dispatch(setHTML(visualizationResponse.data.cloudinary_link));
 
         const backendResponse = await uploadToBackend(
           data,
@@ -201,14 +125,6 @@ export const useFile = () => {
         if (dataRes.file_url) {
           setSelectedFile(file.name);
           setErrorMsg("");
-
-          const imputedData = await performImputation(file, address);
-
-          const scaledData = await performNormalization(imputedData, address);
-
-          await performOneHotEncoding(scaledData, address);
-
-          // console.log("Backend processes completed successfully");
         } else {
           setErrorMsg(data.error);
           setSelectedFile(null);
