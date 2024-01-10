@@ -6,9 +6,8 @@ import Loader from "../../../partials/loader";
 import { Provider } from "react-redux";
 import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
-import Charts from "../../visualization/components/charts";
 
-const Visualization = () => {
+const Models = () => {
   const file = useAppSelector((state) => state.file.file);
   const {
     currentCell,
@@ -29,8 +28,8 @@ const Visualization = () => {
             />
           )}
           <div className="render-cells">
-            <h1>Visulation</h1>
-            <Charts />
+            <h1>Models</h1>
+            <p>This is where the model info will go</p>
           </div>
         </div>
       </Provider>
@@ -40,4 +39,4 @@ const Visualization = () => {
   }
 };
 
-export default Visualization;
+export default Models;
