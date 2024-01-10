@@ -30,7 +30,7 @@ const Visualization = () => {
           )}
           <div className="render-cells">
             <h1>Visulation</h1>
-            <Charts />
+            {/* <Charts /> */}
           </div>
         </div>
       </Provider>

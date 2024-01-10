@@ -51,36 +51,28 @@ export const useFile = () => {
     }
   };
 
-  async function uploadToCloudinary(formData: FormData) {
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-    return axios.post(
-      `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-  }
+  // async function uploadToCloudinary(formData: FormData) {
+  //   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  //   return axios.post(
+  //     `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
+  //     formData,
+  //     {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     }
+  //   );
+  // }
 
   async function uploadToBackend(
-    fileName: string,
+    file: any,
     parsedFile: any[] | null,
     address: string,
-    url: string,
   ) {
     const storedUserId = localStorage.getItem('user_id');
     const user_id = storedUserId ? JSON.parse(storedUserId) : null;
     const fileData = new FormData();
-    fileData.append("file_name", fileName);
-    fileData.append("cloudinary_url", url);
+    fileData.append("file",file);
     fileData.append("parsedCSV", JSON.stringify(parsedFile));
     fileData.append("user_id", user_id)
-
-    console.log(fileName);
-    console.log(address);
-    console.log(user_id);
-  
-    
     return axios.post(`${address}/api/file/upload/`, fileData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -89,68 +81,52 @@ export const useFile = () => {
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    
     try {
       setLoading(true);
-
+  
       if (!file) {
         setLoading(false);
         return;
       }
-
+  
       const type = file.type;
       const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-
+  
       if (!allowedFormats.includes(type)) {
         setErrorMsg("Invalid file format");
         setSelectedFile(null);
         setLoading(false);
         return;
       }
-
+  
       if (file.type === "text/plain" && delimiter === "") {
         setErrorMsg("Please enter a delimiter for txt files");
         setLoading(false);
         return;
       }
-
+  
       console.log("File selected:", file.name);
-
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "datanalytica");
-
+  
       const parsedFile = await parseFile(file);
-
+  
       dispatch(setFile(file.name));
       dispatch(setData(parsedFile !== null ? parsedFile : []));
-
-      const cloudinaryResponse = await uploadToCloudinary(formData);
-      const data = cloudinaryResponse.data;
-
-      if (data.secure_url) {
+  
+      const backendResponse = await uploadToBackend(
+        file,
+        parsedFile,
+        address,
+      );
+  
+      const dataRes = backendResponse.data;
+      setShow(false);
+  
+      if (dataRes.success) {
         setSelectedFile(file.name);
         setErrorMsg("");
-        console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-        const backendResponse = await uploadToBackend(
-          file.name,
-          parsedFile,
-          address,
-          data.secure_url,
-        );
-        const dataRes = backendResponse.data;
-        setShow(false);
-        if (dataRes.file_url) {
-          setSelectedFile(file.name);
-          setErrorMsg("");
-        } else {
-          setErrorMsg(data.error);
-          setSelectedFile(null);
-        }
       } else {
-        setErrorMsg("Cloudinary upload error");
+        setErrorMsg(dataRes.error);
         setSelectedFile(null);
-        console.error("Cloudinary upload error:", data.error);
       }
     } catch (error) {
       setErrorMsg("File upload error");
@@ -158,9 +134,10 @@ export const useFile = () => {
       console.error("File upload error:", error);
     } finally {
       setLoading(false);
-      window.location.reload();
+      // window.location.reload();
     }
   };
+  
 
   return {
     loading,

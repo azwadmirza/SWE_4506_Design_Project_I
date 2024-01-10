@@ -2,6 +2,7 @@ import { Navbar, Container, Nav, Dropdown} from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
 import { useAppSelector} from "../../../contexts/file/hooks";
+import convertToCSV from "../../../utils/csvConverter";
 
 
 
@@ -21,6 +22,8 @@ const Header = ({ filename }: HeaderProps) => {
     const handleSave = () => {
       console.log("Began Saving");
       console.log(jsonData);
+      console.log(convertToCSV(jsonData));
+
     };
 
   return (

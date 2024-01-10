@@ -12,46 +12,39 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import authentication_classes
 import pandas as pd
 import json
+from .utils import upload_to_cloudinary
+
+
 
 @authentication_classes([JWTAuthentication])
-class FileUploadView(generics.CreateAPIView):
-    permission_classes=[]
-    queryset = FileMetadata.objects.all()  # Provide a queryset
+class FileUploadView(APIView):
+    permission_classes = []  
+    queryset = FileMetadata.objects.all() 
     serializer_class = FileMetadataSerializer
     def post(self, request, format=None):
-        file_serializer = FileMetadataSerializer(data=request.data)
+        try:
+            file = request.data.get("file")
+            file_name = file.name
+            user_id = request.data.get("user_id")
+            cloudinary_url = upload_to_cloudinary(file, user_id)
+
+            file_content = request.data.get("parsedCSV")
+            csv_data = json.loads(file_content)
+            file_df = pd.DataFrame(csv_data[1:], columns=csv_data[0])
+            final_json = file_df.to_json(orient='records')
+            file_metadata = FileMetadata.objects.create(
+                file_name=file_name,
+                cloudinary_url=cloudinary_url,
+                edited_file=cloudinary_url,
+                modified_file=final_json,
+                user_id=user_id
+            )
+
+            return Response({'file_url': cloudinary_url}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': 'File upload failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
-        if file_serializer.is_valid():
-            try:
-   
-                file_name= request.data.get("file_name")  
-
-                cloudinary_url = request.data.get("cloudinary_url")
-
-                file_content = request.data.get("parsedCSV")
-                
-                user_id = request.data.get("user_id")
-                
-                print(user_id)
-                print("I am here")
-
-                csv_data = json.loads(file_content)
-                file_df = pd.DataFrame(csv_data[1:], columns=csv_data[0])
-                # print(file_df)
-                # file_df.describe()
-                final_json = file_df.to_json(orient='records')
-                print("I am here now")
-
-                file_serializer.save(file_name=file_name, cloudinary_url=cloudinary_url, modified_file=final_json, user_id = user_id, edited_file=cloudinary_url)
-                print("serializer saved")
-
-                return Response({'file_url': cloudinary_url}, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                return Response({'error': 'File upload to Mongo failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        
 @authentication_classes([JWTAuthentication])
 class GetAllFiles(APIView):
     queryset = FileMetadata.objects.all()
