@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { renderGrid } from "../utils/grid-renderer";
 import { useAppSelector,useAppDispatch } from "../../../contexts/file/hooks";
-// import { createJsonData } from "../utils/save-data";
 import React from "react";
 import { updateData } from "../../../contexts/file/slice";
 
@@ -21,7 +20,6 @@ export const useSheets = () => {
   };
 
   const onCellChange = async (Key: string, Value: string) => {
-    // console.log(`Cell changed - Key: ${Key}, Value: ${Value}`);
     const updatedGridRows = gridRows.map((row) => {
       return {
         ...row,

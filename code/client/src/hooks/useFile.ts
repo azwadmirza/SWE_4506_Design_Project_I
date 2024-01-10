@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setFile } from "../contexts/file/slice";
+import { setData, setDelimiter, setFile, setType, setURL } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
@@ -10,7 +10,7 @@ import { parseTxt } from "../features/sheets/utils/txtParser";
 export const useFile = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [file, setFileInformation] = useState<File | null>(null);
-  const [delimiter, setDelimiter] = useState<string>("");
+  const [delimiter, setDelimiterLocal] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
@@ -22,7 +22,9 @@ export const useFile = () => {
   ];
 
   const parseFile = async (file: File) => {
+    dispatch(setDelimiter(delimiter));
     const type = file.type;
+    dispatch(setType(type));
     if (type === "text/csv") {
       const parsedCSV = await parseCSV(file);
       return parsedCSV;
@@ -113,7 +115,7 @@ export const useFile = () => {
       if (data.secure_url) {
         setSelectedFile(file.name);
         setErrorMsg("");
-        console.log("File uploaded to Cloudinary. URL:", data.secure_url);
+        dispatch(setURL(data.secure_url));
 
         const backendResponse = await uploadToBackend(
           data,
@@ -140,7 +142,6 @@ export const useFile = () => {
       console.error("File upload error:", error);
     } finally {
       setLoading(false);
-      window.location.reload();
     }
   };
 
@@ -149,7 +150,7 @@ export const useFile = () => {
     file,
     setFileInformation,
     delimiter,
-    setDelimiter,
+    setDelimiterLocal,
     selectedFile,
     errorMsg,
     FileInputSubmit,

@@ -12,11 +12,9 @@ const Visualization = () => {
   const file = useAppSelector((state) => state.file.file);
   const {
     currentCell,
-    gridRows,
     viewValue,
     setViewValue,
-    loading,
-    onCellChange,
+    loading
   } = useSheets();
   if (!loading) {
     return (
@@ -32,7 +30,7 @@ const Visualization = () => {
           )}
           <div className="render-cells">
             <h1>Visulation</h1>
-            <Charts />
+            {file && (<Charts/>)}
           </div>
         </div>
       </Provider>
