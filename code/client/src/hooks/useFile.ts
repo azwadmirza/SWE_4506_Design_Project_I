@@ -7,6 +7,9 @@ import { parseXLSX } from "../features/sheets/utils/xlsxParser";
 import { parseJSON } from "../features/sheets/utils/jsonParser";
 import axios from "axios";
 import { parseTxt } from "../features/sheets/utils/txtParser";
+
+
+
 export const useFile = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [file, setFileInformation] = useState<File | null>(null);
@@ -14,12 +17,17 @@ export const useFile = () => {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  
+  
+
   const allowedFormats = [
     "text/csv",
     "text/plain",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/json",
   ];
+
+  
 
   const parseFile = async (file: File) => {
     const type = file.type;
@@ -55,15 +63,24 @@ export const useFile = () => {
   }
 
   async function uploadToBackend(
-    file: any,
+    fileName: string,
     parsedFile: any[] | null,
-    address: string
+    address: string,
+    url: string,
   ) {
+    const storedUserId = localStorage.getItem('user_id');
+    const user_id = storedUserId ? JSON.parse(storedUserId) : null;
     const fileData = new FormData();
-    fileData.append("file_name", file.name);
-    fileData.append("cloudinary_url", file.secure_url);
+    fileData.append("file_name", fileName);
+    fileData.append("cloudinary_url", url);
     fileData.append("parsedCSV", JSON.stringify(parsedFile));
+    fileData.append("user_id", user_id)
 
+    console.log(fileName);
+    console.log(address);
+    console.log(user_id);
+  
+    
     return axios.post(`${address}/api/file/upload/`, fileData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -72,6 +89,7 @@ export const useFile = () => {
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
+    
     try {
       setLoading(true);
 
@@ -114,11 +132,11 @@ export const useFile = () => {
         setSelectedFile(file.name);
         setErrorMsg("");
         console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-
         const backendResponse = await uploadToBackend(
-          data,
+          file.name,
           parsedFile,
-          address
+          address,
+          data.secure_url,
         );
         const dataRes = backendResponse.data;
         setShow(false);

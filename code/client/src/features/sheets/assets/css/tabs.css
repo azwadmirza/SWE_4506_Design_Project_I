@@ -33,7 +33,7 @@
     padding: 20px; /* Increase padding for a more appealing look */
     max-height: 50vh; /* Set the maximum height for the content */
     display: none;
-    text-align: center; /* Center the content horizontally */
+    text-align: center; 
   }
   
   .show-content {
@@ -41,16 +41,16 @@
     display: block;
     position: absolute;
     overflow: auto;
-    top: 18%; /* Center the content vertically */
-    left: 2%; /* Center the content horizontally */
+    top: 18%; 
+    left: 2%; 
     right: 2%;
     bottom: 10%;
-    padding: 20px; /* Increase padding for a more appealing look */
+    padding: 20px; 
     z-index: 1;
-    background-color: #fff; /* Add a background color to the content area */
+    background-color: #fff; 
     border: 1px solid #ddd;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     
   }
 

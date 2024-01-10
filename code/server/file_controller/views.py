@@ -30,15 +30,21 @@ class FileUploadView(generics.CreateAPIView):
                 cloudinary_url = request.data.get("cloudinary_url")
 
                 file_content = request.data.get("parsedCSV")
+                
+                user_id = request.data.get("user_id")
+                
+                print(user_id)
+                print("I am here")
 
                 csv_data = json.loads(file_content)
                 file_df = pd.DataFrame(csv_data[1:], columns=csv_data[0])
                 # print(file_df)
-                file_df.describe()
+                # file_df.describe()
                 final_json = file_df.to_json(orient='records')
+                print("I am here now")
 
-                file_serializer.save(file_name=file_name, cloudinary_url=cloudinary_url, modified_file=final_json)
-                # print("serializer saved")
+                file_serializer.save(file_name=file_name, cloudinary_url=cloudinary_url, modified_file=final_json, user_id = user_id, edited_file=cloudinary_url)
+                print("serializer saved")
 
                 return Response({'file_url': cloudinary_url}, status=status.HTTP_201_CREATED)
             except Exception as e:
