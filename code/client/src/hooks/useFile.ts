@@ -5,9 +5,8 @@ import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
 import { parseJSON } from "../features/sheets/utils/jsonParser";
-import axios from "axios";
 import { parseTxt } from "../features/sheets/utils/txtParser";
-
+import uploadToBackend from "../utils/uploadFiletoBackend";
 
 
 export const useFile = () => {
@@ -62,21 +61,7 @@ export const useFile = () => {
   //   );
   // }
 
-  async function uploadToBackend(
-    file: any,
-    parsedFile: any[] | null,
-    address: string,
-  ) {
-    const storedUserId = localStorage.getItem('user_id');
-    const user_id = storedUserId ? JSON.parse(storedUserId) : null;
-    const fileData = new FormData();
-    fileData.append("file",file);
-    fileData.append("parsedCSV", JSON.stringify(parsedFile));
-    fileData.append("user_id", user_id)
-    return axios.post(`${address}/api/file/upload/`, fileData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-  }
+
 
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -114,7 +99,7 @@ export const useFile = () => {
   
       const backendResponse = await uploadToBackend(
         file,
-        parsedFile,
+        // parsedFile,
         address,
       );
   
@@ -134,7 +119,7 @@ export const useFile = () => {
       console.error("File upload error:", error);
     } finally {
       setLoading(false);
-      // window.location.reload();
+      window.location.reload();
     }
   };
   
