@@ -66,19 +66,19 @@ class FileSaveView(APIView):
             print(edited_cloudinary_url)
             print("Entering the Block")
             try:
-                # file_metadata = FileMetadata.objects.get(file_name=file_name, user_id=user_id)
-                # print("FileMetadata found:", file_metadata)
-                file_metadata_objects = FileMetadata.objects.filter(file_name=file_name, user_id=user_id)
+                file_metadata, _ = FileMetadata.objects.update_or_create(
+                user_id=user_id,
+                file_name=file_name,
+                defaults={'edited_file': edited_cloudinary_url}
+                )
                 print("Gotzi")
-                if file_metadata_objects.exists():
-                    print("Boom Boom Boom")
-                    file_metadata = file_metadata_objects.first()
-                    print("FileMetadata found:", file_metadata)
-                    
+                print(file_metadata)
+                file_metadata.save()
                 print("I am here")
-
-                # file_metadata.edited_file = edited_cloudinary_url
-                # file_metadata.save()
+                print(file_metadata.cloudinary_url)
+                print(file_metadata.edited_file)
+                print(edited_cloudinary_url)
+                
                 return Response({'file_url': edited_cloudinary_url}, status=status.HTTP_201_CREATED)
 
             except FileMetadata.DoesNotExist:
