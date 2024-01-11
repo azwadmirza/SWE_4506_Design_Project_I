@@ -3,14 +3,21 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface FileState {
     file: string | null;
     data: any[];
-    html: string | null;
+    url:string|null;
+    delimiter:string|null;
+    type:string|null;
+    loading:boolean;
+
 }
 
 
 const initialState: FileState = {
     file: localStorage.getItem('file') || null,
-    data: JSON.parse(localStorage.getItem('data') || '[]'), 
-    html: localStorage.getItem('html') || null,
+    data: [],
+    url:localStorage.getItem('url') || null,
+    delimiter:localStorage.getItem('delimiter') || null,
+    type:localStorage.getItem('type') || null,
+    loading:false
 };
 
 const fileSlice = createSlice({
@@ -19,12 +26,18 @@ const fileSlice = createSlice({
     reducers: {
         setFile: (state, action: PayloadAction<string>) => {
             state.file = action.payload;
-            // Update localStorage
             localStorage.setItem('file', action.payload);
         },
         setData: (state, action: PayloadAction<any[]>) => {
             state.data = action.payload;
-            localStorage.setItem('data', JSON.stringify(action.payload));
+            state.loading=false;
+        },
+        setURL:(state, action: PayloadAction<string>)=>{
+          state.url=action.payload;
+          localStorage.setItem('url', action.payload);
+        },
+        setLoading:(state, action: PayloadAction<boolean>)=>{
+          state.loading=action.payload;
         },
         updateData: (state, action: PayloadAction<{ key: string; value: string }>) => {
             const { key, value } = action.payload;
@@ -38,7 +51,7 @@ const fileSlice = createSlice({
               for (let i = 0; i < state.data[0].length; i++) {
                 if (state.data[0][i] === propertyName) {
                   columnIndex = i;
-                  break; // Exit the loop once a match is found
+                  break; 
                 }
               }
               if (rowIndex >= 0 && rowIndex < state.data.length && columnIndex !== -1) {
@@ -47,14 +60,18 @@ const fileSlice = createSlice({
               }
             }
           },
-        setHTML: (state, action: PayloadAction<string | null>) => {
-            state.html = action.payload;
-
-            localStorage.setItem('html', action.payload? action.payload : "");
-        },
+          setDelimiter:(state, action: PayloadAction<string>)=>{
+            state.delimiter=action.payload;
+            localStorage.setItem('delimiter', action.payload);
+          },
+          setType:(state, action: PayloadAction<string>)=>{
+            state.type=action.payload;
+            localStorage.setItem('type', action.payload);
+          }
     },
+    
 });
 
-export const { setFile, setData, setHTML, updateData } = fileSlice.actions;
+export const { setFile, setData, updateData,setURL,setDelimiter,setType,setLoading } = fileSlice.actions;
 
 export default fileSlice.reducer;

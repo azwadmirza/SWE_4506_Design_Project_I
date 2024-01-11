@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setFile } from "../contexts/file/slice";
+import { setData, setDelimiter, setFile, setLoading, setType, setURL } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
 import { parseJSON } from "../features/sheets/utils/jsonParser";
-import axios from "axios";
 import { parseTxt } from "../features/sheets/utils/txtParser";
+import uploadToBackend from "../utils/uploadFiletoBackend";
+
+
 export const useFile = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoadingLocal] = useState<boolean>(false);
   const [file, setFileInformation] = useState<File | null>(null);
-  const [delimiter, setDelimiter] = useState<string>("");
+  const [delimiter, setDelimiterLocal] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  
+  
+
   const allowedFormats = [
     "text/csv",
     "text/plain",
@@ -21,8 +26,12 @@ export const useFile = () => {
     "application/json",
   ];
 
+  
+
   const parseFile = async (file: File) => {
+    dispatch(setDelimiter(delimiter));
     const type = file.type;
+    dispatch(setType(type));
     if (type === "text/csv") {
       const parsedCSV = await parseCSV(file);
       return parsedCSV;
@@ -43,113 +52,75 @@ export const useFile = () => {
     }
   };
 
-  async function uploadToCloudinary(formData: FormData) {
-    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-    return axios.post(
-      `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-  }
 
-  async function uploadToBackend(
-    file: any,
-    parsedFile: any[] | null,
-    address: string
-  ) {
-    const fileData = new FormData();
-    fileData.append("file_name", file.name);
-    fileData.append("cloudinary_url", file.secure_url);
-    fileData.append("parsedCSV", JSON.stringify(parsedFile));
-
-    return axios.post(`${address}/api/file/upload/`, fileData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-  }
 
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     try {
       setLoading(true);
-
+  
       if (!file) {
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
-
+  
       const type = file.type;
       const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-
+  
       if (!allowedFormats.includes(type)) {
         setErrorMsg("Invalid file format");
         setSelectedFile(null);
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
-
+  
       if (file.type === "text/plain" && delimiter === "") {
         setErrorMsg("Please enter a delimiter for txt files");
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
-
+  
       console.log("File selected:", file.name);
-
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "datanalytica");
-
+  
       const parsedFile = await parseFile(file);
-
+  
       dispatch(setFile(file.name));
       dispatch(setData(parsedFile !== null ? parsedFile : []));
+  
+      const backendResponse = await uploadToBackend(
+        file,
+        address,
+      )
 
-      const cloudinaryResponse = await uploadToCloudinary(formData);
-      const data = cloudinaryResponse.data;
-
-      if (data.secure_url) {
-        setSelectedFile(file.name);
-        setErrorMsg("");
-        console.log("File uploaded to Cloudinary. URL:", data.secure_url);
-
-        const backendResponse = await uploadToBackend(
-          data,
-          parsedFile,
-          address
-        );
-        const dataRes = backendResponse.data;
-        setShow(false);
-        if (dataRes.file_url) {
-          setSelectedFile(file.name);
-          setErrorMsg("");
-        } else {
-          setErrorMsg(data.error);
-          setSelectedFile(null);
-        }
-      } else {
-        setErrorMsg("Cloudinary upload error");
+      console.log(backendResponse);
+  
+      const dataRes = backendResponse.data;
+      dispatch(setURL(dataRes.file_url));
+      setShow(false);
+  
+      if (!dataRes.success) {
+        setErrorMsg(dataRes.error);
         setSelectedFile(null);
-        console.error("Cloudinary upload error:", data.error);
+      } else {
+        setErrorMsg("");
       }
     } catch (error) {
       setErrorMsg("File upload error");
       setSelectedFile(null);
       console.error("File upload error:", error);
     } finally {
-      setLoading(false);
-      window.location.reload();
+      setLoadingLocal(false);
     }
   };
+  
 
   return {
     loading,
     file,
     setFileInformation,
     delimiter,
-    setDelimiter,
+    setDelimiterLocal,
     selectedFile,
     errorMsg,
     FileInputSubmit,

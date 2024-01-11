@@ -172,6 +172,15 @@ PASSWORD_HASHERS = [
 ]
 
 
+CLOUDINARY = {
+    'cloud_name': 'djbspykue',
+    'api_key': '742646115888849',
+    'api_secret': '6QyPwgx5dn5L9zl5viB7fXJN1VM',
+}
+
+CLOUDINARY_URL = f"cloudinary://{CLOUDINARY['api_key']}:{CLOUDINARY['api_secret']}@{CLOUDINARY['cloud_name']}"
+
+
 EMAIL_BACKEND=config('EMAIL_BACKEND')
 EMAIL_HOST= config('EMAIL_HOST')
 EMAIL_PORT= config('EMAIL_PORT')

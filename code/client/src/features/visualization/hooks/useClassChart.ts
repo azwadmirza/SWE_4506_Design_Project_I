@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getColumnValues } from "../../sheets/utils/column-extractor";
-import { useAppSelector } from "../../../contexts/auth/hooks";
+import { useAppSelector } from "../../../contexts/file/hooks";
 
 export const useClassChart = () => {
   const [selectedCharter, setSelectedCharter] = useState('');
@@ -10,7 +10,7 @@ export const useClassChart = () => {
   const [classDistribution, setClass] = useState<number[]>([]);
   const jsonData = useAppSelector((state) => state.file.data)
   const [loading,setLoading]=useState(false);
-  const [charterOptionsPlot,setCharterOptionsPlot]=useState<string[]>(jsonData[0]);
+  const [charterOptionsPlot,setCharterOptionsPlot]=useState<string[]>(jsonData[0]||[]);
   const charterOptions = [
     { value: 'Doughnut Chart', label: 'Doughnut Chart' },
     { value: 'Pie Chart', label: 'Pie Chart' },
@@ -56,7 +56,7 @@ export const useClassChart = () => {
     labels: labels,
     datasets: [
       {
-        label: "Class Distribution For " + charterOptionsPlot[classIndex],
+        label: "Class Distribution For " + String(charterOptionsPlot.length>0?charterOptionsPlot[classIndex]:""),
         data: classDistribution,
         backgroundColor: color,
         hoverBackgroundColor: color,

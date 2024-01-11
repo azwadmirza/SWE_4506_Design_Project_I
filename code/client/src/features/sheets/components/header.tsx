@@ -2,6 +2,10 @@ import { Navbar, Container, Nav, Dropdown} from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
 import { useAppSelector} from "../../../contexts/file/hooks";
+import convertToCSV from "../../../utils/csvConverter";
+import saveToBackend from "../../../utils/saveFileToBackend";
+
+
 
 type HeaderProps = {
   filename: string;
@@ -17,8 +21,15 @@ const Header = ({ filename }: HeaderProps) => {
 
 
     const handleSave = () => {
+      const file_content = convertToCSV(jsonData);
       console.log("Began Saving");
-      console.log(jsonData);
+      console.log(file_content);
+      console.log(filename);
+      const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
+      console.log(address);
+      saveToBackend(file_content,filename,address);
+      console.log("Upload to Backend Completed");
+
     };
 
   return (
