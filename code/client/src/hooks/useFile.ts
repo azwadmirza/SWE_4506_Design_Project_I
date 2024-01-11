@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setDelimiter, setFile, setLoading, setType, setURL } from "../contexts/file/slice";
+import { setData, setDelimiter, setFile, setLoading, setType } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
@@ -52,17 +52,6 @@ export const useFile = () => {
     }
   };
 
-  // async function uploadToCloudinary(formData: FormData) {
-  //   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  //   return axios.post(
-  //     `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
-  //     formData,
-  //     {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     }
-  //   );
-  // }
-
 
 
   const FileInputSubmit = async (
@@ -101,7 +90,6 @@ export const useFile = () => {
   
       const backendResponse = await uploadToBackend(
         file,
-        // parsedFile,
         address,
       );
   
