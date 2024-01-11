@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setDelimiter, setFile, setLoading, setType } from "../contexts/file/slice";
+import { setData, setDelimiter, setFile, setLoading, setType, setURL } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
@@ -91,17 +91,19 @@ export const useFile = () => {
       const backendResponse = await uploadToBackend(
         file,
         address,
-      );
+      )
+
+      console.log(backendResponse);
   
       const dataRes = backendResponse.data;
+      dispatch(setURL(dataRes.file_url));
       setShow(false);
   
-      if (dataRes.success) {
-        setSelectedFile(file.name);
-        setErrorMsg("");
-      } else {
+      if (!dataRes.success) {
         setErrorMsg(dataRes.error);
         setSelectedFile(null);
+      } else {
+        setErrorMsg("");
       }
     } catch (error) {
       setErrorMsg("File upload error");
