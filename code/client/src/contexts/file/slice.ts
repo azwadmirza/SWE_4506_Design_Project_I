@@ -6,6 +6,7 @@ interface FileState {
     url:string|null;
     delimiter:string|null;
     type:string|null;
+    loading:boolean;
 
 }
 
@@ -15,7 +16,8 @@ const initialState: FileState = {
     data: [],
     url:localStorage.getItem('url') || null,
     delimiter:localStorage.getItem('delimiter') || null,
-    type:localStorage.getItem('type') || null
+    type:localStorage.getItem('type') || null,
+    loading:false
 };
 
 const fileSlice = createSlice({
@@ -28,10 +30,14 @@ const fileSlice = createSlice({
         },
         setData: (state, action: PayloadAction<any[]>) => {
             state.data = action.payload;
+            state.loading=false;
         },
         setURL:(state, action: PayloadAction<string>)=>{
           state.url=action.payload;
           localStorage.setItem('url', action.payload);
+        },
+        setLoading:(state, action: PayloadAction<boolean>)=>{
+          state.loading=action.payload;
         },
         updateData: (state, action: PayloadAction<{ key: string; value: string }>) => {
             const { key, value } = action.payload;
@@ -66,6 +72,6 @@ const fileSlice = createSlice({
     
 });
 
-export const { setFile, setData, updateData,setURL,setDelimiter,setType } = fileSlice.actions;
+export const { setFile, setData, updateData,setURL,setDelimiter,setType,setLoading } = fileSlice.actions;
 
 export default fileSlice.reducer;

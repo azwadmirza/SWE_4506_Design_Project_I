@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setDelimiter, setFile, setType, setURL } from "../contexts/file/slice";
+import { setData, setDelimiter, setFile, setLoading, setType, setURL } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
@@ -8,7 +8,7 @@ import { parseJSON } from "../features/sheets/utils/jsonParser";
 import axios from "axios";
 import { parseTxt } from "../features/sheets/utils/txtParser";
 export const useFile = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoadingLocal] = useState<boolean>(false);
   const [file, setFileInformation] = useState<File | null>(null);
   const [delimiter, setDelimiterLocal] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
@@ -75,10 +75,10 @@ export const useFile = () => {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     try {
-      setLoading(true);
+      setLoadingLocal(true);
 
       if (!file) {
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
 
@@ -88,24 +88,22 @@ export const useFile = () => {
       if (!allowedFormats.includes(type)) {
         setErrorMsg("Invalid file format");
         setSelectedFile(null);
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
 
       if (file.type === "text/plain" && delimiter === "") {
         setErrorMsg("Please enter a delimiter for txt files");
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
 
       console.log("File selected:", file.name);
-
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", "datanalytica");
-
+      dispatch(setLoading(true));
       const parsedFile = await parseFile(file);
-
       dispatch(setFile(file.name));
       dispatch(setData(parsedFile !== null ? parsedFile : []));
 
@@ -141,7 +139,7 @@ export const useFile = () => {
       setSelectedFile(null);
       console.error("File upload error:", error);
     } finally {
-      setLoading(false);
+      setLoadingLocal(false);
     }
   };
 
