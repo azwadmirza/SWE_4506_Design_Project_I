@@ -14,7 +14,7 @@ const Visualization = () => {
     currentCell,
     viewValue,
     setViewValue,
-    loading,
+    loading
   } = useSheets();
   if (!loading) {
     return (
@@ -30,7 +30,7 @@ const Visualization = () => {
           )}
           <div className="render-cells">
             <h1>Visulation</h1>
-            <Charts />
+            {file && (<Charts/>)}
           </div>
         </div>
       </Provider>
