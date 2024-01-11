@@ -1,4 +1,3 @@
-import NavbarUser from "../../../partials/navbarUser";
 import RenderCells from "../components/render-cells";
 import '../assets/css/sheets.css';
 import Header from "../components/header";
