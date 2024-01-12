@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'user_profile',
-    'file_controller'
+    'file_controller',
+    'decision_tree'
     
 ]
 

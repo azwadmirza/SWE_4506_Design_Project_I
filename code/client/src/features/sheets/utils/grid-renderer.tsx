@@ -19,7 +19,7 @@ const createCell = (
 );
 
 export const renderGrid = async (
-  data: any[],
+  data: any[]|null,
   setCurrentCell: React.Dispatch<React.SetStateAction<string>>,
   setViewValue: React.Dispatch<React.SetStateAction<string>>,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
@@ -27,6 +27,10 @@ export const renderGrid = async (
 ) => {
   let numRows = 200;
   let numCols = 200;
+  if(data === null) {
+    setLoading(false);
+    return [];
+  }
   numRows = data.length;
   numCols = data[0]?.length;
   const gridRows: JSX.Element[] = [];

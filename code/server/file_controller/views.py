@@ -74,10 +74,8 @@ class FileSaveView(APIView):
                 id=file_id,
                 defaults={'edited_file': edited_cloudinary_url}
                 )
-                print("Gotzi")
                 print(file_metadata)
                 file_metadata.save()
-                print("I am here")
                 print(file_metadata.cloudinary_url)
                 print(file_metadata.edited_file)
                 print(edited_cloudinary_url)
@@ -94,23 +92,20 @@ class FileSaveView(APIView):
         
 @authentication_classes([JWTAuthentication])
 class GetAllFiles(APIView):
+    permission_classes=[]
     queryset = FileMetadata.objects.all()
     serializer_class = FileMetadataSerializer
     def get(self,request,*args,**kwargs):
         try:
-            files = FileMetadata.objects.all()
+            id = kwargs.get('id')
+            files = FileMetadata.objects.filter(user_id=id)
             serializer = FileMetadataSerializer(files, many=True)
             print(serializer.data)
-            response = JsonResponse(serializer.data)
-            
-            # Manually set CORS headers if not done automatically
-            response["Access-Control-Allow-Origin"] = "http://localhost:5173"
-            response["Access-Control-Allow-Methods"] = "GET"
-            response["Access-Control-Allow-Headers"] = "Content-Type"
-            
+            response = JsonResponse(serializer.data, safe=False)
             return response
         except Exception as e:
-            return Response({'error': 'File upload to Mongo failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print(e)
+            return Response({'error': 'File Server Error Could Not Retrieve File'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @authentication_classes([JWTAuthentication])

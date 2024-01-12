@@ -15,6 +15,7 @@
   padding-left: 30px;
   background-color: var(--customGreen) !important;
   border-radius: 25px;
+  margin-right: 10px;
 }
 
 .input-field {
@@ -23,12 +24,12 @@
 }
 
 .value-display {
-  margin-top: 120px;
   background-color: var(--white) !important;
   height: 30px !important;
   color: black;
   font-size: 1.2rem;
   z-index: -50;
+  margin-bottom: 25px !important;
 }
 
 .option {

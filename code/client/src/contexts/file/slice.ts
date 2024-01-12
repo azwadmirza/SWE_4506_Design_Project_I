@@ -30,10 +30,6 @@ const fileSlice = createSlice({
             state.file = action.payload;
             localStorage.setItem('file', action.payload);
         },
-        setData: (state, action: PayloadAction<any[]>) => {
-            state.data = action.payload;
-            state.loading=false;
-        },
         setFileId:(state, action: PayloadAction<string>)=>{
           state.file_id=action.payload;
           localStorage.setItem('file_id', action.payload);
@@ -78,6 +74,6 @@ const fileSlice = createSlice({
     
 });
 
-export const { setFile, setData, updateData,setURL,setDelimiter,setType,setLoading,setFileId } = fileSlice.actions;
+export const { setFile, updateData,setURL,setDelimiter,setType,setLoading,setFileId } = fileSlice.actions;
 
 export default fileSlice.reducer;
