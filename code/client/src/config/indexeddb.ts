@@ -8,12 +8,13 @@ interface FileDB extends DBSchema {
     key: string;
     value: {
       url: string;
+      id:string;
       name: string;
       type: string;
       delimiter: string | null;
       data: Blob;
     };
-    indexes: { 'byUrl': string; 'byName': string };
+    indexes: { 'byUrl': string; 'byName': string ;'byID':string};
   };
 }
 
@@ -25,13 +26,13 @@ class IndexedDBConfig {
    async openDatabase() {
     this.db = await openDB<FileDB>(this.dbName, this.dbVersion, {
       upgrade(db) {
-        const fileStore = db.createObjectStore('file', { keyPath: 'url' });
-        fileStore.createIndex('byUrl', 'url', { unique: false });
+        const fileStore = db.createObjectStore('file', { keyPath: 'id' });
+        fileStore.createIndex('byUrl', 'url', { unique: true });
+        fileStore.createIndex('byID', 'id', { unique: true });
         fileStore.createIndex('byName', 'name', { unique: false });
       },
     });
-
-    console.log('Database opened successfully');
+    return true;
   }
 
   async addFile(file: {
@@ -53,6 +54,7 @@ class IndexedDBConfig {
     const file_id=response.data.file_id;
     const fileWithUrl = {
         ...file,
+        id:file_id,
         url: url,
       };
     if (this.db) {
@@ -114,6 +116,42 @@ class IndexedDBConfig {
     }
   }
 
+  async getFileByID(index: 'byID', value: string) {
+    if (this.db) {
+      const tx = this.db.transaction('file', 'readonly');
+      const fileStore = tx.objectStore('file');
+      const files = await fileStore.index(index).getAll(value);
+      if (files.length > 0) {
+        const file = files[0];
+        const fileObject = new File([file.data], file.name, { type: file.type });
+        return await parseFile(fileObject, file.delimiter, file.type);
+      } else {
+        console.error('File not found');
+        return null;
+      }
+    } else {
+      console.error('Database not initialized');
+      return null;
+    }
+  }
+
+  async deleteFileByID(index: 'byID', value: string) {
+    if (this.db) {
+      const tx = this.db.transaction('file', 'readwrite');
+      const fileStore = tx.objectStore('file');
+      const files = await fileStore.index(index).getAll(value);
+      if (files.length > 0) {
+        const key = files[0].url; 
+        await fileStore.delete(key);
+        console.log('File deleted successfully');
+      } else {
+        console.error('File not found');
+      }
+    } else {
+      console.error('Database not initialized');
+    }
+  }
+
   async deleteFileByURL(index: 'byUrl', value: string) {
     if (this.db) {
       const tx = this.db.transaction('file', 'readwrite');
@@ -137,7 +175,7 @@ class IndexedDBConfig {
       const fileStore = tx.objectStore('file');
       const files = await fileStore.index(index).getAll(value);
       if (files.length > 0) {
-        const key = files[0].url; // Assuming 'url' is unique in this context
+        const key = files[0].url;
         await fileStore.delete(key);
         console.log('File deleted successfully');
       } else {

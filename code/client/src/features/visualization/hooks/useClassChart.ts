@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { getColumnValues } from "../../sheets/utils/column-extractor";
-import { useAppSelector } from "../../../contexts/file/hooks";
 
-export const useClassChart = () => {
+export const useClassChart = (data:any[]) => {
   const [selectedCharter, setSelectedCharter] = useState('');
   const [classIndex, setClassIndex] = useState(0);
   const [labels, setLabels] = useState<string[]>([]);
   const [color,setColor]=useState<string[]>([]);
   const [classDistribution, setClass] = useState<number[]>([]);
-  const jsonData = useAppSelector((state) => state.file.data)
-  const [loading,setLoading]=useState(false);
-  const [charterOptionsPlot,setCharterOptionsPlot]=useState<string[]>(jsonData[0]||[]);
+  const [charterOptionsPlot,setCharterOptionsPlot]=useState<string[]>([]);
+  useEffect(()=>{
+    if(data.length>0){
+      setCharterOptionsPlot(data[0]);
+      handleClass(classIndex);
+    }
+  },[data])
+
   const charterOptions = [
     { value: 'Doughnut Chart', label: 'Doughnut Chart' },
     { value: 'Pie Chart', label: 'Pie Chart' },
   ];
-
-  useEffect(()=>{
-    handleClass(classIndex);
-  },[])
 
   const handleCharterSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCharter(event.target.value);
@@ -34,11 +34,13 @@ export const useClassChart = () => {
   };
 
   const handleClass = (classIndex: number) => {
-    setLoading(true);
     setClassIndex(classIndex);
-    const data = getColumnValues(jsonData, classIndex);
+    if(data==null){
+      return;
+    }
+    const fetchedData = getColumnValues(data, classIndex);
     const frequencyMap: Record<string, number> = {};
-    data.forEach((element) => {
+    fetchedData.forEach((element) => {
       if (frequencyMap[element]) {
         frequencyMap[element]++;
       } else {
@@ -48,7 +50,6 @@ export const useClassChart = () => {
     setLabels(Object.keys(frequencyMap));
     setClass(Object.values(frequencyMap));
     setColor(Object.keys(frequencyMap).map((_) => getRandomColor()));
-    setLoading(false);
   }
 
 
@@ -64,5 +65,5 @@ export const useClassChart = () => {
     ]
   }
 
-  return { loading,classChartData, charterOptions, handleCharterSelect, selectedCharter, charterOptionsPlot, classIndex, handleClass }
+  return {classChartData, charterOptions, handleCharterSelect, selectedCharter, charterOptionsPlot, classIndex, handleClass }
 }

@@ -1,18 +1,16 @@
-import { useEffect, useState, useMemo,  } from "react";
+import { useEffect, useState} from "react";
 import { renderGrid } from "../utils/grid-renderer";
-import { useAppSelector,useAppDispatch } from "../../../contexts/file/hooks";
+import { useAppSelector } from "../../../contexts/file/hooks";
 import React from "react";
 import { indexedDBConfig } from "../../../config/indexeddb";
 
 export const useSheets = () => {
-  const dispatch=useAppDispatch();
-  const jsonData = useAppSelector((state)=> state.file.data)
   const [currentCell, setCurrentCell] = useState<string>("");
   const [viewValue, setViewValue] = useState<string>("");
   const [gridRows, setGridRows] = useState<JSX.Element[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [saveTrigger, setSaveTrigger] = useState<boolean>(false);
-  const [data,setData]=useState<any[]|null>([]);
+  const [data, setData] = useState<any[] | null>([]);
   const delimiter = useAppSelector((state) => state.file.delimiter);
   const type = useAppSelector((state) => state.file.type);
   const url = useAppSelector((state) => state.file.url);
@@ -20,27 +18,6 @@ export const useSheets = () => {
   const updateGrid = (updatedGridRows: JSX.Element[]) => {
     setGridRows(updatedGridRows);
   };
-
-  const getFile = useMemo(
-    () => async () => {
-      setLoading(true)
-        try {
-            if (url) {
-                await indexedDBConfig.openDatabase();
-                setData(await indexedDBConfig.getFileByURL('byUrl', url,type,delimiter));
-                setLoading(false);
-            }
-        } catch (error) {
-            setData([]);
-            setLoading(false);
-        }
-    },
-    [url, delimiter, type, dispatch]
-);
-
-useEffect(() => {
-    getFile();
-}, [url]);
 
   const onCellChange = async (Key: string, Value: string) => {
     const updatedGridRows = gridRows.map((row) => {
@@ -59,13 +36,23 @@ useEffect(() => {
     updateGrid(updatedGridRows);
     setSaveTrigger(true);
   };
-  
-  
+
+
   const save = () => {
     setSaveTrigger(false);
   };
 
-  const render = async () => {
+  useEffect(() => {
+    if (saveTrigger) {
+      save();
+    }
+  }, [saveTrigger, gridRows, data]);
+
+  const render = async (data:any[]|null) => {
+    if(null){
+      setLoading(false);
+      return;
+    }
     const newGridRows = await renderGrid(
       data,
       setCurrentCell,
@@ -74,19 +61,36 @@ useEffect(() => {
       onCellChange
     );
     setGridRows(newGridRows);
+    setLoading(false);
   };
 
-  useEffect(() => {
-    if (saveTrigger) {
-      save();
-    }
-  }, [saveTrigger,gridRows,jsonData]);
+  const getFile = async() => {
+      try {
+        if (url) {
+          const open = await indexedDBConfig.openDatabase();
+          if (open) {
+            const fetchedData=await indexedDBConfig.getFileByURL('byUrl', url, type, delimiter);
+            console.log(fetchedData);
+            await render(fetchedData);
+          }
+          else {
+            throw Error("Database not opened");
+          }
+        }
+        else{
+          setLoading(false);
+        }
+      } catch (error) {
+        setData([]);
+        await render([]);
+        setLoading(false);
+      }
+    };
 
   useEffect(() => {
-
     setLoading(true);
-    render();
-  }, []);
+    getFile();
+  }, [url]);
 
 
   return {
@@ -98,7 +102,6 @@ useEffect(() => {
     save,
     onCellChange,
     saveTrigger,
-    setSaveTrigger,
-    jsonData,
+    setSaveTrigger
   };
 };
