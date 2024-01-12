@@ -1,0 +1,60 @@
+/* models.css */
+/* Add these styles to your existing CSS file or create a new one */
+
+.decision-tree-container {
+    margin: 20px;
+  }
+  
+  .decision-tree-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-right: 8px;
+  }
+  
+  .decision-tree-input,
+  .decision-tree-select {
+    padding: 2px; /* Adjusted padding for input and select */
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px; /* Smaller width for input and select */
+    font-size: 14px;
+  }
+  
+  .decision-tree-select,
+  .decision-tree-input,
+  .decision-tree-button {
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .decision-tree-button {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 2px 0; /* Adjusted margin for the button */
+    cursor: pointer;
+    padding: 8px 25px;
+    border-radius: 5px;
+  }
+  
+  .decision-tree-button:hover {
+    background-color: #45a049;
+  }
+
+  .decision-tree-container-wrapper {
+    position: relative;
+    left: 0%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #f4f4f4;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
+    width: 220px; /* Set the desired width */
+    height: 550px; /* Set the desired height */
+    padding: 10px
+  }
+  
