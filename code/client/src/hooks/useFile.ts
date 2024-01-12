@@ -1,28 +1,17 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import {
-  setData,
-  setDelimiter,
-  setFile,
-  setLoading,
-  setType,
-  setURL,
-  setFileId,
-} from "../contexts/file/slice";
-import { parseCSV } from "../features/sheets/utils/csvParser";
-import { fileAdapter } from "../features/sheets/utils/adapter";
-import { parseXLSX } from "../features/sheets/utils/xlsxParser";
-import { parseJSON } from "../features/sheets/utils/jsonParser";
-import { parseTxt } from "../features/sheets/utils/txtParser";
-import uploadToBackend from "../utils/uploadFiletoBackend";
+import { setFile, setURL, setFileId } from "../contexts/file/slice";
+import { indexedDBConfig } from "../config/indexeddb";
+import { useNavigate } from "react-router-dom";
 
 export const useFile = () => {
-  const [loading, setLoadingLocal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [file, setFileInformation] = useState<File | null>(null);
-  const [delimiter, setDelimiterLocal] = useState<string>("");
+  const [delimiter, setDelimiter] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const allowedFormats = [
     "text/csv",
@@ -31,86 +20,50 @@ export const useFile = () => {
     "application/json",
   ];
 
-  const parseFile = async (file: File) => {
-    dispatch(setDelimiter(delimiter));
-    const type = file.type;
-    dispatch(setType(type));
-    if (type === "text/csv") {
-      const parsedCSV = await parseCSV(file);
-      return parsedCSV;
-    } else if (type === "text/plain") {
-      const parsedTxt = await parseTxt(file, delimiter);
-      return parsedTxt;
-    } else if (
-      type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    ) {
-      const parsedXLSX = await fileAdapter(file, parseXLSX);
-      return parsedXLSX;
-    } else if (type === "application/json") {
-      const parsedJSON = await fileAdapter(file, parseJSON);
-      return parsedJSON;
-    } else {
-      return null;
-    }
-  };
-
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    try {
-      setLoading(true);
-
+  
       if (!file) {
-        setLoadingLocal(false);
+        setLoading(false);
         return;
       }
 
       const type = file.type;
-      const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
 
       if (!allowedFormats.includes(type)) {
         setErrorMsg("Invalid file format");
         setSelectedFile(null);
-        setLoadingLocal(false);
+        setLoading(false);
         return;
       }
 
       if (file.type === "text/plain" && delimiter === "") {
         setErrorMsg("Please enter a delimiter for txt files");
-        setLoadingLocal(false);
+        setLoading(false);
         return;
       }
 
       console.log("File selected:", file.name);
-
-      const parsedFile = await parseFile(file);
-
       dispatch(setFile(file.name));
-      dispatch(setData(parsedFile !== null ? parsedFile : []));
-
-      const backendResponse = await uploadToBackend(file, address);
-
-      console.log(backendResponse);
-
-      const dataRes = backendResponse.data;
-      dispatch(setURL(dataRes.file_url));
-      dispatch(setFileId(dataRes.file_id));
+      await indexedDBConfig.openDatabase();
+      const dataRes=await indexedDBConfig.addFile({
+        name: file.name,
+        type: file.type,
+        delimiter: delimiter,
+        data: file,
+      });
       setShow(false);
-
-      if (!dataRes.success) {
-        setErrorMsg(dataRes.error);
+      if(!dataRes){
+        setErrorMsg("File upload error");
         setSelectedFile(null);
-      } else {
-        setErrorMsg("");
       }
-    } catch (error) {
-      setErrorMsg("File upload error");
-      setSelectedFile(null);
-      console.error("File upload error:", error);
-    } finally {
-      setLoadingLocal(false);
-    }
+      else{
+        dispatch(setURL(dataRes.url));
+        dispatch(setFileId(dataRes.file_id));
+      }
+      navigate('/data');
+      setLoading(false);
   };
 
   return {
@@ -118,7 +71,7 @@ export const useFile = () => {
     file,
     setFileInformation,
     delimiter,
-    setDelimiterLocal,
+    setDelimiter,
     selectedFile,
     errorMsg,
     FileInputSubmit,
