@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getColumnValues } from "../../sheets/utils/column-extractor";
-import { useAppSelector } from "../../../contexts/auth/hooks";
+import { useAppSelector } from "../../../contexts/file/hooks";
 
 export const useLinearChart = () => {
   const [selectedValue, setSelectedValue] = useState('');
@@ -9,7 +9,7 @@ export const useLinearChart = () => {
   const [dependant, setDependant] = useState<string[]>([]);
   const [independant, setIndependant] = useState<string[]>([]);
   const jsonData = useAppSelector((state) => state.file.data)
-  const optionsPlot = jsonData[0];
+  const [optionsPlot,setOptionsPlot]=useState<string[]>(jsonData[0]||[]);
   const options = [
     { value: 'Horizontal Bar Chart', label: 'Horizontal Bar Chart' },
     { value: 'Vertical Bar Chart', label: 'Vertical Bar Chart' },
@@ -39,7 +39,7 @@ export const useLinearChart = () => {
     labels: independant,
     datasets: [
       {
-        label: optionsPlot[dependantIndex] + " vs " + optionsPlot[independantIndex],
+        label:optionsPlot.length>0?optionsPlot[dependantIndex] + " vs " + optionsPlot[independantIndex]:"",
         data: dependant,
         borderColor: "black",
         borderWidth: 2,

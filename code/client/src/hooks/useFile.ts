@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setFile } from "../contexts/file/slice";
+import { setData, setDelimiter, setFile, setLoading, setType, setURL, setFileId } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
@@ -10,9 +10,9 @@ import uploadToBackend from "../utils/uploadFiletoBackend";
 
 
 export const useFile = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoadingLocal] = useState<boolean>(false);
   const [file, setFileInformation] = useState<File | null>(null);
-  const [delimiter, setDelimiter] = useState<string>("");
+  const [delimiter, setDelimiterLocal] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
@@ -29,7 +29,9 @@ export const useFile = () => {
   
 
   const parseFile = async (file: File) => {
+    dispatch(setDelimiter(delimiter));
     const type = file.type;
+    dispatch(setType(type));
     if (type === "text/csv") {
       const parsedCSV = await parseCSV(file);
       return parsedCSV;
@@ -50,17 +52,6 @@ export const useFile = () => {
     }
   };
 
-  // async function uploadToCloudinary(formData: FormData) {
-  //   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  //   return axios.post(
-  //     `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
-  //     formData,
-  //     {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     }
-  //   );
-  // }
-
 
 
   const FileInputSubmit = async (
@@ -70,7 +61,7 @@ export const useFile = () => {
       setLoading(true);
   
       if (!file) {
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
   
@@ -80,13 +71,13 @@ export const useFile = () => {
       if (!allowedFormats.includes(type)) {
         setErrorMsg("Invalid file format");
         setSelectedFile(null);
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
   
       if (file.type === "text/plain" && delimiter === "") {
         setErrorMsg("Please enter a delimiter for txt files");
-        setLoading(false);
+        setLoadingLocal(false);
         return;
       }
   
@@ -99,27 +90,28 @@ export const useFile = () => {
   
       const backendResponse = await uploadToBackend(
         file,
-        // parsedFile,
         address,
-      );
+      )
+
+      console.log(backendResponse);
   
       const dataRes = backendResponse.data;
+      dispatch(setURL(dataRes.file_url));
+      dispatch(setFileId(dataRes.file_id));
       setShow(false);
   
-      if (dataRes.success) {
-        setSelectedFile(file.name);
-        setErrorMsg("");
-      } else {
+      if (!dataRes.success) {
         setErrorMsg(dataRes.error);
         setSelectedFile(null);
+      } else {
+        setErrorMsg("");
       }
     } catch (error) {
       setErrorMsg("File upload error");
       setSelectedFile(null);
       console.error("File upload error:", error);
     } finally {
-      setLoading(false);
-      window.location.reload();
+      setLoadingLocal(false);
     }
   };
   
@@ -129,7 +121,7 @@ export const useFile = () => {
     file,
     setFileInformation,
     delimiter,
-    setDelimiter,
+    setDelimiterLocal,
     selectedFile,
     errorMsg,
     FileInputSubmit,
