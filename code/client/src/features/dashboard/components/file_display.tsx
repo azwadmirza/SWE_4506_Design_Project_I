@@ -23,13 +23,11 @@ const FileDisplay = () => {
         console.error("Error fetching files:", error);
       }
     };
-
-    // Call the fetchData function when the component mounts
     fetchData();
   }, [user_id, dispatch]);
 
   const handleFileOpen = (file: any) => {
-    // Add logic to handle file opening
+
     console.log("Open file:", file);
   };
 
