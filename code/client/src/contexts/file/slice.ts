@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface FileState {
     file: string | null;
+    file_id: string | null;
     data: any[];
     url:string|null;
     delimiter:string|null;
@@ -13,6 +14,7 @@ interface FileState {
 
 const initialState: FileState = {
     file: localStorage.getItem('file') || null,
+    file_id:localStorage.getItem('file_id') || null,
     data: [],
     url:localStorage.getItem('url') || null,
     delimiter:localStorage.getItem('delimiter') || null,
@@ -31,6 +33,10 @@ const fileSlice = createSlice({
         setData: (state, action: PayloadAction<any[]>) => {
             state.data = action.payload;
             state.loading=false;
+        },
+        setFileId:(state, action: PayloadAction<string>)=>{
+          state.file_id=action.payload;
+          localStorage.setItem('file_id', action.payload);
         },
         setURL:(state, action: PayloadAction<string>)=>{
           state.url=action.payload;
@@ -72,6 +78,6 @@ const fileSlice = createSlice({
     
 });
 
-export const { setFile, setData, updateData,setURL,setDelimiter,setType,setLoading } = fileSlice.actions;
+export const { setFile, setData, updateData,setURL,setDelimiter,setType,setLoading,setFileId } = fileSlice.actions;
 
 export default fileSlice.reducer;

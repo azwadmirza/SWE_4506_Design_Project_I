@@ -13,6 +13,7 @@ type HeaderProps = {
 
 const Header = ({ filename }: HeaderProps) => {
   const jsonData = useAppSelector((state)=> state.file.data)
+  const file_id = useAppSelector((state)=> state.file.file_id)
   const { showFileDropdown,
     toggleDropdown,
     showFileUpload,
@@ -25,9 +26,10 @@ const Header = ({ filename }: HeaderProps) => {
       console.log("Began Saving");
       console.log(file_content);
       console.log(filename);
+      console.log(file_id);
       const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
       console.log(address);
-      saveToBackend(file_content,filename,address);
+      saveToBackend(file_content,file_id,filename,address);
       console.log("Upload to Backend Completed");
 
     };

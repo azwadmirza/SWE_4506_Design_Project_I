@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setDelimiter, setFile, setLoading, setType, setURL } from "../contexts/file/slice";
+import { setData, setDelimiter, setFile, setLoading, setType, setURL, setFileId } from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
@@ -97,6 +97,7 @@ export const useFile = () => {
   
       const dataRes = backendResponse.data;
       dispatch(setURL(dataRes.file_url));
+      dispatch(setFileId(dataRes.file_id));
       setShow(false);
   
       if (!dataRes.success) {
