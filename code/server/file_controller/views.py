@@ -13,6 +13,7 @@ from rest_framework.decorators import authentication_classes
 import pandas as pd
 import json
 from .utils import upload_to_cloudinary, save_to_cloudinary
+from django.http import JsonResponse
 
 
 
@@ -99,7 +100,15 @@ class GetAllFiles(APIView):
         try:
             files = FileMetadata.objects.all()
             serializer = FileMetadataSerializer(files, many=True)
-            return Response(serializer.data)
+            print(serializer.data)
+            response = JsonResponse(serializer.data)
+            
+            # Manually set CORS headers if not done automatically
+            response["Access-Control-Allow-Origin"] = "http://localhost:5173"
+            response["Access-Control-Allow-Methods"] = "GET"
+            response["Access-Control-Allow-Headers"] = "Content-Type"
+            
+            return response
         except Exception as e:
             return Response({'error': 'File upload to Mongo failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

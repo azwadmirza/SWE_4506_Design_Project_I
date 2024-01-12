@@ -10,7 +10,7 @@ async function uploadToBackend(
     fileData.append("file",file);
     fileData.append("user_id", user_id)
     console.log(address)
-    return axios.post(`http://127.0.0.1:8000/api/file/upload/`, fileData, {
+    return axios.post(`${address}/api/file/upload/`, fileData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
