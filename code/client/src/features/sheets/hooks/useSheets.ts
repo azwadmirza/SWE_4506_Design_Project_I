@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo,  } from "react";
 import { renderGrid } from "../utils/grid-renderer";
 import { useAppSelector,useAppDispatch } from "../../../contexts/file/hooks";
 import React from "react";
-import { updateData } from "../../../contexts/file/slice";
-
+import { indexedDBConfig } from "../../../config/indexeddb";
 
 export const useSheets = () => {
   const dispatch=useAppDispatch();
@@ -13,11 +12,35 @@ export const useSheets = () => {
   const [gridRows, setGridRows] = useState<JSX.Element[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [saveTrigger, setSaveTrigger] = useState<boolean>(false);
-  const data = useAppSelector((state) => state.file.data);
+  const [data,setData]=useState<any[]|null>([]);
+  const delimiter = useAppSelector((state) => state.file.delimiter);
+  const type = useAppSelector((state) => state.file.type);
+  const url = useAppSelector((state) => state.file.url);
 
   const updateGrid = (updatedGridRows: JSX.Element[]) => {
     setGridRows(updatedGridRows);
   };
+
+  const getFile = useMemo(
+    () => async () => {
+      setLoading(true)
+        try {
+            if (url) {
+                await indexedDBConfig.openDatabase();
+                setData(await indexedDBConfig.getFileByURL('byUrl', url,type,delimiter));
+                setLoading(false);
+            }
+        } catch (error) {
+            setData([]);
+            setLoading(false);
+        }
+    },
+    [url, delimiter, type, dispatch]
+);
+
+useEffect(() => {
+    getFile();
+}, [url]);
 
   const onCellChange = async (Key: string, Value: string) => {
     const updatedGridRows = gridRows.map((row) => {
@@ -34,7 +57,6 @@ export const useSheets = () => {
       };
     });
     updateGrid(updatedGridRows);
-    dispatch(updateData({ key: Key, value: Value }))
     setSaveTrigger(true);
   };
   
