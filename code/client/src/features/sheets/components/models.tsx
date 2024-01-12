@@ -1,35 +1,39 @@
-import "../assets/css/sheets.css";
+import "../assets/css/models.css";
 import Header from "../components/header";
-import ValueDisplay from "../components/value-display";
-import { useSheets } from "../hooks/useSheets";
 import Loader from "../../../partials/loader";
 import { Provider } from "react-redux";
 import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
+import ClassificationModels from "../../models/components/classificationModels";
+import RegressionModels from "../../models/components/regressionModels";
+import {useState} from 'react';
 
-const Models = () => {
+const Visualization = () => {
   const file = useAppSelector((state) => state.file.file);
-  const {
-    currentCell,
-    viewValue,
-    setViewValue,
-    loading,
-  } = useSheets();
+  const loading = useAppSelector((state) => state.file.loading);
+  const [toggle, setToggle] = useState(2);
   if (!loading) {
     return (
       <Provider store={store}>
         <div className="sheets">
           <Header filename={`${file !== null ? file : ""}`} />
-          {currentCell !== "" && (
-            <ValueDisplay
-              currentCell={currentCell}
-              value={viewValue}
-              setValue={setViewValue}
-            />
-          )}
           <div className="render-cells">
-            <h1>Models</h1>
-            <p>This is where the model info will go</p>
+          <div className="d-flex align-items center justify-model-center">
+        <div className={toggle === 1 ? "show-model" : "model"}>
+          <ClassificationModels />
+        </div>
+        <div className={toggle === 2 ? "show-model" : "model"}>
+          <RegressionModels/>
+        </div>
+        <ul className="d-flex model-tabs-list">
+          <li className="flex-fill model-tab" onClick={() => setToggle(1)}>
+            Classification
+          </li>
+          <li className="flex-fill model-tab" onClick={() => setToggle(2)}>
+            Regression
+          </li>
+        </ul>
+      </div>
           </div>
         </div>
       </Provider>
@@ -39,4 +43,4 @@ const Models = () => {
   }
 };
 
-export default Models;
+export default Visualization;
