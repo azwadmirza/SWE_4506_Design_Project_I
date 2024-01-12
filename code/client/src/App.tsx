@@ -18,6 +18,8 @@ import Error404 from './partials/error404';
 import { useAppSelector } from './contexts/auth/hooks';
 import Sheets from './features/sheets/pages/sheets';
 import ForgotPassword from './features/forgot-password/pages/forgot-password';
+import Dashboard from './pages/Dashboard';
+import FileUploadComponent from './pages/FileUploadComponent';
 
 function App() {
   const accessToken = useAppSelector((state) => state.auth.access_token);
@@ -44,6 +46,7 @@ function App() {
               <Route path="/profile" element={<ProfilePage/>}/>
               <Route path="/profile/change-password" element={<ChangePassword/>}/>
               <Route path="/data" element={<Sheets/>}/>
+              <Route path="/dashboard" element={<Dashboard/>}/>
             </>
           )}
           </>
