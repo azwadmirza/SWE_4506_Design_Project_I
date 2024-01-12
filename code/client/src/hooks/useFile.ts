@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
-import { setData, setDelimiter, setFile, setLoading, setType, setURL, setFileId } from "../contexts/file/slice";
+import {
+  setData,
+  setDelimiter,
+  setFile,
+  setLoading,
+  setType,
+  setURL,
+  setFileId,
+} from "../contexts/file/slice";
 import { parseCSV } from "../features/sheets/utils/csvParser";
 import { fileAdapter } from "../features/sheets/utils/adapter";
 import { parseXLSX } from "../features/sheets/utils/xlsxParser";
 import { parseJSON } from "../features/sheets/utils/jsonParser";
 import { parseTxt } from "../features/sheets/utils/txtParser";
 import uploadToBackend from "../utils/uploadFiletoBackend";
-
 
 export const useFile = () => {
   const [loading, setLoadingLocal] = useState<boolean>(false);
@@ -16,8 +23,6 @@ export const useFile = () => {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  
-  
 
   const allowedFormats = [
     "text/csv",
@@ -25,8 +30,6 @@ export const useFile = () => {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/json",
   ];
-
-  
 
   const parseFile = async (file: File) => {
     dispatch(setDelimiter(delimiter));
@@ -52,54 +55,49 @@ export const useFile = () => {
     }
   };
 
-
-
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     try {
       setLoading(true);
-  
+
       if (!file) {
         setLoadingLocal(false);
         return;
       }
-  
+
       const type = file.type;
       const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-  
+
       if (!allowedFormats.includes(type)) {
         setErrorMsg("Invalid file format");
         setSelectedFile(null);
         setLoadingLocal(false);
         return;
       }
-  
+
       if (file.type === "text/plain" && delimiter === "") {
         setErrorMsg("Please enter a delimiter for txt files");
         setLoadingLocal(false);
         return;
       }
-  
+
       console.log("File selected:", file.name);
-  
+
       const parsedFile = await parseFile(file);
-  
+
       dispatch(setFile(file.name));
       dispatch(setData(parsedFile !== null ? parsedFile : []));
-  
-      const backendResponse = await uploadToBackend(
-        file,
-        address,
-      )
+
+      const backendResponse = await uploadToBackend(file, address);
 
       console.log(backendResponse);
-  
+
       const dataRes = backendResponse.data;
       dispatch(setURL(dataRes.file_url));
       dispatch(setFileId(dataRes.file_id));
       setShow(false);
-  
+
       if (!dataRes.success) {
         setErrorMsg(dataRes.error);
         setSelectedFile(null);
@@ -114,7 +112,6 @@ export const useFile = () => {
       setLoadingLocal(false);
     }
   };
-  
 
   return {
     loading,

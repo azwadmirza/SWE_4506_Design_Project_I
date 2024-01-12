@@ -19,7 +19,7 @@ import { useAppSelector } from './contexts/auth/hooks';
 import Sheets from './features/sheets/pages/sheets';
 import ForgotPassword from './features/forgot-password/pages/forgot-password';
 import Dashboard from './pages/Dashboard';
-import FileUploadComponent from './pages/FileUploadComponent';
+// import FileUploadComponent from './pages/FileUploadComponent';
 
 function App() {
   const accessToken = useAppSelector((state) => state.auth.access_token);

@@ -144,13 +144,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Set the token expiration time here
 }
 
-CLOUDINARY = {
-    'cloud_name': 'djbspykue',
-    'api_key': '742646115888849',
-    'api_secret': '6QyPwgx5dn5L9zl5viB7fXJN1VM',
-}
-
-CLOUDINARY_URL = f"cloudinary://{CLOUDINARY['api_key']}:{CLOUDINARY['api_secret']}@{CLOUDINARY['cloud_name']}"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
