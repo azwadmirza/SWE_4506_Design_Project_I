@@ -2,14 +2,16 @@ import { useState } from "react";
 import { useAppDispatch } from "../contexts/file/hooks";
 import { setFile, setURL, setFileId } from "../contexts/file/slice";
 import { indexedDBConfig } from "../config/indexeddb";
+import { useNavigate } from "react-router-dom";
 
 export const useFile = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [file, setFileInformation] = useState<File | null>(null);
-  const [delimiter, setDelimiterLocal] = useState<string>("");
+  const [delimiter, setDelimiter] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const allowedFormats = [
     "text/csv",
@@ -60,6 +62,7 @@ export const useFile = () => {
         dispatch(setURL(dataRes.url));
         dispatch(setFileId(dataRes.file_id));
       }
+      navigate('/data');
       setLoading(false);
   };
 
@@ -68,7 +71,7 @@ export const useFile = () => {
     file,
     setFileInformation,
     delimiter,
-    setDelimiterLocal,
+    setDelimiter,
     selectedFile,
     errorMsg,
     FileInputSubmit,

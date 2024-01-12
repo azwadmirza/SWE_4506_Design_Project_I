@@ -15,6 +15,7 @@
   padding-left: 30px;
   background-color: var(--customGreen) !important;
   border-radius: 25px;
+  margin-right: 10px;
 }
 
 .input-field {

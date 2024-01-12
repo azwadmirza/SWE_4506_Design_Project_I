@@ -52,13 +52,6 @@ const NavbarUser = () => {
             >
               Profile
             </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/data"
-              active={location.pathname === "/data"}
-            >
-              Data
-            </Nav.Link>
             <Nav.Link className="d-block d-lg-none c" onClick={handleLogout}>
               Log Out
             </Nav.Link>
