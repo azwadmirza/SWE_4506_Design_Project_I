@@ -24,7 +24,7 @@ def upload_to_cloudinary(file, user_id):
 def save_to_cloudinary(file_content, file_name, user_id):
     try:
         file_content_bytes = io.BytesIO(file_content.encode())
-        public_id = f"{user_id}_{file_name}"
+        public_id = f"{user_id}_edited_{file_name}"
 
         upload_result = cloudinary.uploader.upload(
             file_content_bytes,
