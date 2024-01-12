@@ -40,6 +40,13 @@ const NavbarUser = () => {
           >
             <Nav.Link
               as={Link}
+              to="/dashboard"
+              active={location.pathname === "/dashboard"}
+            >
+              Dashboard
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
               to="/profile"
               active={location.pathname === "/profile"}
             >

@@ -10,8 +10,6 @@ export const useFile = () => {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  
-  
 
   const allowedFormats = [
     "text/csv",
@@ -19,11 +17,6 @@ export const useFile = () => {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "application/json",
   ];
-
-  
-
-
-
 
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
@@ -33,23 +26,22 @@ export const useFile = () => {
         setLoading(false);
         return;
       }
-  
+
       const type = file.type;
-      const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-  
+
       if (!allowedFormats.includes(type)) {
         setErrorMsg("Invalid file format");
         setSelectedFile(null);
         setLoading(false);
         return;
       }
-  
+
       if (file.type === "text/plain" && delimiter === "") {
         setErrorMsg("Please enter a delimiter for txt files");
         setLoading(false);
         return;
       }
-  
+
       console.log("File selected:", file.name);
       dispatch(setFile(file.name));
       await indexedDBConfig.openDatabase();
@@ -70,7 +62,6 @@ export const useFile = () => {
       }
       setLoading(false);
   };
-  
 
   return {
     loading,
