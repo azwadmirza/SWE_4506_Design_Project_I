@@ -1,82 +1,110 @@
-// import React from "react";
-// import { Bar, Doughnut } from "react-chartjs-2";
+import ConfusionMatrix from "./confusionMatrix";
+import DataMatrix from "./dataMatrix";
 
-const DecisionTreeResults = ({ evaluationResults }) => {
-//   const renderAccuracyChart = () => {
-//     if (!evaluationResults) return null;
+interface DecisionTreeResultsProps {
+  data: {
+    "Accuracy Test": number;
+    "Accuracy Train": number;
+    "Confusion Matrix Test": number[][];
+    "Classification Report Test": {
+      [key: string]: {
+        label: string;
+        precision: number;
+        recall: number;
+        "f1-score": number;
+        support: number;
+      };
+    };
+    "Confusion Matrix Train": number[][];
+    "Classification Report Train": {
+      [key: string]: {
+        precision: number;
+        recall: number;
+        "f1-score": number;
+        support: number;
+      };
+    };
+  };
+}
 
-//     const accuracyData = {
-//       labels: ["Test Accuracy", "Train Accuracy"],
-//       datasets: [
-//         {
-//           label: "Accuracy",
-//           data: [evaluationResults["Accuracy Test"] * 100, evaluationResults["Accuracy Train"] * 100],
-//           backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)"],
-//           borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
-//           borderWidth: 1,
-//         },
-//       ],
-//     };
+const DecisionTreeResults: React.FC<DecisionTreeResultsProps> = ({ data }) => {
+  if (!data) return null;
 
-//     const options = {
-//       scales: {
-//         y: {
-//           beginAtZero: true,
-//           max: 100,
-//         },
-//       },
-//     };
+  const labelsArray = [];
+  const classificationReportTest = data["Classification Report Test"];
 
-//     return <Bar data={accuracyData} options={options} />;
-//   };
+  for (const [label] of Object.entries(classificationReportTest)) {
+    if (label.toLowerCase() === "accuracy") {
+      break;
+    }
+    labelsArray.push(label);
+  }
 
-//   const renderConfusionMatrixChart = (dataKey) => {
-//     if (!evaluationResults) return null;
-  
-//     const numClasses = evaluationResults[dataKey].length;
-//     const classLabels = Array.from({ length: numClasses }, (_, index) => `Class ${index}`);
-  
-//     const confusionMatrixData = {
-//       labels: classLabels,
-//       datasets: evaluationResults[dataKey].map((row, index) => ({
-//         label: `${dataKey} Class ${index}`,
-//         data: row,
-//         backgroundColor: getRandomColor(), // You can use a function to generate random colors
-//         borderColor: getRandomColor(),
-//         borderWidth: 1,
-//         fill: 'origin',
-//         type: 'line',
-//       })),
-//     };
-  
-//     const options = {
-//       scales: {
-//         x: {
-//           stacked: true,
-//         },
-//         y: {
-//           stacked: true,
-//         },
-//       },
-//     };
-  
-//     return <Bar data={confusionMatrixData} options={options} />;
-//   };
+  const dataTest = [];
+
+  for (const [label, metrics] of Object.entries(data["Classification Report Test"])) {
+    if (label.toLowerCase() === "accuracy") {
+      break;
+    }
+    dataTest.push({ label, metrics });
+  }
+  const dataTrain = [];
+
+  for (const [label, metrics] of Object.entries(data["Classification Report Train"])) {
+    if (label.toLowerCase() === "accuracy") {
+      break;
+    }
+    dataTrain.push({ label, metrics });
+  }
+  console.log(dataTest)
+  console.log(dataTrain)
+
   return (
-    <div>
-        <h2>Decision Tree Accuracy</h2>
+    <div style={{ marginBottom: "50px" }}>
+      <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: "15px" }}>
+          <h2>Train Accuracy</h2>
+          <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+          {(data["Accuracy Train"] * 100).toFixed(2)}%
+          </p>
+        </div>
+        <div style={{ marginBottom: "15px" }}>
+          <ConfusionMatrix
+            data={data["Confusion Matrix Train"]}
+            labels={labelsArray}
+            title="Confusion Matrix Train"
+          />
+        </div>
+        <div style={{ marginBottom: "15px" }}>
+          <DataMatrix
+            data={dataTrain}
+            title="Train"
+          />
+        </div>
+      </div>
+      <div style={{ marginTop: "50px" }}>
+        <div style={{ marginBottom: "15px" }}>
+          <h2>Test Accuracy</h2>
+          <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+           {(data["Accuracy Test"] * 100).toFixed(2)}%
+          </p>
+        </div>
+        <div style={{ marginBottom: "15px" }}>
+          <ConfusionMatrix
+            data={data["Confusion Matrix Test"]}
+            labels={labelsArray}
+            title="Confusion Matrix Test"
+          />
+        </div>
+        <div style={{ marginBottom: "15px" }}>
+          <DataMatrix
+            data={dataTest}
+            title="Test"
+          />
+        </div>
+      </div>
     </div>
-//     <div>
-//       <h2>Decision Tree Accuracy</h2>
-//       {renderAccuracyChart()}
-
-//       <h2>Decision Tree Confusion Matrix - Test</h2>
-//       {renderConfusionMatrixChart("Confusion Matrix Test")}
-
-//       <h2>Decision Tree Confusion Matrix - Train</h2>
-//       {renderConfusionMatrixChart("Confusion Matrix Train")}
-//     </div>
-  )
+  );
 };
 
 export default DecisionTreeResults;
