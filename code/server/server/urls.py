@@ -12,3 +12,4 @@ urlpatterns = [
     path('api/file/', include('file_controller.urls')),
     path('api/decision_tree/', include('decision_tree.urls'))
 ]
+

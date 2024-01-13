@@ -23,7 +23,7 @@ export const useFile = () => {
   const FileInputSubmit = async (
     setShow: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-  
+      setLoading(true);
       if (!file) {
         setLoading(false);
         return;
@@ -62,8 +62,8 @@ export const useFile = () => {
         dispatch(setURL(dataRes.url));
         dispatch(setFileId(dataRes.file_id));
       }
-      navigate('/data');
       setLoading(false);
+      navigate('/data');
   };
 
   return {

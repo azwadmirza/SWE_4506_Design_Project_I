@@ -10,7 +10,7 @@ export const useLinearChart = (data:any[]) => {
   const [optionsPlot,setOptionsPlot]=useState<string[]>([]);
 
   useEffect(()=>{
-    if(data.length>0){
+    if(data && data.length>0){
       setOptionsPlot(data[0]);
       handleDependant(dependantIndex);
       handleIndependant(independantIndex);
