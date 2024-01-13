@@ -41,6 +41,11 @@
   margin-top:5rem!important;
 }
 
+.dashboard-card-header{
+  width: max-content !important;
+  background-color: var(--customGreen) !important;
+}
+
 .dashboard-card-text{
   color:black !important;
 }

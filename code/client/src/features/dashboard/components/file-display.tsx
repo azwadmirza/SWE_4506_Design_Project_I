@@ -17,21 +17,17 @@ const FileDisplayCard = ({ file_id,url,filename, updatedAt }: IFileDisplayProps)
       localStorage.setItem("file",filename);
       navigate("/data");
     }}>
+      <Card.Header className="dashboard-card-header">
+        {file_id}
+      </Card.Header>
       <Card.Body className="dashboard-card-text">
         <Card.Img className="dashboard-card-image" variant="top" src="/icon.png" />
             <Card.Title>{filename}</Card.Title>
             <Card.Text>
               <small>Uploaded: {updatedAt}</small>
             </Card.Text>
-        <div className="content">
-          <div className="image">
-            <img src="/icon.png" height={"40%"} />
-          </div>
-          <div className="file-info">
-            
-          </div>
-        </div>
       </Card.Body>
+      
     </Card>
   );
 };
