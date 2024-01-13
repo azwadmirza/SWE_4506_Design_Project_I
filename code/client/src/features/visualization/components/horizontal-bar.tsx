@@ -1,4 +1,5 @@
 import { Bar } from "react-chartjs-2";
+import { isNumeric } from "../hooks/useChart";
 
 interface IBarPlotProps{
     chartData: {
@@ -15,7 +16,7 @@ interface IBarPlotProps{
 
 const HorizontalBarPlot = ({chartData}:IBarPlotProps) => {
   const isValidData = chartData.datasets.every((dataset) =>
-    dataset.data.every((value) => !isNaN(parseFloat(value)))
+    dataset.data.filter((value:any) => isNumeric(value)).length>0
   );
   if(isValidData){
     return ( 
