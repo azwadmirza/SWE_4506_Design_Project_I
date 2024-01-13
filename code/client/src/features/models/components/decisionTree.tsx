@@ -130,7 +130,7 @@ const DecisionTree = () => {
           </button>
         </div>
         <div className="results-container">
-          <DecisionTreeResults evaluationResults={evaluationResults} />
+          <DecisionTreeResults data={evaluationResults} />
         </div>
       </div>
     </div>
