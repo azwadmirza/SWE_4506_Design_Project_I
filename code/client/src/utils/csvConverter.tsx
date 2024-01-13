@@ -1,7 +1,7 @@
-function convertToCSV(array: any[]) {
-  const header = array[0].join(',');
-  const rows = array.slice(1).map(row => row.join(','));
-  return `${header}\n${rows.join('\n')}`;
+export async function arrayToCSV(data: any[][], delimiter: string = ',',filename:string,mimeType:string): Promise<File> {
+  const csvContent = data.map(e => e.join(delimiter)).join('\n');
+  console.log(csvContent);
+  const blob = new Blob([csvContent], { type: mimeType });
+  const file = new File([blob], filename, { type: mimeType });
+  return file;
 }
-
-export default convertToCSV;

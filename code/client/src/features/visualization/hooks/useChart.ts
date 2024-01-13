@@ -22,7 +22,6 @@ export const useChart = () => {
         const number_labels:any[]=[];
         const dataset:number[][]=[]
         const labels = table[0];
-        console.log(labels)
         for (let i = 0; i < labels.length; i++) {
           const label = labels[i];
           const columnValues = table.slice(1).map((row) => row[i]);
@@ -39,7 +38,6 @@ export const useChart = () => {
         setLoading(false);
         try {
             if (url) {
-                console.log(url)
                 const open = await indexedDBConfig.openDatabase();
                 if (open) {
                     const fetchedData: any[] | null = await indexedDBConfig.getFileByURL('byUrl', url, type, delimiter);
@@ -48,9 +46,7 @@ export const useChart = () => {
                     });
                     setData(filteredData?filteredData:[[]]);
                     const result=filterNumericColumns(fetchedData ?? [])
-                    console.log(result);
                     setData(filteredData ?? []);
-                    setLabels(result.labels);
                     const matrix = calculatePearsonCorrelationMatrix(result.values);
                     setCorrelationMatrix(matrix);
                     setLoading(false);
@@ -85,7 +81,6 @@ export const useChart = () => {
             }).then((response) => {
                 const dataArray = Object.entries(JSON.parse(response.data)).map(([field, value]) => ({ field, ...value }));
                 setStatistics(dataArray);
-                console.log(dataArray)
             }).catch((error) => {
                 console.log(error);
             })

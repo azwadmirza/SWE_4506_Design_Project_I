@@ -1,4 +1,4 @@
-import { useTable } from "react-table";
+import {useTable} from "react-table";
 interface IStatTable {
   columns: {
     Header: string;
@@ -22,9 +22,9 @@ const StatTable = ({ columns, data }: IStatTable) => {
         }}
       >
         <thead>
-          {headerGroups.map((headerGroup) => (
+          {headerGroups.map((headerGroup:any) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
+              {headerGroup.headers.map((column:any) => (
                 <th
                   {...column.getHeaderProps()}
                   style={{
@@ -40,14 +40,14 @@ const StatTable = ({ columns, data }: IStatTable) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {rows.map((row:any) => {
             prepareRow(row);
             return (
               <tr
                 {...row.getRowProps()}
                 style={{ borderBottom: "1px solid #ddd" }}
               >
-                {row.cells.map((cell) => (
+                {row.cells.map((cell:any) => (
                   <td
                     {...cell.getCellProps()}
                     style={{ border: "1px solid #ddd", padding: "8px" }}
@@ -69,7 +69,6 @@ const StatTable = ({ columns, data }: IStatTable) => {
                         )}
                       </>
                     ) : (
-                      // Render non-object values
                       cell.render("Cell")
                     )}
                   </td>
