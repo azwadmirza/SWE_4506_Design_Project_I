@@ -2,8 +2,10 @@ import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
 import { useAppSelector } from "../../../contexts/file/hooks";
-import convertToCSV from "../../../utils/csvConverter";
 import { indexedDBConfig } from "../../../config/indexeddb";
+import saveToBackend from "../../../utils/saveFileToBackend";
+import { useAppDispatch } from "../../../contexts/auth/hooks";
+import { setFile, setURL } from "../../../contexts/file/slice";
 
 type HeaderProps = {
   filename: string;
@@ -12,7 +14,8 @@ type HeaderProps = {
 
 const Header = ({ filename,data }: HeaderProps) => {
   const file_id = useAppSelector((state) => state.file.file_id);
-  const file = useAppSelector((state) => state.file.file);
+  const url=useAppSelector((state) => state.file.url);
+  const dispatch=useAppDispatch();
   const {
     showFileDropdown,
     toggleDropdown,
@@ -21,18 +24,19 @@ const Header = ({ filename,data }: HeaderProps) => {
   } = useDropDown();
 
   const handleSave = async() => {
-    const file_content = convertToCSV(data?data:[]);
-    const file=new Blob([file_content], { type: "text/csv" });
-    console.log("Began Saving");
-    console.log(file_content);
-    console.log(filename);
-    console.log(file_id);
     if(file_id){
-      console.log("Comes Here");
-      console.log(file_id);
-      console.log(file);
-      console.log(data);
-      await indexedDBConfig.updateFileURLByID("byID",file_id, file,data);
+      if(url){
+        const backendRes = await saveToBackend(
+          data,
+          file_id,
+          filename,
+          import.meta.env.VITE_BACKEND_REQ_ADDRESS
+        );
+        await indexedDBConfig.updateFileURL(data, url,backendRes.data.file_url);
+        dispatch(setURL(backendRes.data.file_url));
+        dispatch(setFile(filename));
+        console.log("File Saved");
+      }
     }
   };
 

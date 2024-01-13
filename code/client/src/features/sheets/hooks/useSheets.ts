@@ -62,6 +62,7 @@ export const useSheets = () => {
           if (open) {
             const fetchedData=await indexedDBConfig.getFileByURL('byUrl', url, type, delimiter);
             await render(fetchedData);
+            console.log(fetchedData);
             setData(fetchedData);
           }
           else {
@@ -81,7 +82,7 @@ export const useSheets = () => {
   useEffect(() => {
     setLoading(true);
     getFile();
-  }, []);
+  }, [url]);
 
 
   return {

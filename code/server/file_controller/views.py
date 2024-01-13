@@ -119,7 +119,6 @@ class GetStatisticalInformation(APIView):
                 df=pd.read_csv(url)
             df=df.describe()
             df=df.to_json()
-            print(df)
             return Response(df,status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
