@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { indexedDBConfig } from "../../../config/indexeddb";
 
 export const useDashboard = () => {
     const [files, setFiles] = useState([]);
@@ -7,12 +8,17 @@ export const useDashboard = () => {
     const [filteredFiles,setFilteredFiles]=useState([]);
     const [loading,setLoading]=useState(true);
 
-    useEffect(() => {
-        axios.get(import.meta.env.VITE_BACKEND_REQ_ADDRESS + "/api/file/getall/" + localStorage.getItem("user_id")).then((res) => {
-            setFiles(res.data);
-            setFilteredFiles(res.data);
+    const fetchFiles = async () => {
+        await indexedDBConfig.openDatabase();
+        await indexedDBConfig.getAllFiles().then((res:any)=>{
+            setFiles(res);
+            setFilteredFiles(res);
             setLoading(false);
-        });
+        })
+    };
+
+    useEffect(() => {
+        fetchFiles();
     }, [])
 
     const handleSearch=(e:string)=>{
