@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .pagination .page-link {
@@ -14,14 +15,14 @@
 
 .pagination .page-link:hover,
 .pagination .page-link:focus {
-  background-color: var(--customMagenta);
+  background-color: var(--customDarkGreen);
   border-color: whitesmoke;
   color:whitesmoke;
 }
 
 .pagination .page-item.active .page-link {
-  background-color: var(--customDarkBlue);
-  border-color: var(--customDarkBlue);
+  background-color: var(--customFont);
+  border-color: var(--customFont);
   color: whitesmoke;
 }
 
