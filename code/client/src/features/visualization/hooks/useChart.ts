@@ -5,6 +5,16 @@ import { useAppSelector } from "../../../contexts/file/hooks";
 import { indexedDBConfig } from "../../../config/indexeddb";
 import axios from "axios";
 
+
+export const isNumeric=(value: any): boolean=>{
+  try{
+    return value !== "" && !isNaN(Number(value));
+  }
+  catch(error){
+    return false;
+  }
+}
+
 export const useChart = () => {
   const [loading, setLoading] = useState(true);
   const delimiter = useAppSelector((state) => state.file.delimiter);
@@ -13,10 +23,6 @@ export const useChart = () => {
   const url = useAppSelector((state) => state.file.url);
   const [labels, setLabels] = useState<string[]>([]);
   const [statistics, setStatistics] = useState<any[]>([]);
-
-  function isNumeric(value: string): boolean {
-    return value !== "" && !isNaN(Number(value));
-  }
 
   function filterNumericColumns(table: any[][]): any {
     const number_labels: any[] = [];
@@ -49,7 +55,6 @@ export const useChart = () => {
           );
           setData(fetchedData ? fetchedData : [[]]);
           const result = filterNumericColumns(fetchedData ? fetchedData : []);
-          console.log(result);
           setLabels(result.labels);
           const matrix = calculatePearsonCorrelationMatrix(result.values);
           setCorrelationMatrix(matrix);
@@ -89,7 +94,10 @@ export const useChart = () => {
         )
         .then((response) => {
           const dataArray = Object.entries(JSON.parse(response.data)).map(
-            ([field, value]) => ({ field, ...value })
+            ([field, value]) => {
+              const fieldValue = typeof value === 'object' ? { ...value } : value;
+              return { field, ...fieldValue };
+            }
           );
           setStatistics(dataArray);
         })
