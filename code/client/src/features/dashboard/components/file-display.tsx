@@ -1,5 +1,7 @@
 import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../contexts/auth/hooks";
+import { setFile, setFileId, setURL } from "../../../contexts/file/slice";
 
 interface IFileDisplayProps {
   file_id: string;
@@ -10,11 +12,12 @@ interface IFileDisplayProps {
 
 const FileDisplayCard = ({ file_id,url,filename, updatedAt }: IFileDisplayProps) => {
   const navigate=useNavigate();
+  const dispatch=useAppDispatch();
   return (
     <Card className="dashboard-card justify-content-center" onClick={()=>{
-      localStorage.setItem("file_id",file_id);
-      localStorage.setItem("url",url);
-      localStorage.setItem("file",filename);
+      dispatch(setURL(url));
+      dispatch(setFile(filename));
+      dispatch(setFileId(file_id));
       navigate("/data");
     }}>
       <Card.Header className="dashboard-card-header">

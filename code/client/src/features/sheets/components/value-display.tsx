@@ -8,7 +8,7 @@ type ValueDisplayProps = {
 
 const ValueDisplay = ({currentCell,value,setValue}:ValueDisplayProps) => {
   return (
-    <Navbar className='value-display' variant="dark" expand="lg">
+    <Navbar className='value-display d-flex' variant="dark" expand="lg">
     <Container fluid className='navbarContents px-0 px-lg-5 d-flex justify-content-between' >
     <div className='cell-name'>{currentCell}</div>
     <div className="input-field">
