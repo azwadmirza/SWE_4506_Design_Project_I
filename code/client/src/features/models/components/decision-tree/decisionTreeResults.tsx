@@ -1,7 +1,7 @@
-import ConfusionMatrix from "./confusionMatrix";
-import DataMatrix from "./dataMatrix";
+import ConfusionMatrix from "../confusionMatrix";
+import DataMatrix from "../dataMatrix";
 
-interface DecisionTreeResultsProps {
+interface IDecisionTreeProps {
   data: {
     "Accuracy Test": number;
     "Accuracy Train": number;
@@ -24,10 +24,10 @@ interface DecisionTreeResultsProps {
         support: number;
       };
     };
-  };
+  }|null;
 }
 
-const DecisionTreeResults: React.FC<DecisionTreeResultsProps> = ({ data }) => {
+const DecisionTreeResults = ({ data }:IDecisionTreeProps) => {
   if (!data) return null;
 
   const labelsArray = [];

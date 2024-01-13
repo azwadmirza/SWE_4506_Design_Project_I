@@ -1,6 +1,5 @@
 import "../assets/css/models.css";
 import { useState } from "react";
-import DecisionTree from "./decisionTree";
 
 const RegressionModels = () => {
   const [toggle, setToggle] = useState(1);
@@ -11,21 +10,48 @@ const RegressionModels = () => {
                   className="flex-fill model-tab"
                   onClick={() => setToggle(1)}
                 >
-                  Decision Tree
+                  Linear Regression
                 </li>
                 <li
                   className="flex-fill model-tab"
                   onClick={() => setToggle(2)}
                 >
-                  Logistic Regression
+                  Decision Tree
+                </li>
+                <li
+                  className="flex-fill model-tab"
+                  onClick={() => setToggle(3)}
+                >
+                  K Nearest Neighbour
+                </li>
+                <li
+                  className="flex-fill model-tab"
+                  onClick={() => setToggle(4)}
+                >
+                  Support Vector Machines
+                </li>
+                <li
+                  className="flex-fill model-tab"
+                  onClick={() => setToggle(5)}
+                >
+                  XGBoost
                 </li>
               </ul>
             <div className="d-flex align-items center justify-content-center">
               <div className={toggle === 1 ? "show-model" : "model"}>
-                <DecisionTree/>
+                <h1>This is Linear Regression</h1>
               </div>
               <div className={toggle === 2 ? "show-model" : "model"}>
-                <h1>This is Logistic Regression</h1>
+                <h1>This is Decision Tree</h1>
+              </div>
+              <div className={toggle === 3 ? "show-model" : "model"}>
+                <h1>This is K Nearest Neigbours</h1>
+              </div>
+              <div className={toggle === 4 ? "show-model" : "model"}>
+                <h1>This is Support Vector Machines</h1>
+              </div>
+              <div className={toggle === 5 ? "show-model" : "model"}>
+                <h1>This is Boosted XGBoost Trees</h1>
               </div>
             </div>
           </div>

@@ -1,8 +1,8 @@
 import "../assets/css/models.css";
 import "../assets/css/decisionTree.css";
 import { useState, ChangeEvent } from "react";
-import { useChart } from "../../visualization/hooks/useChart";
-import { useAppSelector } from "../../../contexts/file/hooks";
+import { useChart } from "../../../visualization/hooks/useChart";
+import { useAppSelector } from "../../../../contexts/file/hooks";
 import axios from "axios";
 import DecisionTreeResults from "./decisionTreeResults";
 
@@ -61,7 +61,7 @@ const DecisionTree = () => {
     <div>
       <div className="decision-tree-container-wrapper">
         <div className="decision-tree-container">
-          <h3>Logistic Regression</h3>
+          <h3>Decision Tree</h3>
           <div className="decision-tree-label">
             <label className="decision-tree-label">Target Variable:</label>
             <select
