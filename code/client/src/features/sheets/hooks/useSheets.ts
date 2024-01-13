@@ -3,13 +3,14 @@ import { renderGrid } from "../utils/grid-renderer";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import React from "react";
 import { indexedDBConfig } from "../../../config/indexeddb";
+import { useSave } from "./useSave";
 
 export const useSheets = () => {
   const [currentCell, setCurrentCell] = useState<string>("");
   const [viewValue, setViewValue] = useState<string>("");
   const [gridRows, setGridRows] = useState<JSX.Element[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [saveTrigger, setSaveTrigger] = useState<boolean>(false);
+  const {save}=useSave();
   const [data, setData] = useState<any[] | null>([]);
   const delimiter = useAppSelector((state) => state.file.delimiter);
   const type = useAppSelector((state) => state.file.type);
@@ -34,19 +35,9 @@ export const useSheets = () => {
       };
     });
     updateGrid(updatedGridRows);
-    setSaveTrigger(true);
+    setData(save(updatedGridRows));
   };
 
-
-  const save = () => {
-    setSaveTrigger(false);
-  };
-
-  useEffect(() => {
-    if (saveTrigger) {
-      save();
-    }
-  }, [saveTrigger, gridRows, data]);
 
   const render = async (data:any[]|null) => {
     if(null){
@@ -70,8 +61,8 @@ export const useSheets = () => {
           const open = await indexedDBConfig.openDatabase();
           if (open) {
             const fetchedData=await indexedDBConfig.getFileByURL('byUrl', url, type, delimiter);
-            console.log(fetchedData);
             await render(fetchedData);
+            setData(fetchedData);
           }
           else {
             throw Error("Database not opened");
@@ -81,8 +72,8 @@ export const useSheets = () => {
           setLoading(false);
         }
       } catch (error) {
-        setData([]);
         await render([]);
+        setData([]);
         setLoading(false);
       }
     };
@@ -90,18 +81,16 @@ export const useSheets = () => {
   useEffect(() => {
     setLoading(true);
     getFile();
-  }, [url]);
+  }, []);
 
 
   return {
+    data,
     currentCell,
     gridRows,
     viewValue,
     setViewValue,
     loading,
-    save,
-    onCellChange,
-    saveTrigger,
-    setSaveTrigger
+    onCellChange
   };
 };

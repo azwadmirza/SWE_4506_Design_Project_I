@@ -11,3 +11,4 @@ urlpatterns = [
     path('api/one_hot_encoding/', include('one_hot_encoding.urls')),
     path('api/file/', include('file_controller.urls')),
 ]
+

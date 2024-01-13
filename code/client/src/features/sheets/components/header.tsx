@@ -3,15 +3,16 @@ import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import convertToCSV from "../../../utils/csvConverter";
-import saveToBackend from "../../../utils/saveFileToBackend";
+import { indexedDBConfig } from "../../../config/indexeddb";
 
 type HeaderProps = {
   filename: string;
+  data:any[]|null;
 };
 
-const Header = ({ filename }: HeaderProps) => {
-  const jsonData = useAppSelector((state) => state.file.data);
+const Header = ({ filename,data }: HeaderProps) => {
   const file_id = useAppSelector((state) => state.file.file_id);
+  const file = useAppSelector((state) => state.file.file);
   const {
     showFileDropdown,
     toggleDropdown,
@@ -19,16 +20,20 @@ const Header = ({ filename }: HeaderProps) => {
     setShowFileUpload,
   } = useDropDown();
 
-  const handleSave = () => {
-    const file_content = convertToCSV(jsonData);
+  const handleSave = async() => {
+    const file_content = convertToCSV(data?data:[]);
+    const file=new Blob([file_content], { type: "text/csv" });
     console.log("Began Saving");
     console.log(file_content);
     console.log(filename);
     console.log(file_id);
-    const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-    console.log(address);
-    saveToBackend(file_content, file_id, filename, address);
-    console.log("Upload to Backend Completed");
+    if(file_id){
+      console.log("Comes Here");
+      console.log(file_id);
+      console.log(file);
+      console.log(data);
+      await indexedDBConfig.updateFileURLByID("byID",file_id, file,data);
+    }
   };
 
   return (
