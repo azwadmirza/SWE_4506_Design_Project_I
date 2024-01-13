@@ -21,9 +21,8 @@ class decision_tree_model(APIView):
         requestBody = request.data
         depth = requestBody.get('max_depth', None)
         criter = requestBody.get('criterion', None)
-        split_data = requestBody.get('train_test_split', None)
+        split_data = requestBody.get('train_test_split', None)/100
         targetCol = requestBody.get('target', None)
-
         df = pd.read_csv(requestBody['file_url'])
 
         if targetCol is not None:
@@ -64,11 +63,11 @@ class decision_tree_model(APIView):
 
         accuracy_train = accuracy_score(y_train, predictions_Xtrain)
 
-        conf_matrix_test = confusion_matrix(y_test, predictions_Xtest)
-
+        conf_matrix_test = confusion_matrix(y_test, predictions_Xtest).tolist()  
+        
         class_report_test = classification_report(y_test, predictions_Xtest, output_dict=True)
-
-        conf_matrix_train = confusion_matrix(y_train, predictions_Xtrain)
+        
+        conf_matrix_train = confusion_matrix(y_train, predictions_Xtrain).tolist()  
 
         class_report_train = classification_report(y_train, predictions_Xtrain, output_dict=True)
 

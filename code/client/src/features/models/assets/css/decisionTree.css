@@ -48,9 +48,8 @@
 
   .decision-tree-container-wrapper {
     position: relative;
-    left: 0%;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 80%;
+    transform: translateY(0%);
     background-color: #f4f4f4;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
     width: 220px; /* Set the desired width */
@@ -58,3 +57,14 @@
     padding: 10px
   }
   
+  .results-container {
+    position: relative;
+    left: calc(100% + 20px); /* Adjust the distance from the right side as needed */
+    transform: translateY(-89%);
+    background-color: #ffffff; /* Set your desired background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 785%; /* Set the desired width */
+    height: 105%; /* Set the desired height */
+    padding: 10px;
+    overflow-y: auto; /* Add scroll if content overflows vertically */
+  }
