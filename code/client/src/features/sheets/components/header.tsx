@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../../contexts/auth/hooks";
 import { setFile, setURL } from "../../../contexts/file/slice";
 import { Link } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
-import { folder, saveOutline } from "ionicons/icons";
+import { folder, save, saveOutline } from "ionicons/icons";
 
 type HeaderProps = {
   filename: string;
@@ -63,7 +63,7 @@ const Header = ({ filename, data }: HeaderProps) => {
           setShowFileUpload(!showFileUpload);
         }}
       >
-        <IonIcon icon={folder}></IonIcon>
+        <IonIcon icon={folder} style={{marginRight:"2px"}}></IonIcon>
         <span className="header-buttons-text">Upload</span>
       </button>
       <button
@@ -72,7 +72,7 @@ const Header = ({ filename, data }: HeaderProps) => {
           handleSave();
         }}
       >
-        <IonIcon icon={saveOutline} />
+        <IonIcon icon={save}  style={{marginRight:"2px"}} />
         <span className="header-buttons-text">Save</span>
       </button>
     </div>

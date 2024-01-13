@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getColumnValues } from "../../sheets/utils/column-extractor";
+import { polynomialRegression } from "../../../utils/polynomial-regression";
 
 export const useLinearChart = (data:any[]) => {
   const [selectedValue, setSelectedValue] = useState('');
