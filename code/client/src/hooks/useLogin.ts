@@ -31,7 +31,7 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
         navigate("/verification");
       }
       else{
-        navigate("/data");
+        navigate("/dashboard");
       }
       setError("");
     }).catch(()=>{
