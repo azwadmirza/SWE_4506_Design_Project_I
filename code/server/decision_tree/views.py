@@ -27,14 +27,8 @@ class decision_tree_model(APIView):
         criter = requestBody.get('criterion', None)
         split_data = requestBody.get('train_test_split', None)/100
         targetCol = requestBody.get('target', None)
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
         normalisation = requestBody.get('normalization', None)
 
-=======
->>>>>>> 0a16c51838873919be81c88b3b5ad7c6472dbddc
->>>>>>> Stashed changes
         df = pd.read_csv(requestBody['file_url'])
 
         if targetCol is not None:
@@ -105,24 +99,17 @@ class decision_tree_model(APIView):
 
         accuracy_train = accuracy_score(y_train, predictions_Xtrain)
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
         conf_matrix_test = confusion_matrix(y_test, predictions_Xtest)
 
         class_report_test = classification_report(y_test, predictions_Xtest, output_dict=True, zero_division=0)
 
         conf_matrix_train = confusion_matrix(y_train, predictions_Xtrain)
-=======
->>>>>>> Stashed changes
+
         conf_matrix_test = confusion_matrix(y_test, predictions_Xtest).tolist()  
         
         class_report_test = classification_report(y_test, predictions_Xtest, output_dict=True)
         
         conf_matrix_train = confusion_matrix(y_train, predictions_Xtrain).tolist()  
-<<<<<<< Updated upstream
-=======
->>>>>>> 0a16c51838873919be81c88b3b5ad7c6472dbddc
 
         class_report_train = classification_report(y_train, predictions_Xtrain, output_dict=True, zero_division=0)
 
@@ -218,8 +205,6 @@ class decision_tree_model(APIView):
             test_avg_fpr = 'Not defined'
             train_avg_tpr = 'Not defined'
             train_avg_fpr = 'Not defined'
->>>>>>> Stashed changes
-
 
         evaluation_results = {
             'Accuracy Test': accuracy_test,
