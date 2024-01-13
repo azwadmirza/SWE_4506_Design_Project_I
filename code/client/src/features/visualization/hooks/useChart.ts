@@ -46,8 +46,7 @@ export const useChart = () => {
                     let filteredData = fetchedData?.filter((row: any[]) => {
                         return Array.isArray(row) && row.every((element) => element !== null && element !== "");
                     });
-                    setData(filteredData ?? []);
-                    setLabels(filteredData ? filteredData.length > 0 ? filteredData[0] : [] : []);
+                    setData(filteredData?filteredData:[[]]);
                     const result=filterNumericColumns(fetchedData ?? [])
                     console.log(result);
                     setData(filteredData ?? []);
@@ -146,8 +145,8 @@ export const useChart = () => {
 
 
 
-    const { chartData, options, handleSelect, selectedValue, optionsPlot, dependantIndex, handleDependant, independantIndex, handleIndependant } = useLinearChart(data ? data : []);
-    const { classChartData, charterOptions, handleCharterSelect, selectedCharter, charterOptionsPlot, classIndex, handleClass } = useClassChart(data ? data : []);
+    const { chartData, options, handleSelect, selectedValue, optionsPlot, dependantIndex, handleDependant, independantIndex, handleIndependant } = useLinearChart(data?data:[[]]);
+    const { classChartData, charterOptions, handleCharterSelect, selectedCharter, charterOptionsPlot, classIndex, handleClass } = useClassChart(data ? data : [[]]);
 
     return { columns, statistics,heatmapData, chartData, options, handleSelect, selectedValue, optionsPlot, dependantIndex, handleDependant, independantIndex, handleIndependant, classChartData, charterOptions, handleCharterSelect, selectedCharter, charterOptionsPlot, classIndex, handleClass, loading }
 

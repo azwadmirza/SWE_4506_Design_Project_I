@@ -9,7 +9,7 @@ export const useClassChart = (data:any[]) => {
   const [classDistribution, setClass] = useState<number[]>([]);
   const [charterOptionsPlot,setCharterOptionsPlot]=useState<string[]>([]);
   useEffect(()=>{
-    if(data.length>0){
+    if(data && data.length>0){
       setCharterOptionsPlot(data[0]);
       handleClass(classIndex);
     }
