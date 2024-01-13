@@ -1,6 +1,6 @@
 import "../../assets/css/models.css";
 import "../../assets/css/decisionTree.css";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useChart } from "../../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../../contexts/file/hooks";
 import axios from "axios";
@@ -13,11 +13,16 @@ const DecisionTree = () => {
   const [criterion, setCriterion] = useState("gini");
   const { optionsPlot } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
-  const [targetVariable, setTargetVariable] = useState(
-    optionsPlot[optionsPlot.length - 1]
-  );
+  const [targetVariable, setTargetVariable] = useState<string|null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
+
+  useEffect(()=>{
+    if(optionsPlot && optionsPlot.length>0){
+      setTargetVariable(optionsPlot[optionsPlot.length - 1])
+    }
+  },[optionsPlot])
+
   const handleRunDecisionTree = async () => {
     console.log("Run Decision Tree",{
       file_url: file_url,
@@ -36,8 +41,8 @@ const DecisionTree = () => {
         max_depth: maxDepth,
         criterion: criterion,
       });
-      console.log("Backend response received:", response.data);
-      setEvaluationResults(response.data)
+      console.log("Backend response received:", JSON.parse(response.data));
+      setEvaluationResults(JSON.parse(response.data))
     } catch (error) {
       console.error("Error during backend request:");
     }
@@ -53,7 +58,7 @@ const DecisionTree = () => {
             <select
               id="dropdown"
               className="decision-tree-select"
-              value={targetVariable}
+              value={targetVariable?targetVariable:""}
               onChange={(e) => setTargetVariable(e.target.value)}
             >
               {optionsPlot
