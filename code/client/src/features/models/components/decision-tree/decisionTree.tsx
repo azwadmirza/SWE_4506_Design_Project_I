@@ -19,13 +19,13 @@ const DecisionTree = () => {
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const handleRunDecisionTree = async () => {
-    console.log("Run Decision Tree", {
-      file_url,
-      targetVariable,
-      normalization,
-      trainTestSplit,
-      maxDepth,
-      criterion,
+    console.log("Run Decision Tree",{
+      file_url: file_url,
+      target: targetVariable,
+      normalization: normalization,
+      train_test_split: trainTestSplit,
+      max_depth: maxDepth,
+      criterion: criterion,
     });
     try {
       const response = await axios.post(`${address}/api/decision_tree/start/`, {
@@ -42,21 +42,7 @@ const DecisionTree = () => {
       console.error("Error during backend request:");
     }
   };
-  const handleTrainTestSplitChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
 
-    if (!isNaN(value)) {
-      const clampedValue = Math.min(100, Math.max(0, value));
-      setTrainTestSplit(clampedValue);
-    }
-  };
-
-  const handleMaxDepthChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value) && value > 0) {
-      setMaxDepth(value);
-    }
-  };
   return (
     <div>
       <div className="decision-tree-container-wrapper">
@@ -93,12 +79,14 @@ const DecisionTree = () => {
             </select>
           </div>
           <div>
-            <label className="decision-tree-label">Train Test Split:</label>
+            <label className="decision-tree-label">Percentage Test Set:</label>
             <input
               className="decision-tree-input"
               type="number"
+              min={0}
+              max={100}
               value={trainTestSplit}
-              onChange={handleTrainTestSplitChange}
+              onChange={(e)=>setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
           <div>
@@ -107,7 +95,9 @@ const DecisionTree = () => {
               className="decision-tree-input"
               type="number"
               value={maxDepth}
-              onChange={handleMaxDepthChange}
+              min={1}
+              max={100}
+              onChange={(e)=>setMaxDepth(parseInt(e.target.value))}
             />
           </div>
           <div>

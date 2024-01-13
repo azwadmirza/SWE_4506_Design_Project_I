@@ -24,6 +24,10 @@
   color:white;
 }
 
+.header-buttons-text{
+  font-size: medium;
+}
+
 .header-buttons:hover{
   background-color: var(--customDarkGreen);
 }
