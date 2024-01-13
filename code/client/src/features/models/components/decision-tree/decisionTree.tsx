@@ -1,5 +1,5 @@
-import "../assets/css/models.css";
-import "../assets/css/decisionTree.css";
+import "../../assets/css/models.css";
+import "../../assets/css/decisionTree.css";
 import { useState, ChangeEvent } from "react";
 import { useChart } from "../../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../../contexts/file/hooks";
