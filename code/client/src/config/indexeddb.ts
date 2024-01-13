@@ -14,6 +14,7 @@ interface FileDB extends DBSchema {
       type: string;
       delimiter: string | null;
       data: Blob;
+      uploaded_at:string;
     };
     indexes: { 'byUrl': string; 'byName': string; 'byID': string };
   };
@@ -55,6 +56,7 @@ class IndexedDBConfig {
     const file_id = response.data.file_id;
     const fileWithUrl = {
       ...file,
+      uploaded_at:new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString(),
       id: file_id,
       url: url,
     };
@@ -136,6 +138,36 @@ class IndexedDBConfig {
     }
   }
 
+  async getAllFiles(){
+    if (this.db) {
+      const tx = this.db.transaction('file', 'readonly');
+      const fileStore = tx.objectStore('file');
+      const files = await fileStore.getAll();
+      if(files.length==0){
+        const res=await axios.get(import.meta.env.VITE_BACKEND_REQ_ADDRESS + "/api/file/getall/" + localStorage.getItem("user_id"));
+        return res.data.map((file:any)=>{
+          return {
+            id:file.id,
+            file_name:file.file_name,
+            cloudinary_url:file.cloudinary_url,
+            uploaded_at:new Date(file.uploaded_at).toLocaleDateString()+" "+new Date(file.uploaded_at).toLocaleTimeString()
+          }
+        });
+      }
+      return files.map((file)=>{
+        return {
+          id:file.id,
+          file_name:file.name,
+          cloudinary_url:file.url,
+          uploaded_at:file.uploaded_at
+        }
+      });
+    } else {
+      console.error('Database not initialized');
+      return null;
+    }
+  }
+
   async updateFileURL(jsonData: any, url: string, new_url: string) {
     if (this.db) {
       try {
@@ -154,6 +186,7 @@ class IndexedDBConfig {
             type: file.type,
             delimiter: file.delimiter,
             url: new_url,
+            uploaded_at:new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString(),
             data: file_content
           };
           console.log(file_content);
