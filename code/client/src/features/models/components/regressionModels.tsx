@@ -8,31 +8,31 @@ const RegressionModels = () => {
         <div className="sheets">
               <ul className="d-flex model-tabs-list">
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==1?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(1)}
                 >
                   Linear Regression
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==2?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(2)}
                 >
                   Decision Tree
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==3?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(3)}
                 >
                   K Nearest Neighbour
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==4?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(4)}
                 >
                   Support Vector Machines
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==5?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(5)}
                 >
                   XGBoost
