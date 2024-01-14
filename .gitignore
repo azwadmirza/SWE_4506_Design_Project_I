@@ -4,3 +4,4 @@
 code/.env
 code/serverenv/.env
 code/visualizerenv
+.vscode
