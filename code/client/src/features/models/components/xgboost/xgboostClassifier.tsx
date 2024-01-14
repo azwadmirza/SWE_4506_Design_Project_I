@@ -1,46 +1,10 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useState, useEffect } from "react";
-import { useChart } from "../../../visualization/hooks/useChart";
-import { useAppSelector } from "../../../../contexts/file/hooks";
-import axios from "axios";
 import XGBoostResults from "./xgboostClassificationResults";
+import { useXGBoost } from "../../hooks/useXGBoost";
 
 const XGBoost = () => {
-  const [normalization, setNormalization] = useState("MinMaxScaler");
-  const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [maxDepth, setMaxDepth] = useState(3);
-  const [booster, setBooster] = useState("dart");
-  const { optionsPlot } = useChart();
-  const [evaluationResults, setEvaluationResults] = useState(null);
-  const [targetVariable, setTargetVariable] = useState<string | null>();
-  const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-  const file_url = useAppSelector((state) => state.file.url);
-
-  useEffect(() => {
-    if (optionsPlot && optionsPlot.length > 0) {
-      setTargetVariable(optionsPlot[optionsPlot.length - 1]);
-    }
-  }, [optionsPlot]);
-
-  
-
-  const handleRunXGBoost = async () => {
-    try {
-      const response = await axios.post(`${address}/api/decision_tree/start/`, {
-        file_url: file_url,
-        target: targetVariable,
-        normalization: normalization,
-        train_test_split: trainTestSplit,
-        max_depth: maxDepth,
-        booster: booster,
-      });
-      console.log("Backend response received:", JSON.parse(response.data));
-      setEvaluationResults(JSON.parse(response.data));
-    } catch (error) {
-      console.error("Error during backend request:");
-    }
-  };
+  const {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot}=useXGBoost();
 
   return (
     <div>
@@ -84,8 +48,8 @@ const XGBoost = () => {
             <input
               className="model-input"
               type="number"
-              min={1}
-              max={99}
+              min={10}
+              max={90}
               value={trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
@@ -118,10 +82,14 @@ const XGBoost = () => {
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
-              min={0.1}
-              max={1}
-              onChange={(e) => setMaxDepth(parseInt(e.target.value))}
+              value={subsampleRatio}
+              min="0.1"
+              max="1.0"
+              step=".01"
+              onChange={(e) => {
+                const newValue = parseFloat(e.target.value);
+                setSampleRatio(newValue > 1.0 ? 1.0 : newValue);
+              }}
             />
           </div>
           <div>
@@ -129,27 +97,27 @@ const XGBoost = () => {
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={regAlpha}
               min={10e-6}
               max={10e6}
-              onChange={(e) => setMaxDepth(parseInt(e.target.value))}
+              onChange={(e) => setRegAlpha(parseInt(e.target.value))}
             />
             <div>
             <label className="model-label">L2 Regularization:</label>
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={regLambda}
               min={10e-6}
               max={10e6}
-              onChange={(e) => setMaxDepth(parseInt(e.target.value))}
+              onChange={(e) => setRegLambda(parseInt(e.target.value))}
             />
           </div>
             <label className="model-label">Tree Method:</label>
             <select
               className="model-select"
-              value={booster}
-              onChange={(e) => setBooster(e.target.value)}
+              value={treeMethod}
+              onChange={(e) => setTreeMethod(e.target.value)}
             >
               <option value="exact">Exact</option>
               <option value="approx">Approx</option>
@@ -160,8 +128,8 @@ const XGBoost = () => {
             <label className="model-label">Grow Policy:</label>
             <select
               className="model-select"
-              value={booster}
-              onChange={(e) => setBooster(e.target.value)}
+              value={growPolicy}
+              onChange={(e) => setGrowPolicy(e.target.value)}
             >
               <option value="depthwise">Depthwise</option>
               <option value="lossguide">Lossguide</option>
