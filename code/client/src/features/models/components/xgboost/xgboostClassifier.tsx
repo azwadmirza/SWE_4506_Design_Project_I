@@ -139,7 +139,13 @@ const XGBoost = () => {
             Run
           </button>
         </div>
-        {loader && (<Loader/>) || !loader && (<XGBoostResults data={evaluationResults} />)}
+        <div className="results-container">
+          {loader ? (
+            <Loader />
+          ) : (
+            <XGBoostResults data={evaluationResults} />
+          )}
+        </div>
       </div>
     </div>
   );

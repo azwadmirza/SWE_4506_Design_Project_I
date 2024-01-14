@@ -28,10 +28,10 @@ const Models = () => {
           <RegressionModels/>
         </div>
         <ul className="d-flex model-tabs-list">
-          <li className="flex-fill model-tab" onClick={() => setToggle(1)}>
+          <li className={`flex-fill ${toggle==1?'model-selected':'model-tab'}`} onClick={() => setToggle(1)}>
             Classification
           </li>
-          <li className="flex-fill model-tab" onClick={() => setToggle(2)}>
+          <li className={`flex-fill ${toggle==2?'model-selected':'model-tab'}`} onClick={() => setToggle(2)}>
             Regression
           </li>
         </ul>
