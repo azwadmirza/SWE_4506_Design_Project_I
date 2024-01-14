@@ -4,6 +4,7 @@ import LinearRegression from "./linear-regression/linearRegression";
 import DecisionTree from "./decision-tree/decisionTreeRegression";
 import KNearestNeighbours from "./knn/knnRegression";
 import XGBoost from "./xgboost/xgboostRegression";
+import SVM from "./svm/svmRegression";
 
 const RegressionModels = () => {
   const [toggle, setToggle] = useState(1);
@@ -52,7 +53,7 @@ const RegressionModels = () => {
                 <KNearestNeighbours/>
               </div>
               <div className={toggle === 4 ? "show-model" : "model"}>
-                <h1>This is Support Vector Machines</h1>
+                <SVM/>
               </div>
               <div className={toggle === 5 ? "show-model" : "model"}>
                 <XGBoost/>
