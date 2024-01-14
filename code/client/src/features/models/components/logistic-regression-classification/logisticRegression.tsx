@@ -1,22 +1,23 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useChart } from "../../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../../contexts/file/hooks";
 import axios from "axios";
-import SVMResults from "./svmResults";
+import LogisticRegressionResults from "./logisticRegressionResults";
+import Loader from "../../../../partials/loader";
 
-const SVM = () => {
+const LogisticRegression = () => {
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [degree, setDegree] = useState(3);
-  const [maxIter, setMaxIter] = useState(20);
-  const [kernel, setKernel] = useState("linear");
+  const [maxIter, setMaxIter] = useState(3);
+  const [penalty, setPenalty] = useState("none");
   const { optionsPlot } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
+  const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     if (optionsPlot && optionsPlot.length > 0) {
@@ -24,19 +25,23 @@ const SVM = () => {
     }
   }, [optionsPlot]);
 
-  const handleRunSVM = async () => {
+  const handleRunLogisticRegression = async () => {
     try {
-      const response = await axios.post(`${address}/api/svm/start/`, {
-        file_url: file_url,
-        target: targetVariable,
-        normalization: normalization,
-        train_test_split: trainTestSplit,
-        max_iter: maxIter,
-        kernel: kernel,
-        degree: degree,
-      });
+      setLoader(true);
+      const response = await axios.post(
+        `${address}/api/logistic_regression/start/`,
+        {
+          file_url: file_url,
+          target: targetVariable,
+          normalization: normalization,
+          train_test_split: trainTestSplit,
+          max_iter: maxIter,
+          penalty: penalty,
+        }
+      );
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
+      setLoader(false);
     } catch (error) {
       console.error("Error during backend request:");
     }
@@ -46,7 +51,7 @@ const SVM = () => {
     <div>
       <div className="model-container-wrapper">
         <div className="model-container">
-          <h5>Support Vector Machines</h5>
+          <h5>Logistic Regression</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -82,8 +87,8 @@ const SVM = () => {
             <input
               className="model-input"
               type="number"
-              min={1}
-              max={99}
+              min={10}
+              max={90}
               value={trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
@@ -95,45 +100,39 @@ const SVM = () => {
               type="number"
               value={maxIter}
               min={1}
-              // max={100}
+              max={100}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
           <div>
-            <label className="model-label">Kernel:</label>
+            <label className="model-label">Penalty:</label>
             <select
               className="model-select"
-              value={kernel}
-              onChange={(e) => setKernel(e.target.value)}
+              value={penalty}
+              onChange={(e) => setPenalty(e.target.value)}
             >
-              <option value="linear">Linear</option>
-              <option value="rbf">RBF</option>
-              <option value="sigmoid">Sigmoid</option>
-              <option value="poly">Poly</option>
+              <option value="none">None</option>
+              <option value="l1">L1</option>
+              <option value="l2">L2</option>
             </select>
           </div>
-          {kernel === "poly" && (
-            <div>
-              <label className="model-label">Degree:</label>
-              <input
-                className="model-input"
-                type="number"
-                min={0}
-                value={degree}
-                onChange={(e) => setDegree(parseInt(e.target.value))}
-              />
-            </div>
-          )}
-          <button className="model-button" onClick={handleRunSVM}>
+          <button
+            className="model-button"
+            onClick={handleRunLogisticRegression}
+          >
             Run
           </button>
         </div>
         <div className="results-container">
-          <SVMResults data={evaluationResults} />
+          {loader ? (
+            <Loader />
+          ) : (
+            <LogisticRegressionResults data={evaluationResults} />
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default SVM;
+export default LogisticRegression;
