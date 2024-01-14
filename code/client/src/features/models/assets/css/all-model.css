@@ -19,7 +19,7 @@
     font-size: 12px !important;
   }
   
-  .model-select,
+
   .model-input,
   .model-button {
     cursor: pointer;
@@ -74,9 +74,7 @@
   
   .results-container {
     position: absolute;
-    /* top: 89%; */
     left: calc(100% + 20px);
-    transform: translateY(-20.5%);
     background-color: #ffffff; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 715%; 

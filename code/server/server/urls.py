@@ -16,5 +16,6 @@ urlpatterns = [
     path('api/svm/', include('svm.urls')),
     path('api/xgboost/', include('xgBoost.urls')),
     path('api/naive_bayes/', include('naive_bayes.urls')),
+    path('api/knn/', include('knn.urls')),
 ]
 

@@ -30,16 +30,19 @@ export const useKNN=()=>{
     }
   }, [optionsPlot]);
 
-  const handleRunDecisionTree = async () => {
+  const handleRunKNN = async () => {
     try {
       setLoader(true);
-      const response = await axios.post(`${address}/api/decision_tree/start/`, {
+      const response = await axios.post(`${address}/api/knn/start/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
         train_test_split: trainTestSplit,
-        max_depth: minkowskiMetric,
+        p: minkowskiMetric,
         algorithm: algorithm,
+        distance_metric: distanceMetric,
+        weights: weights,
+        n_neighbours: n_neighbours?n_neighbours:5,
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
@@ -48,5 +51,5 @@ export const useKNN=()=>{
       console.error("Error during backend request:");
     }
   };
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunDecisionTree,optionsPlot}
+  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}
 }

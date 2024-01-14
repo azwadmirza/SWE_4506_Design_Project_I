@@ -10,7 +10,7 @@ import KNearestNeighbours from "./knn/knnClassification";
 const ClassificationModels = () => {
   const [toggle, setToggle] = useState(1);
     return (
-        <div className="sheets">
+        <div className="d-flex sheets">
               <ul className="d-flex model-tabs-list">
                 <li
                   className={`flex-fill ${toggle==1?'model-selected':'model-tab'}`}
