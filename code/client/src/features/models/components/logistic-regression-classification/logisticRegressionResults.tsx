@@ -48,7 +48,7 @@ interface ILogisticRegressionProps {
   } | null;
 }
 
-const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
+const LogisticRegressionResults = ({ data }: ILogisticRegressionProps) => {
   if (!data) return null;
 
   const labelsArray = [];
@@ -83,10 +83,11 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
     labelsArray
   );
 
-
   const dataTest = [];
 
-  for (const [label, metrics] of Object.entries(data["Classification Report Test"])) {
+  for (const [label, metrics] of Object.entries(
+    data["Classification Report Test"]
+  )) {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
@@ -94,22 +95,22 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
   }
   const dataTrain = [];
 
-  for (const [label, metrics] of Object.entries(data["Classification Report Train"])) {
+  for (const [label, metrics] of Object.entries(
+    data["Classification Report Train"]
+  )) {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
     dataTrain.push({ label, metrics });
   }
 
-
-
   return (
     <div style={{ marginBottom: "50px" }}>
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "120px" }}>
         <div style={{ marginBottom: "15px" }}>
           <h2>Train Accuracy</h2>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-          {(data["Accuracy Train"] * 100).toFixed(2)}%
+            {(data["Accuracy Train"] * 100).toFixed(2)}%
           </p>
         </div>
         <div style={{ marginBottom: "15px" }}>
@@ -120,21 +121,22 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
           />
         </div>
         <div style={{ marginBottom: "15px" }}>
-          <DataMatrix
-            data={dataTrain}
-            title="Train"
-          />
+          <DataMatrix data={dataTrain} title="Train" />
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="logistic-regression-train" data={rocCurveTrainData} labels={labelsArray} />
+          <RocCurveChart
+            chartId="Logistic Regression Train"
+            data={rocCurveTrainData}
+            labels={labelsArray}
+          />
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
         <div style={{ marginBottom: "15px" }}>
           <h2>Test Accuracy</h2>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-           {(data["Accuracy Test"] * 100).toFixed(2)}%
+            {(data["Accuracy Test"] * 100).toFixed(2)}%
           </p>
         </div>
         <div style={{ marginBottom: "15px" }}>
@@ -145,14 +147,15 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
           />
         </div>
         <div style={{ marginBottom: "15px" }}>
-          <DataMatrix
-            data={dataTest}
-            title="Test"
-          />
+          <DataMatrix data={dataTest} title="Test" />
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Test</h2>
-          <RocCurveChart chartId="logistic-regression-test" data={rocCurveTestData} labels={labelsArray} />
+          <RocCurveChart
+            chartId="Logistic Regression Test"
+            data={rocCurveTestData}
+            labels={labelsArray}
+          />
         </div>
       </div>
     </div>

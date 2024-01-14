@@ -1,21 +1,23 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useChart } from "../../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../../contexts/file/hooks";
 import axios from "axios";
-import LogisticRegressionResults from "./logisticRegressionResults";
+import NaiveBayesResults from "./naiveBayesResults";
+import Loader from "../../../../partials/loader";
 
-const LogisticRegression = () => {
+const NaiveBayes = () => {
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxIter, setMaxIter] = useState(3);
-  const [penalty, setPenalty] = useState("none");
+  const [smoothing, setSmoothing] = useState("none");
   const { optionsPlot } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
+  const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     if (optionsPlot && optionsPlot.length > 0) {
@@ -23,8 +25,9 @@ const LogisticRegression = () => {
     }
   }, [optionsPlot]);
 
-  const handleRunLogisticRegression = async () => {
+  const handleRunNaiveBayes = async () => {
     try {
+      setLoader(true);
       const response = await axios.post(
         `${address}/api/logistic_regression/start/`,
         {
@@ -33,11 +36,12 @@ const LogisticRegression = () => {
           normalization: normalization,
           train_test_split: trainTestSplit,
           max_iter: maxIter,
-          penalty: penalty,
+          smoothing: smoothing,
         }
       );
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
+      setLoader(false);
     } catch (error) {
       console.error("Error during backend request:");
     }
@@ -47,11 +51,13 @@ const LogisticRegression = () => {
     <div>
       <div className="model-container-wrapper">
         <div className="model-container">
-          <h5>Logistic Regression</h5>
+          <h5>
+            Naive
+            <br />
+            Bayes
+          </h5>
           <div className="model-label">
-            <label className="model-label">
-              Target Variable:
-            </label>
+            <label className="model-label">Target Variable:</label>
             <select
               id="dropdown"
               className="model-select"
@@ -81,14 +87,12 @@ const LogisticRegression = () => {
             </select>
           </div>
           <div>
-            <label className="model-label">
-              Percentage Test Set:
-            </label>
+            <label className="model-label">Percentage Test Set:</label>
             <input
               className="model-input"
               type="number"
-              min={1}
-              max={99}
+              min={10}
+              max={90}
               value={trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
@@ -100,35 +104,32 @@ const LogisticRegression = () => {
               type="number"
               value={maxIter}
               min={1}
-              // max={99}
+              max={100}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
           <div>
-            <label className="model-label">Penalty:</label>
+            <label className="model-label">Smoothing:</label>
             <select
               className="model-select"
-              value={penalty}
-              onChange={(e) => setPenalty(e.target.value)}
+              value={smoothing}
+              onChange={(e) => setSmoothing(e.target.value)}
             >
               <option value="none">None</option>
               <option value="l1">L1</option>
               <option value="l2">L2</option>
             </select>
           </div>
-          <button
-            className="model-button"
-            onClick={handleRunLogisticRegression}
-          >
+          <button className="model-button" onClick={handleRunNaiveBayes}>
             Run
           </button>
         </div>
         <div className="results-container">
-          <LogisticRegressionResults data={evaluationResults} />
+          {loader ? <Loader /> : <NaiveBayesResults data={evaluationResults} />}
         </div>
       </div>
     </div>
   );
 };
 
-export default LogisticRegression;
+export default NaiveBayes;
