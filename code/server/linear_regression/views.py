@@ -8,6 +8,8 @@ from library.classification_analysis import ClassificationAnalysis
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.metrics import r2_score
+from django.http import JsonResponse
+
 
 
 class linear_regression_model(APIView):
@@ -66,20 +68,20 @@ class linear_regression_model(APIView):
         evaluation = {
             'MSE Test': mse_test,
             'MSE Train': mse_train,
-            'MSE Whole': mse_whole,
+            # 'MSE Whole': mse_whole,
             'RMSE Test': rmse_test,
             'RMSE Train': rmse_train,
-            'RMSE Whole': rmse_whole,
+            # 'RMSE Whole': rmse_whole,
             'MAE Test': mae_test,
             'MAE Train': mae_train,
-            'MAE Whole': mae_whole,
+            # 'MAE Whole': mae_whole,
             'R2 Accuracy Test': r2_accuracy_test,
             'R2 Accuracy Train': r2_accuracy_train,
-            'R2 Accuracy Whole': r2_accuracy_whole,
-            'Predictions Test': predictions_test,
-            'Actual test data': y_test,
-            'Actual Train data': y_train,
-            'Actual whole data': y
+            # 'R2 Accuracy Whole': r2_accuracy_whole,
+            'Predictions Whole': predictions_Whole.tolist(), 
+            # 'Actual test data': y_test.tolist(),
+            # 'Actual Train data': y_train.tolist(),
+            # 'Actual whole data': y.tolist(),
         }
-
-        return Response(evaluation, status=status.HTTP_200_OK)
+        
+        return JsonResponse(evaluation, status=status.HTTP_200_OK)

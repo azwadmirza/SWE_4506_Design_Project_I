@@ -1,5 +1,6 @@
 import "../assets/css/models.css";
 import { useState } from "react";
+import LinearRegression from "./linear-regression/linearRegression";
 
 const RegressionModels = () => {
   const [toggle, setToggle] = useState(1);
@@ -39,7 +40,7 @@ const RegressionModels = () => {
               </ul>
             <div className="d-flex align-items center justify-content-center">
               <div className={toggle === 1 ? "show-model" : "model"}>
-                <h1>This is Linear Regression</h1>
+                <LinearRegression/>
               </div>
               <div className={toggle === 2 ? "show-model" : "model"}>
                 <h1>This is Decision Tree</h1>
