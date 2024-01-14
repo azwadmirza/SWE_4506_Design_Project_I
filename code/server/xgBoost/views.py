@@ -9,7 +9,7 @@ import pandas as pd
 from library.classification_analysis import ClassificationAnalysis
 from xgboost import XGBClassifier
 
-# Create your views here.
+
 class xgboost_model(APIView):
     queryset = []
 
@@ -32,7 +32,6 @@ class xgboost_model(APIView):
         dataProcessing = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data)
         X_train, X_test, y_train, y_test=dataProcessing.get_processed_data_with_split()
         categories=dataProcessing.get_categories()
-        print(categories)
         model = Model(XGBClassifier(booster,max_depth=depth,tree_method=tree_method,grow_policy=grow_policy,reg_alpha=reg_alpha,reg_lambda=reg_lambda,subsample=subsample,enable_categorical=True),normalisation).get_model()
         y_test=pd.Series(LabelEncoder().fit_transform(y_test))
         y_train=pd.Series(LabelEncoder().fit_transform(y_train))
