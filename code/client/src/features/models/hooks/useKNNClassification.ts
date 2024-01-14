@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { round, sqrt } from "mathjs";
 import { useChart } from "../../visualization/hooks/useChart";
 
-export const useKNN=()=>{
+export const useKNNClassification=()=>{
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(20);
   const [minkowskiMetric, setMinkowskiMetric] = useState(2);

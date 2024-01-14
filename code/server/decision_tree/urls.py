@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-     path('start/', views.decision_tree_model.as_view(), name='decision_tree'),
+     path('classification/', views.decisionTreeClassification.as_view(), name='decision_tree'),
+     path('regression/', views.decisionTreeRegression.as_view(), name='decision_tree'),
 ]

@@ -48,7 +48,7 @@ interface IDecisionTreeProps {
   } | null;
 }
 
-const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
+const DecisionTreeClassificationResults = ({ data }: IDecisionTreeProps) => {
   if (!data) return null;
   const labelsArray = [];
   const classificationReportTest = data["Classification Report Test"];
@@ -153,4 +153,4 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
   );
 };
 
-export default DecisionTreeResults;
+export default DecisionTreeClassificationResults;

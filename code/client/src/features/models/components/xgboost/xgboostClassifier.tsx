@@ -1,11 +1,11 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import XGBoostResults from "./xgboostClassificationResults";
-import { useXGBoost } from "../../hooks/useXGBoost";
+import { useXGBoostClassification } from "../../hooks/useXGBoostClassification";
 import Loader from "../../../../partials/loader";
 
 const XGBoost = () => {
-  const {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoost();
+  const {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
   return (
     <div>
       <div className="model-container-wrapper d-flex">

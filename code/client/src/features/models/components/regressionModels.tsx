@@ -1,6 +1,7 @@
 import "../assets/css/models.css";
 import { useState } from "react";
 import LinearRegression from "./linear-regression/linearRegression";
+import DecisionTree from "./decision-tree-classification/decisionTreeRegression";
 
 const RegressionModels = () => {
   const [toggle, setToggle] = useState(1);
@@ -43,7 +44,7 @@ const RegressionModels = () => {
                 <LinearRegression/>
               </div>
               <div className={toggle === 2 ? "show-model" : "model"}>
-                <h1>This is Decision Tree</h1>
+                <DecisionTree/>
               </div>
               <div className={toggle === 3 ? "show-model" : "model"}>
                 <h1>This is K Nearest Neigbours</h1>
