@@ -56,8 +56,6 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
     }
     dataTrain.push({ label, metrics });
   }
-  console.log(dataTest)
-  console.log(dataTrain)
 
   return (
     <div style={{ marginBottom: "50px" }}>

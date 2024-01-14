@@ -76,7 +76,7 @@ const DecisionTree = () => {
             >
               <option value="MinMaxScaler">MinMax Scaler</option>
               <option value="StandardScaler">Standard Scaler</option>
-              <option value="RobustScaler">RobustScaler (Median)</option>
+              <option value="RobustScaler">Robust Scaler</option>
             </select>
           </div>
           <div>
