@@ -5,10 +5,11 @@ from rest_framework.views import APIView
 from library.data_preprocessing import DataProcessing
 from library.model import Model
 from library.classification_analysis import ClassificationAnalysis
-from sklearn.tree import DecisionTreeClassifier
+from library.regression_analysis import RegressionAnalysis
+from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
 
-# Create your views here.
-class decision_tree_model(APIView):
+
+class decisionTreeClassification(APIView):
     queryset = []
 
     permission_classes = []
@@ -29,3 +30,25 @@ class decision_tree_model(APIView):
             model = Model(DecisionTreeClassifier(max_depth=depth),normalisation).get_model()
         model.fit(X_train,y_train)
         return Response(ClassificationAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)
+    
+class decisionTreeRegression(APIView):
+    queryset = []
+
+    permission_classes = []
+    def get(self, request):
+        return Response('Decison Tree Model Working...', status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        requestBody = request.data
+        depth = requestBody.get('max_depth', None)
+        criter = requestBody.get('criterion', None)
+        split_data = requestBody.get('train_test_split', None)
+        targetCol = requestBody.get('target', None)
+        normalisation = requestBody.get('normalization', None)
+        X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'regression',"text/csv",split_data).get_processed_data_with_split()
+        if criter is not None:
+            model = Model(DecisionTreeRegressor(criterion=criter,max_depth=depth),normalisation).get_model()
+        else:
+            model = Model(DecisionTreeRegressor(max_depth=depth),normalisation).get_model()
+        model.fit(X_train,y_train)
+        return Response(RegressionAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)

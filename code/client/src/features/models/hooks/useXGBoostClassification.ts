@@ -3,7 +3,7 @@ import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
 
-export const useXGBoost=()=>{
+export const useXGBoostClassification=()=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxDepth, setMaxDepth] = useState(6);
