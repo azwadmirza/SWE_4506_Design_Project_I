@@ -74,13 +74,13 @@
   
   .results-container {
     position: absolute;
-    top: 89%;
+    /* top: 89%; */
     left: calc(100% + 20px);
-    transform: translateY(-89%);
+    transform: translateY(-20.5%);
     background-color: #ffffff; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 715%; 
-    height: 100%;
+    height: auto;
     padding: 10px;
     overflow-y: auto;
   }
