@@ -3,11 +3,12 @@ import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
 
-export const useXGBoostClassification=()=>{
+export const useXGBoostRegression=()=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxDepth, setMaxDepth] = useState(6);
   const [subsampleRatio, setSampleRatio] = useState(0.5);
+  const [objective, setObjective] = useState("reg:squarederror");
   const [regAlpha, setRegAlpha] = useState(0);
   const [regLambda, setRegLambda] = useState(0);
   const [loader,setLoader]=useState(false);
@@ -31,7 +32,7 @@ export const useXGBoostClassification=()=>{
   const handleRunXGBoost = async () => {
     try {
       setLoader(true);
-      const response = await axios.post(`${address}/api/xgboost/classification/`, {
+      const response = await axios.post(`${address}/api/xgboost/regression/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
@@ -42,7 +43,8 @@ export const useXGBoostClassification=()=>{
         grow_policy: growPolicy,
         reg_alpha: regAlpha,
         reg_lambda: regLambda,
-        subsample_ratio: subsampleRatio
+        subsample_ratio: subsampleRatio,
+        objective: objective
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
@@ -52,5 +54,5 @@ export const useXGBoostClassification=()=>{
     }
   };
 
-  return {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}
+  return {objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}
 }

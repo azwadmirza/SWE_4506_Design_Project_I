@@ -3,6 +3,7 @@ import { useState } from "react";
 import LinearRegression from "./linear-regression/linearRegression";
 import DecisionTree from "./decision-tree/decisionTreeRegression";
 import KNearestNeighbours from "./knn/knnRegression";
+import XGBoost from "./xgboost/xgboostRegression";
 
 const RegressionModels = () => {
   const [toggle, setToggle] = useState(1);
@@ -54,7 +55,7 @@ const RegressionModels = () => {
                 <h1>This is Support Vector Machines</h1>
               </div>
               <div className={toggle === 5 ? "show-model" : "model"}>
-                <h1>This is Boosted XGBoost Trees</h1>
+                <XGBoost/>
               </div>
             </div>
           </div>
