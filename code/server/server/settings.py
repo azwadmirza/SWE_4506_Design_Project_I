@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'decision_tree',
     'logistic_regression',
     'svm',
+    'naive_bayes',
+    'xgBoost'
 ]
 
 MIDDLEWARE = [
