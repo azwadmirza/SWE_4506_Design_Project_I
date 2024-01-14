@@ -4,7 +4,7 @@ import extractRocCurveData from "../rocDataExtraction";
 import { RawData } from "../rocDataExtraction";
 import RocCurveChart, { RocCurveChartProps } from "../rocGenerator";
 
-interface ILogisticRegressionProps {
+interface INaiveBayesProps {
   data: {
     "Accuracy Test": number;
     "Accuracy Train": number;
@@ -48,7 +48,7 @@ interface ILogisticRegressionProps {
   } | null;
 }
 
-const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
+const NaiveBayesResults = ({ data }:INaiveBayesProps) => {
   if (!data) return null;
 
   const labelsArray = [];
@@ -127,7 +127,7 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="Logistic Regression Train" data={rocCurveTrainData} labels={labelsArray} />
+          <RocCurveChart chartId="Naive Bayes Train" data={rocCurveTrainData} labels={labelsArray} />
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -152,11 +152,11 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Test</h2>
-          <RocCurveChart chartId="Logistic Regression Test" data={rocCurveTestData} labels={labelsArray} />
+          <RocCurveChart chartId="Naive Bayes Test" data={rocCurveTestData} labels={labelsArray} />
         </div>
       </div>
     </div>
   );
 };
 
-export default LogisticRegressionResults;
+export default NaiveBayesResults;
