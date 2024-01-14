@@ -1,6 +1,6 @@
 import "../assets/css/models.css";
 import { useState } from "react";
-import DecisionTree from "./decision-tree-classification/decisionTreeClassification";
+import DecisionTree from "./decision-tree/decisionTreeClassification";
 import LogisticRegression from "./logistic-regression-classification/logisticRegression";
 import SVM from "./svm-classification/svm";
 import NaiveBayes from "./naive-bayes/naiveBayes";
