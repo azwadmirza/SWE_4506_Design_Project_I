@@ -122,7 +122,7 @@ const LinearRegression = () => {
           {loader ? (
             <Loader />
           ) : (
-            <LinearRegressionResults data={evaluationResults} />
+            <LinearRegressionResults modelData={evaluationResults} target={targetVariable}/>
           )}
         </div>
       </div>
