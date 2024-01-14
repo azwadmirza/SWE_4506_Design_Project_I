@@ -5,6 +5,7 @@ import LogisticRegression from "./logistic-regression-classification/logisticReg
 import SVM from "./svm-classification/svm";
 import NaiveBayes from "./naive-bayes/naiveBayes";
 import XGBoost from "./xgboost/xgboostClassifier";
+import KNearestNeighbours from "./knn/knnClassification";
 
 const ClassificationModels = () => {
   const [toggle, setToggle] = useState(3);
@@ -59,7 +60,7 @@ const ClassificationModels = () => {
                 <DecisionTree/>
               </div>
               <div className={toggle === 4 ? "show-model" : "model"}>
-                <h1>This is K Nearest Neigbours</h1>
+                <KNearestNeighbours/>
               </div>
               <div className={toggle === 5 ? "show-model" : "model"}>
                 <SVM/>

@@ -10,6 +10,7 @@ export const useXGBoost=()=>{
   const [subsampleRatio, setSampleRatio] = useState(0.5);
   const [regAlpha, setRegAlpha] = useState(0);
   const [regLambda, setRegLambda] = useState(0);
+  const [loader,setLoader]=useState(false);
   const [booster, setBooster] = useState("dart");
   const [treeMethod, setTreeMethod] = useState("hist");
   const [growPolicy, setGrowPolicy] = useState("depthwise");
@@ -29,6 +30,7 @@ export const useXGBoost=()=>{
 
   const handleRunXGBoost = async () => {
     try {
+      setLoader(true);
       const response = await axios.post(`${address}/api/xgboost/start/`, {
         file_url: file_url,
         target: targetVariable,
@@ -44,10 +46,11 @@ export const useXGBoost=()=>{
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
+      setLoader(false);
     } catch (error) {
       console.error("Error during backend request:");
     }
   };
 
-  return {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,optionsMap}
+  return {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,optionsMap,loader}
 }
