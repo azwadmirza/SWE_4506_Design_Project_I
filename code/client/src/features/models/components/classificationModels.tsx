@@ -4,6 +4,7 @@ import DecisionTree from "./decision-tree-classification/decisionTree";
 import LogisticRegression from "./logistic-regression-classification/logisticRegression";
 import SVM from "./svm-classification/svm";
 import NaiveBayes from "./naive-bayes/naiveBayes";
+import XGBoost from "./xgboost/xgboostClassifier";
 
 const ClassificationModels = () => {
   const [toggle, setToggle] = useState(3);
@@ -64,7 +65,7 @@ const ClassificationModels = () => {
                 <SVM/>
               </div>
               <div className={toggle === 6 ? "show-model" : "model"}>
-                <h1>This is Boosted XGBoost Trees</h1>
+                <h1><XGBoost/></h1>
               </div>
             </div>
           </div>
