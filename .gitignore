@@ -5,3 +5,4 @@ code/.env
 code/serverenv/.env
 code/visualizerenv
 .vscode
+code/server/file_controller/__pycache__/__init__.cpython-312.pyc
