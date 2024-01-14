@@ -1,7 +1,7 @@
 import "../assets/css/models.css";
 import { useState } from "react";
 import LinearRegression from "./linear-regression/linearRegression";
-import DecisionTree from "./decision-tree-classification/decisionTreeRegression";
+import DecisionTree from "./decision-tree/decisionTreeRegression";
 
 const RegressionModels = () => {
   const [toggle, setToggle] = useState(1);
