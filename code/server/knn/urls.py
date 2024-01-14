@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-     path('start/', views.knn_model.as_view(), name='knn_model'),
+     path('classification/', views.knnClassification.as_view(), name='knn_model'),
+     # path('regression/', views.knnRegression.as_view(), name='decision_tree'),
 ]

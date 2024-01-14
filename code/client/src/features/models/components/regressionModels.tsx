@@ -2,6 +2,7 @@ import "../assets/css/models.css";
 import { useState } from "react";
 import LinearRegression from "./linear-regression/linearRegression";
 import DecisionTree from "./decision-tree/decisionTreeRegression";
+import KNearestNeighbours from "./knn/knnRegression";
 
 const RegressionModels = () => {
   const [toggle, setToggle] = useState(1);
@@ -47,7 +48,7 @@ const RegressionModels = () => {
                 <DecisionTree/>
               </div>
               <div className={toggle === 3 ? "show-model" : "model"}>
-                <h1>This is K Nearest Neigbours</h1>
+                <KNearestNeighbours/>
               </div>
               <div className={toggle === 4 ? "show-model" : "model"}>
                 <h1>This is Support Vector Machines</h1>

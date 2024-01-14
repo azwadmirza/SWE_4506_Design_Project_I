@@ -6,7 +6,7 @@ from library.model import Model
 from library.classification_analysis import ClassificationAnalysis
 from sklearn.neighbors import KNeighborsClassifier
 
-class knn_model(APIView):
+class knnClassification(APIView):
     queryset = []
 
     permission_classes = []
