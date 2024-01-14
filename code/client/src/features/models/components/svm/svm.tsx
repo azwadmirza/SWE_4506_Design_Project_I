@@ -33,6 +33,7 @@ const SVM = () => {
         train_test_split: trainTestSplit,
         max_iter: maxIter,
         kernel: kernel,
+        degree: degree,
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
@@ -73,7 +74,7 @@ const SVM = () => {
             >
               <option value="MinMaxScaler">MinMax Scaler</option>
               <option value="StandardScaler">Standard Scaler</option>
-              <option value="RobustScaler">RobustScaler (Median)</option>
+              <option value="RobustScaler">Robust Scaler</option>
             </select>
           </div>
           <div>
@@ -81,8 +82,8 @@ const SVM = () => {
             <input
               className="model-input"
               type="number"
-              min={0}
-              max={100}
+              min={1}
+              max={99}
               value={trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
@@ -94,7 +95,7 @@ const SVM = () => {
               type="number"
               value={maxIter}
               min={1}
-              max={100}
+              // max={100}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
@@ -107,6 +108,7 @@ const SVM = () => {
             >
               <option value="linear">Linear</option>
               <option value="rbf">RBF</option>
+              <option value="sigmoid">Sigmoid</option>
               <option value="poly">Poly</option>
             </select>
           </div>

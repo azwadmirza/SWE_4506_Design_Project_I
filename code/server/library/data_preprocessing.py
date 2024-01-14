@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import numpy as np
 
 class DataProcessing:
     def __init__(__self,url,target_column,process,file_type,train_test_split=None,delimiter=None):
@@ -86,5 +87,11 @@ class DataProcessing:
             __self.features[col + '_second'] = __self.features[col].dt.second
         __self.features = __self.features.drop(datetime_columns, axis=1)
         
+    def isMultiClass(__self):
+        if __self.target_column is not None:
+            unique_classes = np.unique(__self.df[__self.target_column])
+            return len(unique_classes) > 2
+        else:
+            raise Exception("Target Column Not Specified")
     
     

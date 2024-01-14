@@ -85,7 +85,7 @@ const LogisticRegression = () => {
             >
               <option value="MinMaxScaler">MinMax Scaler</option>
               <option value="StandardScaler">Standard Scaler</option>
-              <option value="RobustScaler">RobustScaler (Median)</option>
+              <option value="RobustScaler">Robust Scaler</option>
             </select>
           </div>
           <div>
@@ -95,8 +95,8 @@ const LogisticRegression = () => {
             <input
               className="model-input"
               type="number"
-              min={0}
-              max={100}
+              min={1}
+              max={99}
               value={trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
@@ -108,7 +108,7 @@ const LogisticRegression = () => {
               type="number"
               value={maxIter}
               min={1}
-              max={100}
+              // max={99}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>

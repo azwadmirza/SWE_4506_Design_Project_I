@@ -84,8 +84,8 @@ const DecisionTree = () => {
             <input
               className="model-input"
               type="number"
-              min={0}
-              max={100}
+              min={1}
+              max={99}
               value={trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
@@ -97,7 +97,7 @@ const DecisionTree = () => {
               type="number"
               value={maxDepth}
               min={1}
-              max={100}
+              // max={100}
               onChange={(e) => setMaxDepth(parseInt(e.target.value))}
             />
           </div>
