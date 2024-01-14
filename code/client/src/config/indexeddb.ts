@@ -2,7 +2,7 @@ import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { parseFile } from './parser';
 import uploadToBackend from './uploadFiletoBackend';
 import axios from 'axios';
-import { arrayToCSV } from '../utils/csvConverter';
+import { arrayToCSV, fileToCSV } from '../utils/csvConverter';
 
 interface FileDB extends DBSchema {
   'file': {
@@ -14,7 +14,7 @@ interface FileDB extends DBSchema {
       type: string;
       delimiter: string | null;
       data: Blob;
-      uploaded_at:string;
+      uploaded_at: string;
     };
     indexes: { 'byUrl': string; 'byName': string; 'byID': string };
   };
@@ -56,7 +56,7 @@ class IndexedDBConfig {
     const file_id = response.data.file_id;
     const fileWithUrl = {
       ...file,
-      uploaded_at:new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString(),
+      uploaded_at: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
       id: file_id,
       url: url,
     };
@@ -70,7 +70,25 @@ class IndexedDBConfig {
     }
   }
 
-  async getFileByURL(index: 'byUrl', value: string, type: string | null, delimiter: string | null) {
+  async addFileLocal(file: {
+    name: string;
+    type: string;
+    delimiter: string | null;
+    url: string;
+    id: string;
+    data: Blob;
+    uploaded_at: string;
+  }) {
+    if (this.db) {
+      const tx = this.db.transaction('file', 'readwrite');
+      const fileStore = tx.objectStore('file');
+      await fileStore.add(file);
+    } else {
+      throw new Error('Database not initialized');
+    }
+  }
+
+  async getFileByURL(index: 'byUrl', value: string, id: string,file_name:string,uploaded_at:string|null) {
     if (this.db) {
       const tx = this.db.transaction('file', 'readonly');
       const fileStore = tx.objectStore('file');
@@ -80,19 +98,22 @@ class IndexedDBConfig {
         const fileObject = new File([file.data], file.name, { type: file.type });
         return await parseFile(fileObject, file.delimiter, file.type);
       } else {
-        await axios.get(value);
-        if (type) {
-          this.addFile({
-            name: value,
-            type: type,
-            delimiter: delimiter,
-            data: new Blob(),
+        if (id) {
+          const file = await axios.get(value);
+          const file_content = await fileToCSV(file.data, value, "text/csv");
+          await this.addFileLocal({
+            name: file_name,
+            type: "text/csv",
+            delimiter: ",",
+            url: value,
+            id: id,
+            data: file_content,
+            uploaded_at: uploaded_at||new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
           });
-          const fileObject = new File([], value, { type: type });
-          return await parseFile(fileObject, delimiter, type);
+          return await parseFile(file_content, ",", "text/csv");
         }
         else {
-          throw new Error("File not found");
+          throw new Error("ID Must Be Specified");
         }
       }
     } else {
@@ -138,28 +159,31 @@ class IndexedDBConfig {
     }
   }
 
-  async getAllFiles(){
+  async getAllFiles() {
     if (this.db) {
       const tx = this.db.transaction('file', 'readonly');
       const fileStore = tx.objectStore('file');
       const files = await fileStore.getAll();
-      if(files.length==0){
-        const res=await axios.get(import.meta.env.VITE_BACKEND_REQ_ADDRESS + "/api/file/getall/" + localStorage.getItem("user_id"));
-        return res.data.map((file:any)=>{
+      if (files.length == 0) {
+        const res = await axios.get(import.meta.env.VITE_BACKEND_REQ_ADDRESS + "/api/file/getall/" + localStorage.getItem("user_id"));
+        res.data.map(async(file:any)=>{
+          this.getFileByURL('byUrl', file.cloudinary_url, file.id, file.file_name, new Date(file.uploaded_at).toLocaleDateString() + " " + new Date(file.uploaded_at).toLocaleTimeString());
+        })
+        return res.data.map((file: any) => {
           return {
-            id:file.id,
-            file_name:file.file_name,
-            cloudinary_url:file.cloudinary_url,
-            uploaded_at:new Date(file.uploaded_at).toLocaleDateString()+" "+new Date(file.uploaded_at).toLocaleTimeString()
+            id: file.id,
+            file_name: file.file_name,
+            cloudinary_url: file.cloudinary_url,
+            uploaded_at: new Date(file.uploaded_at).toLocaleDateString() + " " + new Date(file.uploaded_at).toLocaleTimeString()
           }
         });
       }
-      return files.map((file)=>{
+      return files.map((file) => {
         return {
-          id:file.id,
-          file_name:file.name,
-          cloudinary_url:file.url,
-          uploaded_at:file.uploaded_at
+          id: file.id,
+          file_name: file.name,
+          cloudinary_url: file.url,
+          uploaded_at: file.uploaded_at
         }
       });
     } else {
@@ -177,7 +201,7 @@ class IndexedDBConfig {
 
         if (files.length > 0) {
           const file = files[0];
-          const file_content = await arrayToCSV(jsonData ? jsonData : [],file.delimiter?file.delimiter:undefined,file.name,file.type);
+          const file_content = await arrayToCSV(jsonData ? jsonData : [], file.delimiter ? file.delimiter : undefined, file.name, file.type);
           console.log(file.data)
           console.log(typeof file.data);
           const updatedFile = {
@@ -186,7 +210,7 @@ class IndexedDBConfig {
             type: file.type,
             delimiter: file.delimiter,
             url: new_url,
-            uploaded_at:new Date().toLocaleDateString()+" "+new Date().toLocaleTimeString(),
+            uploaded_at: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
             data: file_content
           };
           console.log(file_content);

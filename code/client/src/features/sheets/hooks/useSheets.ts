@@ -12,9 +12,10 @@ export const useSheets = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const {save}=useSave();
   const [data, setData] = useState<any[] | null>([]);
-  const delimiter = useAppSelector((state) => state.file.delimiter);
-  const type = useAppSelector((state) => state.file.type);
+  const file=useAppSelector((state)=>state.file.file);
   const url = useAppSelector((state) => state.file.url);
+  const file_id=useAppSelector((state)=>state.file.file_id);
+  const uploaded_at=useAppSelector((state)=>state.file.uploaded_at);
 
   const updateGrid = (updatedGridRows: JSX.Element[]) => {
     setGridRows(updatedGridRows);
@@ -60,7 +61,7 @@ export const useSheets = () => {
         if (url) {
           const open = await indexedDBConfig.openDatabase();
           if (open) {
-            const fetchedData=await indexedDBConfig.getFileByURL('byUrl', url, type, delimiter);
+            const fetchedData=await indexedDBConfig.getFileByURL('byUrl', url,file_id,file,uploaded_at );
             await render(fetchedData);
             setData(fetchedData);
           }
