@@ -1,7 +1,7 @@
 import ConfusionMatrix from "../confusionMatrix";
 import DataMatrix from "../dataMatrix";
 
-interface IDecisionTreeProps {
+interface ILogisticRegressionProps {
   data: {
     "Accuracy Test": number;
     "Accuracy Train": number;
@@ -27,7 +27,7 @@ interface IDecisionTreeProps {
   }|null;
 }
 
-const DecisionTreeResults = ({ data }:IDecisionTreeProps) => {
+const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
   if (!data) return null;
 
   const labelsArray = [];
@@ -56,6 +56,8 @@ const DecisionTreeResults = ({ data }:IDecisionTreeProps) => {
     }
     dataTrain.push({ label, metrics });
   }
+  console.log(dataTest)
+  console.log(dataTrain)
 
   return (
     <div style={{ marginBottom: "50px" }}>
@@ -105,4 +107,4 @@ const DecisionTreeResults = ({ data }:IDecisionTreeProps) => {
   );
 };
 
-export default DecisionTreeResults;
+export default LogisticRegressionResults;

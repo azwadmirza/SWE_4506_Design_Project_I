@@ -4,13 +4,13 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { useChart } from "../../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../../contexts/file/hooks";
 import axios from "axios";
-import DecisionTreeResults from "./decisionTreeResults";
+import LogisticRegressionResults from "./logisticRegressionResults";
 
-const DecisionTree = () => {
+const LogisticRegression = () => {
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [maxDepth, setMaxDepth] = useState(3);
-  const [criterion, setCriterion] = useState("gini");
+  const [maxIter, setMaxIter] = useState(3);
+  const [penalty, setPenalty] = useState("none");
   const { optionsPlot } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [targetVariable, setTargetVariable] = useState<string | null>();
@@ -23,16 +23,27 @@ const DecisionTree = () => {
     }
   }, [optionsPlot]);
 
-  const handleRunDecisionTree = async () => {
+  const handleRunLogisticRegression = async () => {
+    console.log("Run Logistic Regression", {
+      file_url: file_url,
+      target: targetVariable,
+      normalization: normalization,
+      train_test_split: trainTestSplit,
+      max_iter: maxIter,
+      penalty: penalty,
+    });
     try {
-      const response = await axios.post(`${address}/api/decision_tree/start/`, {
-        file_url: file_url,
-        target: targetVariable,
-        normalization: normalization,
-        train_test_split: trainTestSplit,
-        max_depth: maxDepth,
-        criterion: criterion,
-      });
+      const response = await axios.post(
+        `${address}/api/logistic_regression/start/`,
+        {
+          file_url: file_url,
+          target: targetVariable,
+          normalization: normalization,
+          train_test_split: trainTestSplit,
+          max_iter: maxIter,
+          penalty: penalty,
+        }
+      );
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
     } catch (error) {
@@ -44,13 +55,11 @@ const DecisionTree = () => {
     <div>
       <div className="model-container-wrapper">
         <div className="model-container">
-          <h5>
-            Decision
-            <br />
-            Tree
-          </h5>
+          <h5>Logistic Regression</h5>
           <div className="model-label">
-            <label className="model-label">Target Variable:</label>
+            <label className="model-label">
+              Target Variable:
+            </label>
             <select
               id="dropdown"
               className="model-select"
@@ -80,7 +89,9 @@ const DecisionTree = () => {
             </select>
           </div>
           <div>
-            <label className="model-label">Percentage Test Set:</label>
+            <label className="model-label">
+              Percentage Test Set:
+            </label>
             <input
               className="model-input"
               type="number"
@@ -91,38 +102,41 @@ const DecisionTree = () => {
             />
           </div>
           <div>
-            <label className="model-label">Max Depth:</label>
+            <label className="model-label">Max Iter:</label>
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={maxIter}
               min={1}
               max={100}
-              onChange={(e) => setMaxDepth(parseInt(e.target.value))}
+              onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
           <div>
-            <label className="model-label">Criterion:</label>
+            <label className="model-label">Penalty:</label>
             <select
               className="model-select"
-              value={criterion}
-              onChange={(e) => setCriterion(e.target.value)}
+              value={penalty}
+              onChange={(e) => setPenalty(e.target.value)}
             >
-              <option value="gini">Gini</option>
-              <option value="entropy">Entropy</option>
-              <option value="log_loss">Log Loss</option>
+              <option value="none">None</option>
+              <option value="l1">L1</option>
+              <option value="l2">L2</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunDecisionTree}>
+          <button
+            className="model-button"
+            onClick={handleRunLogisticRegression}
+          >
             Run
           </button>
         </div>
         <div className="results-container">
-          <DecisionTreeResults data={evaluationResults} />
+          <LogisticRegressionResults data={evaluationResults} />
         </div>
       </div>
     </div>
   );
 };
 
-export default DecisionTree;
+export default LogisticRegression;

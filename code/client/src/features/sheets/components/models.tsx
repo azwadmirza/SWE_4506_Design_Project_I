@@ -12,7 +12,7 @@ import { useSheets } from "../hooks/useSheets";
 const Models = () => {
   const file = useAppSelector((state) => state.file.file);
   const loading = useAppSelector((state) => state.file.loading);
-  const [toggle, setToggle] = useState(2);
+  const [toggle, setToggle] = useState(1);
   const {data}=useSheets();
   if (!loading) {
     return (

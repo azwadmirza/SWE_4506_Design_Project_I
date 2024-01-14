@@ -1,7 +1,7 @@
 import ConfusionMatrix from "../confusionMatrix";
 import DataMatrix from "../dataMatrix";
 
-interface IDecisionTreeProps {
+interface ISVMProps {
   data: {
     "Accuracy Test": number;
     "Accuracy Train": number;
@@ -27,7 +27,7 @@ interface IDecisionTreeProps {
   }|null;
 }
 
-const DecisionTreeResults = ({ data }:IDecisionTreeProps) => {
+const SVMResults = ({ data }:ISVMProps) => {
   if (!data) return null;
 
   const labelsArray = [];
@@ -105,4 +105,4 @@ const DecisionTreeResults = ({ data }:IDecisionTreeProps) => {
   );
 };
 
-export default DecisionTreeResults;
+export default SVMResults;
