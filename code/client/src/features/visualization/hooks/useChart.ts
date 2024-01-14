@@ -21,6 +21,9 @@ export const useChart = () => {
   const [data, setData] = useState<any[] | null>([]);
   const type = useAppSelector((state) => state.file.type);
   const url = useAppSelector((state) => state.file.url);
+  const id = useAppSelector((state) => state.file.file_id);
+  const file_name = useAppSelector((state) => state.file.file);
+  const uploaded_at = useAppSelector((state) => state.file.uploaded_at);
   const [labels, setLabels] = useState<string[]>([]);
   const [statistics, setStatistics] = useState<any[]>([]);
 
@@ -50,8 +53,9 @@ export const useChart = () => {
           const fetchedData: any[] | null = await indexedDBConfig.getFileByURL(
             "byUrl",
             url,
-            type,
-            delimiter
+            id,
+            file_name,
+            uploaded_at
           );
           setData(fetchedData ? fetchedData : [[]]);
           const result = filterNumericColumns(fetchedData ? fetchedData : []);
@@ -177,6 +181,7 @@ export const useChart = () => {
     handleSelect,
     selectedValue,
     optionsPlot,
+    optionsMap,
     dependantIndex,
     handleDependant,
     independantIndex,
@@ -212,6 +217,7 @@ export const useChart = () => {
     charterOptionsPlot,
     classIndex,
     handleClass,
+    optionsMap,
     loading,
   };
 };

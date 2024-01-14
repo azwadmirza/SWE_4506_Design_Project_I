@@ -14,6 +14,6 @@ urlpatterns = [
     path('api/linear_regression/', include('linear_regression.urls')),
     path('api/logistic_regression/', include('logistic_regression.urls')),
     path('api/svm/', include('svm.urls')),
-    
+    path('api/xgboost/', include('xgBoost.urls')),
 ]
 

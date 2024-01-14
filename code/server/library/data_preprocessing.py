@@ -46,8 +46,6 @@ class DataProcessing:
     
     def __process_class_data(__self):
         if __self.target_column is not None:
-            if __self.df[__self.target_column].dtype != 'object':
-                raise Exception('This target is not suitable for classification')
             __self.features = __self.df.drop(__self.target_column, axis=1)
             __self.labels = __self.df[__self.target_column]
         else:

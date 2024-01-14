@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getColumnValues } from "../../sheets/utils/column-extractor";
-import { polynomialRegression } from "../../../utils/polynomial-regression";
 
 export const useLinearChart = (data:any[]) => {
   const [selectedValue, setSelectedValue] = useState('');
@@ -9,14 +8,26 @@ export const useLinearChart = (data:any[]) => {
   const [dependant, setDependant] = useState<string[]>([]);
   const [independant, setIndependant] = useState<string[]>([]);
   const [optionsPlot,setOptionsPlot]=useState<string[]>([]);
+  const [optionsMap,setOptionsMap]=useState<Map<string,string[]>>(new Map());
 
   useEffect(()=>{
     if(data && data.length>0){
       setOptionsPlot(data[0]);
       handleDependant(dependantIndex);
       handleIndependant(independantIndex);
+      populateOptionsMap();
     }
   },[data])
+
+  const populateOptionsMap=async()=>{
+    const map=new Map<string,string[]>();
+    for(let i=0;i<optionsPlot.length;i++){
+      const values=getColumnValues(data,i);
+      map.set(optionsPlot[i],values);
+    }
+    setOptionsMap(map);
+  }
+
 
   const options = [
     { value: 'Horizontal Bar Chart', label: 'Horizontal Bar Chart' },
@@ -57,5 +68,5 @@ export const useLinearChart = (data:any[]) => {
     ]
   }
 
-  return { chartData, options, handleSelect, selectedValue, optionsPlot, dependantIndex, handleDependant, independantIndex, handleIndependant }
+  return { chartData, options, handleSelect, selectedValue, optionsPlot, dependantIndex, handleDependant, independantIndex, handleIndependant,optionsMap }
 }
