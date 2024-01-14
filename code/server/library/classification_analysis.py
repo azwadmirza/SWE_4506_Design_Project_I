@@ -11,12 +11,13 @@ from sklearn.preprocessing import label_binarize
 import json
 
 class ClassificationAnalysis:
-    def __init__(__self, model, X_train, X_test, y_train, y_test):
+    def __init__(__self, model, X_train, X_test, y_train, y_test,categories=None):
         __self.model = model
         __self.X_train = X_train
         __self.X_test = X_test
         __self.y_train = y_train
         __self.y_test = y_test
+        __self.categories=categories
         __self.results = {}
         __self.template()
     
@@ -128,7 +129,8 @@ class ClassificationAnalysis:
             __self.results['train_avg_fpr'] = 'Not defined'
 
     def to_json(__self):
-        print(__self.results)
+        if __self.categories is not None:
+            __self.results['categories']=__self.categories.tolist()
         return json.dumps(__self.results)
 
 

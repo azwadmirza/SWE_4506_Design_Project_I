@@ -129,6 +129,7 @@ const LogisticRegressionResults = ({ data }: ILogisticRegressionProps) => {
             chartId="Logistic Regression Train"
             data={rocCurveTrainData}
             labels={labelsArray}
+            assigned_labels={labelsArray}
           />
         </div>
       </div>
@@ -155,6 +156,7 @@ const LogisticRegressionResults = ({ data }: ILogisticRegressionProps) => {
             chartId="Logistic Regression Test"
             data={rocCurveTestData}
             labels={labelsArray}
+            assigned_labels={labelsArray}
           />
         </div>
       </div>

@@ -19,6 +19,10 @@ class DataProcessing:
         else:
             raise Exception("Operation Type Not Supported: For classification use \"class\" and for regression use \"regression\"")
         __self.__process_data()
+    
+    def get_categories(__self):
+        __self.categories=np.array(pd.Categorical(__self.labels).categories)
+        return __self.categories
         
     def get_processed_data(_self):
         return _self.features,_self.labels

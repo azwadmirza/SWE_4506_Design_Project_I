@@ -124,7 +124,7 @@ const KNearestNeighboursResults = ({ data }: IKNNProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="Decision Tree Train" data={rocCurveTrainData} labels={labelsArray} />
+          <RocCurveChart chartId="Decision Tree Train" data={rocCurveTrainData} labels={labelsArray} assigned_labels={labelsArray}/>
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -146,7 +146,7 @@ const KNearestNeighboursResults = ({ data }: IKNNProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
         <h2>ROC Curve-Test</h2>
-        <RocCurveChart chartId="Decision Tree Test" data={rocCurveTestData} labels={labelsArray} />
+        <RocCurveChart chartId="Decision Tree Test" data={rocCurveTestData} labels={labelsArray} assigned_labels={labelsArray}/>
         </div>
       </div>
     </div>
