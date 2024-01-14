@@ -36,10 +36,8 @@ const LinearRegression = () => {
         max_iter: maxIter,
         smoothing: smoothing,
       });
-    //   console.log("Backend response received:", JSON.parse(response.data));
-    //   setEvaluationResults(JSON.parse(response.data));
-      console.log("Backend response received:", response.data);
-      setEvaluationResults(response.data);
+      console.log("Backend response received:", JSON.parse(response.data));
+      setEvaluationResults(JSON.parse(response.data));
       setLoader(false);
     } catch (error) {
       console.error("Error during backend request:");

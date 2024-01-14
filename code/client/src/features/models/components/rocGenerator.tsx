@@ -24,13 +24,14 @@ const RocCurveChart = ({ chartId, data, labels,assigned_labels }:RocCurveChartPr
         chartRef.current.destroy();
       }
 
-      const datasets = data.roc_curves.map((curve, index) => ({
-        label: `${assigned_labels[index]} (AUC: ${data.auc_scores[labels[index]].toFixed(2)})`,
+      const datasets = data.roc_curves.map((curve, index) => {
+        const score=data.auc_scores[labels[index]].toPrecision(4).toString();
+        return { label: `${assigned_labels[index]} (AUC: ${score})`,
         data: curve.length === 2 ? [...curve, { x: 1, y: 1 }] : curve,
         borderColor: getRandomColor(),
         borderWidth: 2,
-        fill: false,
-      }));
+        fill: false,}
+      });
 
       chartRef.current = new Chart(ctx, {
         type: 'line',

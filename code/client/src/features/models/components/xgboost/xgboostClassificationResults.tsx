@@ -59,8 +59,6 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
     }
     labelsArray.push(label);
   }
-  console.log(labelsArray);
-  console.log(data.categories);
 
   const rawTestData: RawData = {
     auc_scores: data["auc_scores_test"],
@@ -92,7 +90,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
-    dataTest.push({ label, metrics });
+    dataTest.push({ label:data.categories[parseInt(label)], metrics });
   }
   const dataTrain = [];
 
@@ -102,7 +100,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
-    dataTrain.push({ label, metrics });
+    dataTrain.push({ label:data.categories[parseInt(label)], metrics });
   }
 
   return (
