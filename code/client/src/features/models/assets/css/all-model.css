@@ -51,7 +51,7 @@
     background-color: #f4f4f4;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
     width: 220px; 
-    height: 550px; 
+    height: auto; 
     padding: 10px
   }
   
@@ -63,7 +63,7 @@
     background-color: #ffffff; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 785%; 
-    height: 105%;
+    height: auto;
     padding: 10px;
     overflow-y: auto;
   }

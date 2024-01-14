@@ -3,6 +3,7 @@ import { useState } from "react";
 import DecisionTree from "./decision-tree/decisionTree";
 import LogisticRegression from "./logistic-regression/logisticRegression";
 import SVM from "./svm/svm";
+import XGBoost from "./xgboost/xgboostClassifier";
 
 const ClassificationModels = () => {
   const [toggle, setToggle] = useState(3);
@@ -63,7 +64,7 @@ const ClassificationModels = () => {
                 <SVM/>
               </div>
               <div className={toggle === 6 ? "show-model" : "model"}>
-                <h1>This is Boosted XGBoost Trees</h1>
+                <h1><XGBoost/></h1>
               </div>
             </div>
           </div>
