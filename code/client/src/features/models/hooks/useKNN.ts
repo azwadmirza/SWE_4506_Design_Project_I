@@ -5,7 +5,7 @@ import { round, sqrt } from "mathjs";
 import { useChart } from "../../visualization/hooks/useChart";
 
 export const useKNN=()=>{
-    const [normalization, setNormalization] = useState("MinMaxScaler");
+  const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(20);
   const [minkowskiMetric, setMinkowskiMetric] = useState(2);
   const [algorithm, setAlgorithm] = useState("auto");
@@ -13,6 +13,15 @@ export const useKNN=()=>{
   const [weights, setWeights] = useState("uniform");
   const { optionsPlot } = useChart();
   const [n_neighbours, setNNeighbours] = useState(5);
+
+  useEffect(()=>{
+    if(distanceMetric==="euclidean"){
+      setMinkowskiMetric(2)
+    }
+    else if(distanceMetric==="manhattan"){
+      setMinkowskiMetric(1)
+    }
+  },[distanceMetric])
 
   useEffect(()=>{
     setNNeighbours(parseInt(String(round(sqrt(optionsPlot.length))))?parseInt(String(round(sqrt(optionsPlot.length)))):5);
