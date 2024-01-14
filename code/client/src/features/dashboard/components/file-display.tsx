@@ -1,7 +1,7 @@
 import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../contexts/auth/hooks";
-import { setFile, setFileId, setURL } from "../../../contexts/file/slice";
+import { setFile, setFileId, setURL, setUploadedAt } from "../../../contexts/file/slice";
 
 interface IFileDisplayProps {
   file_id: string;
@@ -18,6 +18,7 @@ const FileDisplayCard = ({ file_id,url,filename, updatedAt }: IFileDisplayProps)
       dispatch(setURL(url));
       dispatch(setFile(filename));
       dispatch(setFileId(file_id));
+      dispatch(setUploadedAt(updatedAt));
       navigate("/data");
     }}>
       <Card.Header className="dashboard-card-header">
