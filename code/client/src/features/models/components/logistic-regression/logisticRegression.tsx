@@ -24,14 +24,6 @@ const LogisticRegression = () => {
   }, [optionsPlot]);
 
   const handleRunLogisticRegression = async () => {
-    console.log("Run Logistic Regression", {
-      file_url: file_url,
-      target: targetVariable,
-      normalization: normalization,
-      train_test_split: trainTestSplit,
-      max_iter: maxIter,
-      penalty: penalty,
-    });
     try {
       const response = await axios.post(
         `${address}/api/logistic_regression/start/`,
