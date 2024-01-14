@@ -55,8 +55,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'user_profile',
     'file_controller',
-    'decision_tree'
-    
+    'decision_tree',
+    'logistic_regression',
+    'svm',
 ]
 
 MIDDLEWARE = [

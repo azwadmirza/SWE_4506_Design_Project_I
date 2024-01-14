@@ -4,13 +4,14 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { useChart } from "../../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../../contexts/file/hooks";
 import axios from "axios";
-import DecisionTreeResults from "./decisionTreeResults";
+import SVMResults from "./svmResults";
 
-const DecisionTree = () => {
+const SVM = () => {
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [maxDepth, setMaxDepth] = useState(3);
-  const [criterion, setCriterion] = useState("gini");
+  const [degree, setDegree] = useState(3);
+  const [maxIter, setMaxIter] = useState(20);
+  const [kernel, setKernel] = useState("linear");
   const { optionsPlot } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [targetVariable, setTargetVariable] = useState<string | null>();
@@ -23,17 +24,16 @@ const DecisionTree = () => {
     }
   }, [optionsPlot]);
 
-  
-
-  const handleRunDecisionTree = async () => {
+  const handleRunSVM = async () => {
     try {
-      const response = await axios.post(`${address}/api/decision_tree/start/`, {
+      const response = await axios.post(`${address}/api/svm/start/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
         train_test_split: trainTestSplit,
-        max_depth: maxDepth,
-        criterion: criterion,
+        max_iter: maxIter,
+        kernel: kernel,
+        degree: degree,
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
@@ -46,11 +46,7 @@ const DecisionTree = () => {
     <div>
       <div className="model-container-wrapper">
         <div className="model-container">
-          <h5>
-            Decision
-            <br />
-            Tree
-          </h5>
+          <h5>Support Vector Machines</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -93,38 +89,51 @@ const DecisionTree = () => {
             />
           </div>
           <div>
-            <label className="model-label">Max Depth:</label>
+            <label className="model-label">Max Iter:</label>
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={maxIter}
               min={1}
               // max={100}
-              onChange={(e) => setMaxDepth(parseInt(e.target.value))}
+              onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
           <div>
-            <label className="model-label">Criterion:</label>
+            <label className="model-label">Kernel:</label>
             <select
               className="model-select"
-              value={criterion}
-              onChange={(e) => setCriterion(e.target.value)}
+              value={kernel}
+              onChange={(e) => setKernel(e.target.value)}
             >
-              <option value="gini">Gini</option>
-              <option value="entropy">Entropy</option>
-              <option value="log_loss">Log Loss</option>
+              <option value="linear">Linear</option>
+              <option value="rbf">RBF</option>
+              <option value="sigmoid">Sigmoid</option>
+              <option value="poly">Poly</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunDecisionTree}>
+          {kernel === "poly" && (
+            <div>
+              <label className="model-label">Degree:</label>
+              <input
+                className="model-input"
+                type="number"
+                min={0}
+                value={degree}
+                onChange={(e) => setDegree(parseInt(e.target.value))}
+              />
+            </div>
+          )}
+          <button className="model-button" onClick={handleRunSVM}>
             Run
           </button>
         </div>
         <div className="results-container">
-          <DecisionTreeResults data={evaluationResults} />
+          <SVMResults data={evaluationResults} />
         </div>
       </div>
     </div>
   );
 };
 
-export default DecisionTree;
+export default SVM;

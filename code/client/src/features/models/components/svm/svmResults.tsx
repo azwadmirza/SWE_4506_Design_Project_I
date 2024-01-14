@@ -4,7 +4,7 @@ import extractRocCurveData from "../rocDataExtraction";
 import { RawData } from "../rocDataExtraction";
 import RocCurveChart, { RocCurveChartProps } from "../rocGenerator";
 
-interface IDecisionTreeProps {
+interface ISVMProps {
   data: {
     "Accuracy Test": number;
     "Accuracy Train": number;
@@ -48,8 +48,9 @@ interface IDecisionTreeProps {
   } | null;
 }
 
-const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
+const SVMResults = ({ data }:ISVMProps) => {
   if (!data) return null;
+
   const labelsArray = [];
   const classificationReportTest = data["Classification Report Test"];
 
@@ -84,9 +85,7 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
 
   const dataTest = [];
 
-  for (const [label, metrics] of Object.entries(
-    data["Classification Report Test"]
-  )) {
+  for (const [label, metrics] of Object.entries(data["Classification Report Test"])) {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
@@ -94,9 +93,7 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
   }
   const dataTrain = [];
 
-  for (const [label, metrics] of Object.entries(
-    data["Classification Report Train"]
-  )) {
+  for (const [label, metrics] of Object.entries(data["Classification Report Train"])) {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
@@ -109,7 +106,7 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
         <div style={{ marginBottom: "15px" }}>
           <h2>Train Accuracy</h2>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {(data["Accuracy Train"] * 100).toFixed(2)}%
+          {(data["Accuracy Train"] * 100).toFixed(2)}%
           </p>
         </div>
         <div style={{ marginBottom: "15px" }}>
@@ -120,18 +117,21 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
           />
         </div>
         <div style={{ marginBottom: "15px" }}>
-          <DataMatrix data={dataTrain} title="Train" />
+          <DataMatrix
+            data={dataTrain}
+            title="Train"
+          />
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="decision-tree-train" data={rocCurveTrainData} labels={labelsArray} />
+          <RocCurveChart chartId="svm-train" data={rocCurveTrainData} labels={labelsArray} />
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
         <div style={{ marginBottom: "15px" }}>
           <h2>Test Accuracy</h2>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-            {(data["Accuracy Test"] * 100).toFixed(2)}%
+           {(data["Accuracy Test"] * 100).toFixed(2)}%
           </p>
         </div>
         <div style={{ marginBottom: "15px" }}>
@@ -142,15 +142,18 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
           />
         </div>
         <div style={{ marginBottom: "15px" }}>
-          <DataMatrix data={dataTest} title="Test" />
+          <DataMatrix
+            data={dataTest}
+            title="Test"
+          />
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
-        <h2>ROC Curve-Test</h2>
-        <RocCurveChart chartId="decision-tree-test" data={rocCurveTestData} labels={labelsArray} />
+          <h2>ROC Curve-Tets</h2>
+          <RocCurveChart chartId="svm-test" data={rocCurveTestData} labels={labelsArray} />
         </div>
       </div>
     </div>
   );
 };
 
-export default DecisionTreeResults;
+export default SVMResults;
