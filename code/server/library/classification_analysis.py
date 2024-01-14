@@ -67,51 +67,6 @@ class ClassificationAnalysis:
             __self.results['test_avg_fpr'] = fpr_test_per_class
             __self.results['train_avg_tpr'] = tpr_train_per_class
             __self.results['train_avg_fpr'] = fpr_train_per_class
-            
-    # def multiclass_classification(__self):
-    #         __self.y_proba_test = __self.model.predict_proba(__self.X_test)
-    #         __self.y_test_binary = label_binarize(__self.y_test, classes=__self.model.classes_)
-
-    #         __self.results['auc_scores_test'] = {}
-
-    #         for i in range(len(__self.model.classes_)):
-    #             __self.results['auc_scores_test'][__self.model.classes_[i]] = roc_auc_score(
-    #                 __self.y_test_binary[:, i], __self.y_proba_test[:, i]
-    #             )
-
-    #         __self.y_proba_train = __self.model.predict_proba(__self.X_train)
-    #         __self.y_train_binary = label_binarize(__self.y_train, classes=__self.model.classes_)
-
-    #         __self.results['auc_scores_train'] = {}
-
-    #         for i in range(len(__self.model.classes_)):
-    #             __self.results['auc_scores_train'][__self.model.classes_[i]] = roc_auc_score(
-    #                 __self.y_train_binary[:, i], __self.y_proba_train[:, i]
-    #             )
-
-    #         tpr_test_per_class = []
-    #         fpr_test_per_class = []
-    #         tpr_train_per_class = []
-    #         fpr_train_per_class = []
-
-    #         for i in range(len(__self.model.classes_)):
-    #             fpr, tpr, _ = roc_curve(
-    #                 label_binarize(__self.y_test, classes=__self.model.classes_)[:, i], __self.y_proba_test[:, i]
-    #             )
-    #             tpr_test_per_class.append(tpr)
-    #             fpr_test_per_class.append(fpr)
-
-    #         for i in range(len(__self.model.classes_)):
-    #             fpr, tpr, _ = roc_curve(
-    #                 label_binarize(__self.y_train, classes=__self.model.classes_)[:, i], __self.y_proba_train[:, i]
-    #             )
-    #             tpr_train_per_class.append(tpr)
-    #             fpr_train_per_class.append(fpr)
-
-    #         __self.results['test_avg_tpr'] = [np.mean(np.array(tpr_list)) for tpr_list in tpr_test_per_class]
-    #         __self.results['test_avg_fpr'] = [np.mean(np.array(fpr_list)) for fpr_list in fpr_test_per_class]
-    #         __self.results['train_avg_tpr'] = [np.mean(np.array(tpr_list)) for tpr_list in tpr_train_per_class]
-    #         __self.results['train_avg_fpr'] = [np.mean(np.array(fpr_list)) for fpr_list in fpr_train_per_class]
 
 
     def multiclass_classification(__self):

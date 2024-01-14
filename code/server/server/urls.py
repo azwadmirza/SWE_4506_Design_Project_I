@@ -13,6 +13,6 @@ urlpatterns = [
     path('api/decision_tree/', include('decision_tree.urls')),
     path('api/logistic_regression/', include('logistic_regression.urls')),
     path('api/svm/', include('svm.urls')),
-    
+    path('api/xgboost/', include('xgBoost.urls')),
 ]
 

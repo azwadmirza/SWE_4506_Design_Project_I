@@ -5,7 +5,6 @@ import { useXGBoost } from "../../hooks/useXGBoost";
 
 const XGBoost = () => {
   const {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot}=useXGBoost();
-
   return (
     <div>
       <div className="model-container-wrapper">
