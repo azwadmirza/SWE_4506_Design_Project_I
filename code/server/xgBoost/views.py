@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from library.data_preprocessing import DataProcessing
 from sklearn.preprocessing import LabelEncoder
-import numpy as np
 from library.model import Model
 import pandas as pd
 from library.classification_analysis import ClassificationAnalysis

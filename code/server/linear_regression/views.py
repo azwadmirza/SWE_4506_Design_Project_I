@@ -4,18 +4,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from library.data_preprocessing import DataProcessing
 from library.model import Model
+from library.classification_analysis import ClassificationAnalysis
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
 from sklearn.metrics import r2_score
 
-import pandas as pd
 
-# Create your views here.
 class linear_regression_model(APIView):
     queryset = []
 
@@ -29,55 +23,16 @@ class linear_regression_model(APIView):
         normalisation = requestBody.get('normalization', None)
         split_data = requestBody.get('train_test_split', '0.2')
 
-        df = pd.read_csv(requestBody['file_url'])
-
-        y = df[targetCol]
-        x = df.drop(targetCol, axis=1)
-
-        X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=float(split_data), random_state=42)
-
-        numeric_features = x.select_dtypes(exclude=['object']).columns
-        categorical_features = x.select_dtypes(include=['object']).columns
-
-        if normalisation is not None:
-            if normalisation == 'MinMaxScaler':
-                scaler = MinMaxScaler()
-            elif normalisation == 'StandardScaler':
-                scaler = StandardScaler()
-            else:
-                scaler = RobustScaler()
-        else:
-            scaler = None
-
-        numeric_transformer = Pipeline(steps=[
-            ('scale', scaler),
-            #('num', OneHotEncoder())
-        ])
-
-        categorical_transformer = Pipeline(steps=[
-            ('cat', OneHotEncoder())
-        ])
-
-        # Create a preprocessor to apply transformers to respective features
-        preprocessor = ColumnTransformer(
-            transformers=[
-                ('num', numeric_transformer, numeric_features),
-                ('cat', categorical_transformer, categorical_features)
-            ])
-
-        # Create a linear regression model with preprocessing
-        model = Pipeline(steps=[('preprocessor', preprocessor),
-                                ('regressor', LinearRegression())])
-
-        # Train the model
+        
+        X_train, X_test, y_train, y_test=DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
+        model=Model(LinearRegression(),normalisation).get_model()
         model.fit(X_train, y_train)
 
-        # Make predictions on the test set
         predictions_test = model.predict(X_test)
 
         predictions_train = model.predict(X_train)
 
-        predictions_Whole = model.predict(x)
+        predictions_Whole = model.predict(X_train.append(X_test))
 
         # Evaluate the model
         #Mean square error
