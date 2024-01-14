@@ -13,14 +13,13 @@ interface ILinearRegressionProps {
     'RMSE Test': number;
     'RMSE Train': number;
   } | null;
-  target: string|null; 
+  target: string|null|undefined; 
 };
 
 const LinearRegressionResults = ({ modelData, target }: ILinearRegressionProps) => {
   const {data}=useSheets();
-  
-  console.log(target)
   if (!modelData) return null;
+  if(!target) return null;
 
   const extractColumnValues = (columnName: string | null) => {
     if (!columnName || !data || data.length === 0 || !data[0]) {

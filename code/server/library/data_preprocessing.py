@@ -42,6 +42,7 @@ class DataProcessing:
             __self.df=pd.read_json(__self.url)
         else:
             raise Exception("Invalid File Type")
+        __self.df = __self.df.dropna()
         
         
     def __process_data(__self):
