@@ -1,9 +1,9 @@
 import "../assets/css/models.css";
 import { useState } from "react";
-import DecisionTree from "./decision-tree/decisionTree";
-import LogisticRegression from "./logistic-regression/logisticRegression";
-import SVM from "./svm/svm";
-import XGBoost from "./xgboost/xgboostClassifier";
+import DecisionTree from "./decision-tree-classification/decisionTree";
+import LogisticRegression from "./logistic-regression-classification/logisticRegression";
+import SVM from "./svm-classification/svm";
+import NaiveBayes from "./naive-bayes/naiveBayes";
 
 const ClassificationModels = () => {
   const [toggle, setToggle] = useState(3);
@@ -52,7 +52,7 @@ const ClassificationModels = () => {
                 <LogisticRegression/>
               </div>
               <div className={toggle === 2 ? "show-model" : "model"}>
-                <h1>This is Naive Bayes</h1>
+                <NaiveBayes/>
               </div>
               <div className={toggle === 3 ? "show-model" : "model"}>
                 <DecisionTree/>
@@ -64,7 +64,7 @@ const ClassificationModels = () => {
                 <SVM/>
               </div>
               <div className={toggle === 6 ? "show-model" : "model"}>
-                <h1><XGBoost/></h1>
+                <h1>This is Boosted XGBoost Trees</h1>
               </div>
             </div>
           </div>
