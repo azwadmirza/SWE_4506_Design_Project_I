@@ -12,6 +12,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.metrics import r2_score
+from django.http import JsonResponse
+
 
 import pandas as pd
 
@@ -28,13 +30,14 @@ class linear_regression_model(APIView):
         targetCol = requestBody.get('target', None)
         normalisation = requestBody.get('normalization', None)
         split_data = requestBody.get('train_test_split', '0.2')
-
+        split_data= float(split_data/100)
         df = pd.read_csv(requestBody['file_url'])
-
         y = df[targetCol]
         x = df.drop(targetCol, axis=1)
-
+        
         X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=float(split_data), random_state=42)
+        print(X_train)
+        print(y_train)
 
         numeric_features = x.select_dtypes(exclude=['object']).columns
         categorical_features = x.select_dtypes(include=['object']).columns
@@ -121,10 +124,10 @@ class linear_regression_model(APIView):
             'R2 Accuracy Test': r2_accuracy_test,
             'R2 Accuracy Train': r2_accuracy_train,
             'R2 Accuracy Whole': r2_accuracy_whole,
-            'Predictions Test': predictions_test,
-            'Actual test data': y_test,
-            'Actual Train data': y_train,
-            'Actual whole data': y
+            'Predictions Test': predictions_test.tolist(), 
+            'Actual test data': y_test.tolist(),
+            'Actual Train data': y_train.tolist(),
+            'Actual whole data': y.tolist(),
         }
-
+        
         return Response(evaluation, status=status.HTTP_200_OK)

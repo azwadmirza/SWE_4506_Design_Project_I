@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { useChart } from "../../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../../contexts/file/hooks";
 import axios from "axios";
-import NaiveBayesResults from "./naiveBayesResults";
+import LinearRegressionResults from "./linearRegressionResults";
 import Loader from "../../../../partials/loader";
 
-const NaiveBayes = () => {
+const LinearRegression = () => {
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxIter, setMaxIter] = useState(3);
@@ -25,22 +25,21 @@ const NaiveBayes = () => {
     }
   }, [optionsPlot]);
 
-  const handleRunNaiveBayes = async () => {
+  const handleRunLinearRegression = async () => {
     try {
       setLoader(true);
-      const response = await axios.post(
-        `${address}/api/naive_bayes/start/`,
-        {
-          file_url: file_url,
-          target: targetVariable,
-          normalization: normalization,
-          train_test_split: trainTestSplit,
-          max_iter: maxIter,
-          smoothing: smoothing,
-        }
-      );
-      console.log("Backend response received:", JSON.parse(response.data));
-      setEvaluationResults(JSON.parse(response.data));
+      const response = await axios.post(`${address}/api/linear_regression/start/`, {
+        file_url: file_url,
+        target: targetVariable,
+        normalization: normalization,
+        train_test_split: trainTestSplit,
+        max_iter: maxIter,
+        smoothing: smoothing,
+      });
+    //   console.log("Backend response received:", JSON.parse(response.data));
+    //   setEvaluationResults(JSON.parse(response.data));
+      console.log("Backend response received:", response.data);
+      setEvaluationResults(response.data);
       setLoader(false);
     } catch (error) {
       console.error("Error during backend request:");
@@ -51,11 +50,7 @@ const NaiveBayes = () => {
     <div>
       <div className="model-container-wrapper">
         <div className="model-container">
-          <h5>
-            Naive
-            <br />
-            Bayes
-          </h5>
+          <h5>Linear Regression</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -119,16 +114,20 @@ const NaiveBayes = () => {
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
-          <button className="model-button" onClick={handleRunNaiveBayes}>
+          <button className="model-button" onClick={handleRunLinearRegression}>
             Run
           </button>
         </div>
         <div className="results-container">
-          {loader ? <Loader /> : <NaiveBayesResults data={evaluationResults} />}
+          {loader ? (
+            <Loader />
+          ) : (
+            <LinearRegressionResults data={evaluationResults} />
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default NaiveBayes;
+export default LinearRegression;

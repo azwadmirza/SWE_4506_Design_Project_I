@@ -15,5 +15,6 @@ urlpatterns = [
     path('api/logistic_regression/', include('logistic_regression.urls')),
     path('api/svm/', include('svm.urls')),
     path('api/xgboost/', include('xgBoost.urls')),
+    path('api/naive_bayes/', include('naive_bayes.urls')),
 ]
 
