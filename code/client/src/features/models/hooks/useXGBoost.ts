@@ -14,7 +14,7 @@ export const useXGBoost=()=>{
   const [booster, setBooster] = useState("dart");
   const [treeMethod, setTreeMethod] = useState("hist");
   const [growPolicy, setGrowPolicy] = useState("depthwise");
-  const { optionsPlot,optionsMap } = useChart();
+  const { optionsPlot } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
@@ -52,5 +52,5 @@ export const useXGBoost=()=>{
     }
   };
 
-  return {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,optionsMap,loader}
+  return {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}
 }

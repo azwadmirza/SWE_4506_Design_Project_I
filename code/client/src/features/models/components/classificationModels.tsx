@@ -8,42 +8,42 @@ import XGBoost from "./xgboost/xgboostClassifier";
 import KNearestNeighbours from "./knn/knnClassification";
 
 const ClassificationModels = () => {
-  const [toggle, setToggle] = useState(3);
+  const [toggle, setToggle] = useState(1);
     return (
         <div className="sheets">
               <ul className="d-flex model-tabs-list">
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==1?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(1)}
                 >
                   Logistic Regression
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==2?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(2)}
                 >
                   Naive Bayes
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==3?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(3)}
                 >
                   Decision Tree
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==4?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(4)}
                 >
                   K Nearest Neighbour
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==5?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(5)}
                 >
                   Support Vector Machines
                 </li>
                 <li
-                  className="flex-fill model-tab"
+                  className={`flex-fill ${toggle==6?'model-selected':'model-tab'}`}
                   onClick={() => setToggle(6)}
                 >
                   XGBoost
