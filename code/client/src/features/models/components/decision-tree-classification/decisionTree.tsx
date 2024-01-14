@@ -36,7 +36,6 @@ const DecisionTree = () => {
         max_depth: maxDepth,
         criterion: criterion,
       });
-      console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
       setLoader(false);
     } catch (error) {
@@ -46,7 +45,7 @@ const DecisionTree = () => {
 
   return (
     <div>
-      <div className="model-container-wrapper">
+      <div className="d-flex model-container-wrapper">
         <div className="model-container">
           <h5>
             Decision

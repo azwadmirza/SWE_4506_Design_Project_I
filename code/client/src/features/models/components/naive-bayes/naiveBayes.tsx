@@ -49,7 +49,7 @@ const NaiveBayes = () => {
 
   return (
     <div>
-      <div className="model-container-wrapper">
+      <div className="model-container-wrapper d-flex">
         <div className="model-container">
           <h5>
             Naive

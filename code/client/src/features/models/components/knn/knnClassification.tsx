@@ -5,11 +5,11 @@ import KNearestNeighboursResults from "./knnClassificationResults";
 import { useKNN } from "../../hooks/useKNN";
 
 const KNearestNeighbours = () => {
-  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunDecisionTree,optionsPlot}=useKNN();
+  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNN();
 
   return (
     <div>
-      <div className="model-container-wrapper">
+      <div className=" d-flex model-container-wrapper">
         <div className="model-container">
           <h5>
             K Nearest
@@ -114,7 +114,7 @@ const KNearestNeighbours = () => {
               <option value="distance">Distance</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunDecisionTree}>
+          <button className="model-button" onClick={handleRunKNN}>
             Run
           </button>
         </div>

@@ -49,7 +49,7 @@ const LogisticRegression = () => {
 
   return (
     <div>
-      <div className="model-container-wrapper">
+      <div className="model-container-wrapper d-flex">
         <div className="model-container">
           <h5>Logistic Regression</h5>
           <div className="model-label">

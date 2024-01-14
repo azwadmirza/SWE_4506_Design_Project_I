@@ -48,7 +48,7 @@ const SVM = () => {
 
   return (
     <div>
-      <div className="model-container-wrapper">
+      <div className="model-container-wrapper d-flex ">
         <div className="model-container">
           <h5>Support Vector Machines</h5>
           <div className="model-label">
