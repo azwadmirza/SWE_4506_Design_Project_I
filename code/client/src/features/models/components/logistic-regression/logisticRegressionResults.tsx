@@ -1,5 +1,8 @@
 import ConfusionMatrix from "../confusionMatrix";
 import DataMatrix from "../dataMatrix";
+import extractRocCurveData from "../rocDataExtraction";
+import { RawData } from "../rocDataExtraction";
+import RocCurveChart, { RocCurveChartProps } from "../rocGenerator";
 
 interface ILogisticRegressionProps {
   data: {
@@ -24,7 +27,25 @@ interface ILogisticRegressionProps {
         support: number;
       };
     };
-  }|null;
+    auc_scores_test: {
+      [key: string]: number;
+    };
+    auc_scores_train: {
+      [key: string]: number;
+    };
+    fpr_test_per_class: {
+      [key: string]: number[];
+    };
+    fpr_train_per_class: {
+      [key: string]: number[];
+    };
+    tpr_test_per_class: {
+      [key: string]: number[];
+    };
+    tpr_train_per_class: {
+      [key: string]: number[];
+    };
+  } | null;
 }
 
 const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
@@ -39,6 +60,29 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
     }
     labelsArray.push(label);
   }
+
+  const rawTestData: RawData = {
+    auc_scores: data["auc_scores_test"],
+    fpr_per_class: data["fpr_test_per_class"],
+    tpr_per_class: data["tpr_test_per_class"],
+  };
+
+  const rocCurveTestData: RocCurveChartProps["data"] = extractRocCurveData(
+    rawTestData,
+    labelsArray
+  );
+
+  const rawTrainData: RawData = {
+    auc_scores: data["auc_scores_train"],
+    fpr_per_class: data["fpr_train_per_class"],
+    tpr_per_class: data["tpr_train_per_class"],
+  };
+
+  const rocCurveTrainData: RocCurveChartProps["data"] = extractRocCurveData(
+    rawTrainData,
+    labelsArray
+  );
+
 
   const dataTest = [];
 
@@ -56,6 +100,8 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
     }
     dataTrain.push({ label, metrics });
   }
+
+
 
   return (
     <div style={{ marginBottom: "50px" }}>
@@ -79,6 +125,10 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
             title="Train"
           />
         </div>
+        <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
+          <h2>ROC Curve-Train</h2>
+          <RocCurveChart chartId="logistic-regression-train" data={rocCurveTrainData} labels={labelsArray} />
+        </div>
       </div>
       <div style={{ marginTop: "50px" }}>
         <div style={{ marginBottom: "15px" }}>
@@ -99,6 +149,10 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
             data={dataTest}
             title="Test"
           />
+        </div>
+        <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
+          <h2>ROC Curve-Test</h2>
+          <RocCurveChart chartId="logistic-regression-test" data={rocCurveTestData} labels={labelsArray} />
         </div>
       </div>
     </div>

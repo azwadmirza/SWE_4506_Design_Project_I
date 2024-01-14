@@ -23,6 +23,8 @@ const DecisionTree = () => {
     }
   }, [optionsPlot]);
 
+  
+
   const handleRunDecisionTree = async () => {
     try {
       const response = await axios.post(`${address}/api/decision_tree/start/`, {
