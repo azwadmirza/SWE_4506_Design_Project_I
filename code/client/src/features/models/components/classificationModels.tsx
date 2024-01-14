@@ -1,9 +1,11 @@
 import "../assets/css/models.css";
 import { useState } from "react";
 import DecisionTree from "./decision-tree/decisionTree";
+import LogisticRegression from "./logistic-regression/logisticRegression";
+import SVM from "./svm/svm";
 
 const ClassificationModels = () => {
-  const [toggle, setToggle] = useState(1);
+  const [toggle, setToggle] = useState(3);
     return (
         <div className="sheets">
               <ul className="d-flex model-tabs-list">
@@ -46,7 +48,7 @@ const ClassificationModels = () => {
               </ul>
             <div className="d-flex align-items center justify-content-center">
               <div className={toggle === 1 ? "show-model" : "model"}>
-                <h1>This is Logistic Regression</h1>
+                <LogisticRegression/>
               </div>
               <div className={toggle === 2 ? "show-model" : "model"}>
                 <h1>This is Naive Bayes</h1>
@@ -58,7 +60,7 @@ const ClassificationModels = () => {
                 <h1>This is K Nearest Neigbours</h1>
               </div>
               <div className={toggle === 5 ? "show-model" : "model"}>
-                <h1>This is Support Vector Machines</h1>
+                <SVM/>
               </div>
               <div className={toggle === 6 ? "show-model" : "model"}>
                 <h1>This is Boosted XGBoost Trees</h1>
