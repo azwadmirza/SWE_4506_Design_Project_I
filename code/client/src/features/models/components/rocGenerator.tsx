@@ -8,9 +8,10 @@ export interface RocCurveChartProps {
     roc_curves: Array<Array<{ x: number; y: number }>>;
   };
   labels: string[];
+  assigned_labels:string[];
 }
 
-const RocCurveChart: React.FC<RocCurveChartProps> = ({ chartId, data, labels }) => {
+const RocCurveChart = ({ chartId, data, labels,assigned_labels }:RocCurveChartProps) => {
   const chartRef = useRef<Chart | null>(null);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const RocCurveChart: React.FC<RocCurveChartProps> = ({ chartId, data, labels }) 
       }
 
       const datasets = data.roc_curves.map((curve, index) => ({
-        label: `${labels[index]} (AUC: ${data.auc_scores[labels[index]].toFixed(2)})`,
+        label: `${assigned_labels[index]} (AUC: ${data.auc_scores[labels[index]].toFixed(2)})`,
         data: curve.length === 2 ? [...curve, { x: 1, y: 1 }] : curve,
         borderColor: getRandomColor(),
         borderWidth: 2,

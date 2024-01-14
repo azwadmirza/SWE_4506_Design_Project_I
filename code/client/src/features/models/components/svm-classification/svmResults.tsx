@@ -129,6 +129,7 @@ const SVMResults = ({ data }: ISVMProps) => {
             chartId="SVM Train"
             data={rocCurveTrainData}
             labels={labelsArray}
+            assigned_labels={labelsArray}
           />
         </div>
       </div>
@@ -155,6 +156,7 @@ const SVMResults = ({ data }: ISVMProps) => {
             chartId="SVM Test"
             data={rocCurveTestData}
             labels={labelsArray}
+            assigned_labels={labelsArray}
           />
         </div>
       </div>

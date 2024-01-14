@@ -9,6 +9,7 @@ interface IXGBoostProps {
     "Accuracy Test": number;
     "Accuracy Train": number;
     "Confusion Matrix Test": number[][];
+    categories: string[];
     "Classification Report Test": {
       [key: string]: {
         label: string;
@@ -52,13 +53,14 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
   if (!data) return null;
   const labelsArray = [];
   const classificationReportTest = data["Classification Report Test"];
-
   for (const [label] of Object.entries(classificationReportTest)) {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
     labelsArray.push(label);
   }
+  console.log(labelsArray);
+  console.log(data.categories);
 
   const rawTestData: RawData = {
     auc_scores: data["auc_scores_test"],
@@ -115,7 +117,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         <div style={{ marginBottom: "15px" }}>
           <ConfusionMatrix
             data={data["Confusion Matrix Train"]}
-            labels={labelsArray}
+            labels={data.categories}
             title="Confusion Matrix Train"
           />
         </div>
@@ -124,7 +126,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="decision-tree-train" data={rocCurveTrainData} labels={labelsArray} />
+          <RocCurveChart chartId="decision-tree-train" data={rocCurveTrainData} labels={labelsArray} assigned_labels={data.categories}/>
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -137,7 +139,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         <div style={{ marginBottom: "15px" }}>
           <ConfusionMatrix
             data={data["Confusion Matrix Test"]}
-            labels={labelsArray}
+            labels={data.categories}
             title="Confusion Matrix Test"
           />
         </div>
@@ -146,7 +148,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
         <h2>ROC Curve-Test</h2>
-        <RocCurveChart chartId="decision-tree-test" data={rocCurveTestData} labels={labelsArray} />
+        <RocCurveChart chartId="decision-tree-test" data={rocCurveTestData} labels={labelsArray} assigned_labels={data.categories}/>
         </div>
       </div>
     </div>

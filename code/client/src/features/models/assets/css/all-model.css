@@ -16,7 +16,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 150px;
-    font-size: 12px;
+    font-size: 12px !important;
   }
   
   .model-select,
@@ -25,6 +25,23 @@
     cursor: pointer;
     font-size: 12px;
   }
+
+  .cell {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 12px !important;
+    padding: 10px;
+  }
+  
+  .highlighted {
+    background-color: rgba(144, 238, 144, 0.8);
+  }
+  
+  .not-highlighted {
+    background-color: rgba(255, 99, 71, 0.8);
+  }
+  
   
   .model-button {
     background-color: #4caf50;
