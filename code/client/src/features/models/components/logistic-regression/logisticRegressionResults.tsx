@@ -105,7 +105,7 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
 
   return (
     <div style={{ marginBottom: "50px" }}>
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "120px" }}>
         <div style={{ marginBottom: "15px" }}>
           <h2>Train Accuracy</h2>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -127,7 +127,7 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="logistic-regression-train" data={rocCurveTrainData} labels={labelsArray} />
+          <RocCurveChart chartId="Logistic Regression Train" data={rocCurveTrainData} labels={labelsArray} />
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -152,7 +152,7 @@ const LogisticRegressionResults = ({ data }:ILogisticRegressionProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Test</h2>
-          <RocCurveChart chartId="logistic-regression-test" data={rocCurveTestData} labels={labelsArray} />
+          <RocCurveChart chartId="Logistic Regression Test" data={rocCurveTestData} labels={labelsArray} />
         </div>
       </div>
     </div>

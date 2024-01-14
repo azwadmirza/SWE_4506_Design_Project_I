@@ -105,7 +105,7 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
 
   return (
     <div style={{ marginBottom: "50px" }}>
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "120px" }}>
         <div style={{ marginBottom: "15px" }}>
           <h2>Train Accuracy</h2>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -124,7 +124,7 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="decision-tree-train" data={rocCurveTrainData} labels={labelsArray} />
+          <RocCurveChart chartId="Decision Tree Train" data={rocCurveTrainData} labels={labelsArray} />
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -146,7 +146,7 @@ const DecisionTreeResults = ({ data }: IDecisionTreeProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
         <h2>ROC Curve-Test</h2>
-        <RocCurveChart chartId="decision-tree-test" data={rocCurveTestData} labels={labelsArray} />
+        <RocCurveChart chartId="Decision Tree Test" data={rocCurveTestData} labels={labelsArray} />
         </div>
       </div>
     </div>
