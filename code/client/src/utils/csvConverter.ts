@@ -5,3 +5,9 @@ export async function arrayToCSV(data: any[][], delimiter: string = ',',filename
   const file = new File([blob], filename, { type: mimeType });
   return file;
 }
+
+export async function fileToCSV(csvContent:string,filename:string,mimeType:string): Promise<File> {
+  const blob = new Blob([csvContent], { type: mimeType });
+  const file = new File([blob], filename, { type: mimeType });
+  return file;
+}

@@ -1,25 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface FileState {
-    file: string | null;
-    file_id: string | null;
+    file: string;
+    file_id: string;
     data: any[];
     url:string|null;
     delimiter:string|null;
     type:string|null;
     loading:boolean;
+    uploaded_at:string|null;
 
 }
 
 
 const initialState: FileState = {
-    file: localStorage.getItem('file') || null,
-    file_id:localStorage.getItem('file_id') || null,
+    file: localStorage.getItem('file') || "New File",
+    file_id:localStorage.getItem('file_id')||"0",
     data: [],
     url:localStorage.getItem('url') || null,
     delimiter:localStorage.getItem('delimiter') || null,
     type:localStorage.getItem('type') || null,
-    loading:false
+    loading:false,
+    uploaded_at:localStorage.getItem('uploaded_at') || null,
 };
 
 const fileSlice = createSlice({
@@ -40,6 +42,10 @@ const fileSlice = createSlice({
         },
         setLoading:(state, action: PayloadAction<boolean>)=>{
           state.loading=action.payload;
+        },
+        setUploadedAt:(state, action: PayloadAction<string>)=>{
+          state.uploaded_at=action.payload;
+          localStorage.setItem('uploaded_at', action.payload);
         },
         updateData: (state, action: PayloadAction<{ key: string; value: string }>) => {
             const { key, value } = action.payload;
@@ -74,6 +80,6 @@ const fileSlice = createSlice({
     
 });
 
-export const { setFile, updateData,setURL,setDelimiter,setType,setLoading,setFileId } = fileSlice.actions;
+export const { setFile,setUploadedAt, updateData,setURL,setDelimiter,setType,setLoading,setFileId } = fileSlice.actions;
 
 export default fileSlice.reducer;
