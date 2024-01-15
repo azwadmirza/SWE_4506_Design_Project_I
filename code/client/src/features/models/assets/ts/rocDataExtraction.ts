@@ -1,4 +1,4 @@
-import { RocCurveChartProps } from "./rocGenerator";
+import { RocCurveChartProps } from "../../components/rocGenerator";
 
 export interface RawData {
   auc_scores: { [key: string]: number };

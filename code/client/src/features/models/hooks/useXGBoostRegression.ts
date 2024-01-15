@@ -20,10 +20,20 @@ export const useXGBoostRegression=()=>{
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
+  const [error,setError]=useState<string>();
 
   useEffect(() => {
     if (optionsPlot && optionsPlot.length > 0) {
-      setTargetVariable(optionsPlot[optionsPlot.length - 1]);
+      const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Regression");
+      if(filteredOptions.length>0){
+        setTargetVariable(filteredOptions[filteredOptions.length - 1]);
+      }
+      else{
+        setError("No regression variables found");
+      }
+    }
+    else{
+      setError("No variables found");
     }
   }, [optionsPlot]);
 
