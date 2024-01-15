@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
@@ -21,10 +21,19 @@ export const useXGBoostRegression=()=>{
   const [targetVariable, setTargetVariable] = useState<string>("Select a Target");
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
-  
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleInference = async ()=>{
+    console.log("XGBoost Regression Inference Time..");
+  }
 
   const handleRunXGBoost = async () => {
     try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
       setLoader(true);
       const response = await axios.post(`${address}/api/xgboost/regression/`, {
         file_url: file_url,
@@ -48,5 +57,5 @@ export const useXGBoostRegression=()=>{
     }
   };
 
-  return {supervisedML,objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}
+  return {handleInference, supervisedML,objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }

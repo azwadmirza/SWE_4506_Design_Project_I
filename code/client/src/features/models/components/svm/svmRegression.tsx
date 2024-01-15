@@ -5,7 +5,7 @@ import Loader from "../../../../partials/loader";
 import { useSVM } from "../../hooks/useSVM";
 
 const SVM = () => {
-  const {supervisedML,normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVM("regression");
+  const {supervisedML,handleInference,errorMessage,normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVM("regression");
   return (
     <div>
       <div className="model-container-wrapper d-flex ">
@@ -91,8 +91,12 @@ const SVM = () => {
               />
             </div>
           )}
-          <button className="model-button" onClick={handleRunSVM} disabled={targetVariable==="Select a Target"?true:false}>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          <button className="model-button" onClick={handleRunSVM}>
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">
