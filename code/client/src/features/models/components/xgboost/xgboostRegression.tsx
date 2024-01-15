@@ -36,7 +36,7 @@ const XGBoost = () => {
     errorMessage,
     handleInference,
   } = useXGBoost("regression");
-    
+
   return (
     <div>
       <div className="model-container-wrapper d-flex">
@@ -51,11 +51,13 @@ const XGBoost = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Regression")
+                .filter((option) => supervisedML.get(option) === "Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -174,19 +176,17 @@ const XGBoost = () => {
               value={objective}
               onChange={(e) => setObjective(e.target.value)}
             >
-              <option value="depthwise">Depthwise</option>
-              <option value="lossguide">Lossguide</option>
-              <option value="reg:squarederror">Squared Error</option>
-              <option value="reg:squaredlogerror">Squared Log Error</option>
-              <option value="reg:logistic">Logistic</option>
-              <option value="reg:linear">Linear</option>
-              <option value="reg:pseudohubererror">Pseudo-Huber Error</option>
-              <option value="reg:gamma">Gamma</option>
-              <option value="reg:tweedie">Tweedie</option>
-              <option value="reg:absoluteerror">Absolute Error</option>
+              <option value="binary:logistic">Binary Logistic</option>
+              <option value="binary:logitraw">Binary Logit Raw</option>
+              <option value="multi:softmax">Multiclass Softmax</option>
+              <option value="multi:softprob">Multiclass Softprob</option>
+              <option value="rank:pairwise">Rank Pairwise</option>
+              <option value="rank:ndcg">Rank NDCG</option>
+              <option value="rank:map">Rank MAP</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunXGBoost}>
             Run
           </button>

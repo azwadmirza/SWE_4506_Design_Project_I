@@ -40,9 +40,7 @@ const XGBoost = () => {
     <div>
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
-          <h5>
-            XGBoost
-          </h5>
+          <h5>XGBoost</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -172,8 +170,31 @@ const XGBoost = () => {
               <option value="lossguide">Lossguide</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red', fontSize: '16px' }}>{errorMessage}</p>}
-          <button className="model-button" onClick={handleRunXGBoost} disabled={targetVariable==="Select a Target"?true:false}>
+          <div>
+            <label className="model-label">Objective Function:</label>
+            <select
+              className="model-select"
+              value={objective}
+              onChange={(e) => setObjective(e.target.value)}
+            >
+              <option value="binary:logistic">Binary Logistic</option>
+              <option value="binary:logitraw">Binary Logit Raw</option>
+              <option value="multi:softmax">Multiclass Softmax</option>
+              <option value="multi:softprob">Multiclass Softprob</option>
+              <option value="rank:pairwise">Rank Pairwise</option>
+              <option value="rank:ndcg">Rank NDCG</option>
+              <option value="rank:map">Rank MAP</option>
+            </select>
+          </div>
+
+          {errorMessage && (
+            <p style={{ color: "red", fontSize: "16px" }}>{errorMessage}</p>
+          )}
+          <button
+            className="model-button"
+            onClick={handleRunXGBoost}
+            disabled={targetVariable === "Select a Target" ? true : false}
+          >
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
