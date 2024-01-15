@@ -30,9 +30,12 @@ const RocCurveChart = ({ chartId, data, labels, assigned_labels }: RocCurveChart
   console.log("Data 2: ", data2);
 
   return (
-    <Line
+    <div className='roc-curve mx-auto w-100 d-flex'>
+      <Line
       data={data2}
       options={{
+        maintainAspectRatio: false,
+        responsive: true,
         scales: {
           x: { type: 'linear', position: 'bottom' },
           y: { type: 'linear', position: 'left' },
@@ -43,6 +46,7 @@ const RocCurveChart = ({ chartId, data, labels, assigned_labels }: RocCurveChart
         },
       }}
     ></Line>
+    </div>
   );
 };
 

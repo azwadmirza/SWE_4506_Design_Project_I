@@ -1,8 +1,8 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useXGBoostRegression } from "../../hooks/useXGBoostRegression";
 import Loader from "../../../../partials/loader";
 import XGBoostRegressionResults from "./xgboostRegressionResults";
+import { useXGBoost } from "../../hooks/useXGBoost";
 
 const XGBoost = () => {
   const {
@@ -33,7 +33,7 @@ const XGBoost = () => {
     optionsPlot,
     supervisedML,
     loader,
-  } = useXGBoostRegression();
+  } = useXGBoost("regression");
   return (
     <div>
       <div className="model-container-wrapper d-flex">
