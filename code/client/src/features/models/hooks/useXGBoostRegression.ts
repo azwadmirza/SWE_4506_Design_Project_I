@@ -15,28 +15,12 @@ export const useXGBoostRegression=()=>{
   const [booster, setBooster] = useState("dart");
   const [treeMethod, setTreeMethod] = useState("hist");
   const [growPolicy, setGrowPolicy] = useState("depthwise");
-  const { optionsPlot,supervisedML } = useChart();
+  const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
+  const { supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
-  const [targetVariable, setTargetVariable] = useState<string | null>();
+  const [targetVariable, setTargetVariable] = useState<string>("Select a Target");
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
-  const [error,setError]=useState<string>();
-
-  useEffect(() => {
-    if (optionsPlot && optionsPlot.length > 0) {
-      const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Regression");
-      if(filteredOptions.length>0){
-        setTargetVariable(filteredOptions[filteredOptions.length - 1]);
-      }
-      else{
-        setError("No regression variables found");
-      }
-    }
-    else{
-      setError("No variables found");
-    }
-  }, [optionsPlot]);
-
   
 
   const handleRunXGBoost = async () => {

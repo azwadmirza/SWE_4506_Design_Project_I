@@ -20,9 +20,11 @@ const NaiveBayes = () => {
             <select
               id="dropdown"
               className="model-select"
-              value={targetVariable ? targetVariable : ""}
+              value={targetVariable ? targetVariable : "Select a Target"}
               onChange={(e) => setTargetVariable(e.target.value)}
+              required
             >
+              <option key={null} value="Select a Target">Select a Target</option>
               {optionsPlot
                 ?.slice()
                 .reverse()
@@ -79,7 +81,7 @@ const NaiveBayes = () => {
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
-          <button className="model-button" onClick={handleRunNaiveBayes}>
+          <button className="model-button" onClick={handleRunNaiveBayes} disabled={targetVariable==="Select a Target"?true:false}>
             Run
           </button>
         </div>

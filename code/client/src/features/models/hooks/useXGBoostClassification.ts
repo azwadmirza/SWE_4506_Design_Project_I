@@ -14,29 +14,12 @@ export const useXGBoostClassification=()=>{
   const [booster, setBooster] = useState("dart");
   const [treeMethod, setTreeMethod] = useState("hist");
   const [growPolicy, setGrowPolicy] = useState("depthwise");
-  const { optionsPlot,supervisedML } = useChart();
+  const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
+  const { supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState<any>();
-  const [targetVariable, setTargetVariable] = useState<string | null>();
+  const [targetVariable, setTargetVariable] = useState<string>("Select a Target");
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
-  const [error,setError]=useState<string>();
-
-  useEffect(() => {
-    if (optionsPlot && optionsPlot.length > 0) {
-      const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Classification");
-      if(filteredOptions.length>0){
-        setTargetVariable(filteredOptions[filteredOptions.length - 1]);
-      }
-      else{
-        setError("No classification variables found");
-      }
-    }
-    else{
-      setError("No variables found");
-    }
-  }, [optionsPlot]);
-
-  
 
   const handleRunXGBoost = async () => {
     try {

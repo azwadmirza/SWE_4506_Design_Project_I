@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getColumnValues } from "../../sheets/utils/column-extractor";
+import { useAppDispatch, useAppSelector } from "../../../contexts/file/hooks";
+import { setOptionsPlot } from "../../../contexts/file/slice";
 
 export const useLinearChart = (data: any[]) => {
   const [selectedValue, setSelectedValue] = useState('');
@@ -7,12 +9,13 @@ export const useLinearChart = (data: any[]) => {
   const [independantIndex, setIndependantIndex] = useState(0);
   const [dependant, setDependant] = useState<string[]>([]);
   const [independant, setIndependant] = useState<string[]>([]);
-  const [optionsPlot, setOptionsPlot] = useState<string[]>([]);
   const [optionsMap, setOptionsMap] = useState<Map<string, string[]>>(new Map());
+  const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
+  const dispatch=useAppDispatch();
 
   useEffect(() => {
     if (data && data.length > 0) {
-      setOptionsPlot(data[0]);
+      dispatch(setOptionsPlot(data[0]));
       handleDependant(dependantIndex);
       handleIndependant(independantIndex);
       populateOptionsMap();
