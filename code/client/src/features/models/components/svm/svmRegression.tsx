@@ -1,51 +1,11 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useState, useEffect } from "react";
-import { useChart } from "../../../visualization/hooks/useChart";
-import { useAppSelector } from "../../../../contexts/file/hooks";
-import axios from "axios";
-import SVMResults from "./svmResults";
+import { useSVMRegression } from "../../hooks/useSVMRegression";
+import SVMResults from "./svmRegressionResults";
 import Loader from "../../../../partials/loader";
 
 const SVM = () => {
-  const [normalization, setNormalization] = useState("MinMaxScaler");
-  const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [degree, setDegree] = useState(3);
-  const [maxIter, setMaxIter] = useState(20);
-  const [kernel, setKernel] = useState("linear");
-  const { optionsPlot } = useChart();
-  const [evaluationResults, setEvaluationResults] = useState(null);
-  const [targetVariable, setTargetVariable] = useState<string | null>();
-  const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-  const file_url = useAppSelector((state) => state.file.url);
-  const [loader, setLoader] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (optionsPlot && optionsPlot.length > 0) {
-      setTargetVariable(optionsPlot[optionsPlot.length - 1]);
-    }
-  }, [optionsPlot]);
-
-  const handleRunSVM = async () => {
-    try {
-      setLoader(true);
-      const response = await axios.post(`${address}/api/svm/start/`, {
-        file_url: file_url,
-        target: targetVariable,
-        normalization: normalization,
-        train_test_split: trainTestSplit,
-        max_iter: maxIter,
-        kernel: kernel,
-        degree: degree,
-      });
-      console.log("Backend response received:", JSON.parse(response.data));
-      setEvaluationResults(JSON.parse(response.data));
-      setLoader(false);
-    } catch (error) {
-      console.error("Error during backend request:");
-    }
-  };
-
+  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVMRegression();
   return (
     <div>
       <div className="model-container-wrapper d-flex ">
@@ -133,7 +93,7 @@ const SVM = () => {
           </button>
         </div>
         <div className="results-container">
-          {loader ? <Loader /> : <SVMResults data={evaluationResults} />}
+          {loader ? <Loader /> : <SVMResults modelData={evaluationResults} target={targetVariable} />}
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ from library.regression_analysis import RegressionAnalysis
 from sklearn import svm
 
 
-class svm_model(APIView):
+class svmClassification(APIView):
     queryset = []
 
     permission_classes = []
@@ -41,7 +41,7 @@ class svm_model(APIView):
         model.fit(X_train,y_train)
         return Response(ClassificationAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)
     
-class svm_classifier(APIView):
+class svmRegression(APIView):
     queryset = []
 
     permission_classes = []

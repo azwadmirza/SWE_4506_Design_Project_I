@@ -2,7 +2,7 @@ import { useSheets } from "../../../sheets/hooks/useSheets";
 import ParityPlot from "../parityPlotGenerator";
 import MetricsTable from "../regressionMetrics";
 
-interface IDecisionTreeProps {
+interface IKNearestNeighboursProps {
   modelData: {
     "MAE Test": number;
     "MAE Train": number;
@@ -17,10 +17,10 @@ interface IDecisionTreeProps {
   target: string | null | undefined;
 }
 
-const DecisionTreeResults = ({
+const KNearestNeighboursResults = ({
   modelData,
   target,
-}: IDecisionTreeProps) => {
+}: IKNearestNeighboursProps) => {
   const { data } = useSheets();
   if (!modelData) return null;
   if (!target) return null;
@@ -84,4 +84,4 @@ const DecisionTreeResults = ({
   );
 };
 
-export default DecisionTreeResults;
+export default KNearestNeighboursResults;
