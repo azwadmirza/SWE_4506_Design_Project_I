@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Scatter } from "react-chartjs-2";
 import { ChartDataset } from "chart.js";
 
-interface ParityPlotProps {
+interface IParityPlotProps {
   targetColumnValues: number[];
   predictedValues: number[];
 }
 
-const ParityPlot: React.FC<ParityPlotProps> = ({
+const ParityPlot = ({
   targetColumnValues,
   predictedValues,
-}) => {
+}: IParityPlotProps) => {
   const [chartData, setChartData] = useState<{
     datasets: ChartDataset<any, any>[];
   } | null>(null);
@@ -29,10 +29,11 @@ const ParityPlot: React.FC<ParityPlotProps> = ({
       const diagonalLines: { x: number; y: number }[] = [];
       const originalMaxValue = Math.max(...targetColumnValues);
       const predMaxValue = Math.max(...predictedValues);
-      const maxValue = (originalMaxValue > predMaxValue) ? originalMaxValue : predMaxValue;
-        for (let i = 0; i <= maxValue; i = i+ (maxValue/100) ) {
-          diagonalLines.push({ x: i, y: i });
-        }
+      const maxValue =
+        originalMaxValue > predMaxValue ? originalMaxValue : predMaxValue;
+      for (let i = 0; i <= maxValue; i = i + maxValue / 100) {
+        diagonalLines.push({ x: i, y: i });
+      }
 
       setChartData({
         datasets: [
@@ -48,8 +49,8 @@ const ParityPlot: React.FC<ParityPlotProps> = ({
             data: diagonalLines,
             backgroundColor: "rgba(255, 0, 0, 1)",
             borderWidth: 1,
-            pointHoverRadius: 0, 
-            pointHitRadius: 0,   
+            pointHoverRadius: 0,
+            pointHitRadius: 0,
           },
         ],
       });
@@ -65,31 +66,31 @@ const ParityPlot: React.FC<ParityPlotProps> = ({
             {
               scales: {
                 x: [
-                    {
-                      type: "linear",
-                      position: "bottom",
-                      scaleLabel: {
-                        display: true,
-                        labelString: "Original Values",
-                      },
-                      ticks: {
-                        beginAtZero: true,
-                      },
+                  {
+                    type: "linear",
+                    position: "bottom",
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Original Values",
                     },
-                  ],
-                  y: [
-                    {
-                      type: "linear",
-                      position: "left",
-                      scaleLabel: {
-                        display: true,
-                        labelString: "Predicted Values",
-                      },
-                      ticks: {
-                        beginAtZero: true,
-                      },
+                    ticks: {
+                      beginAtZero: true,
                     },
-                  ],
+                  },
+                ],
+                y: [
+                  {
+                    type: "linear",
+                    position: "left",
+                    scaleLabel: {
+                      display: true,
+                      labelString: "Predicted Values",
+                    },
+                    ticks: {
+                      beginAtZero: true,
+                    },
+                  },
+                ],
               },
             } as any
           }
