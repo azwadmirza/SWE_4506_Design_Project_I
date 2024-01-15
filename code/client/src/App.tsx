@@ -24,13 +24,12 @@ import Dashboard from './features/dashboard/pages/dashboard';
 function App() {
   const accessToken = useAppSelector((state) => state.auth.access_token);
   const verification = useAppSelector((state) => state.auth.verification);
-  const refreshToken = useAppSelector((state) => state.auth.refresh_token);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing access_token={accessToken} refresh_token={refreshToken} verification={verification}/>}/>
+          <Route path="/" element={<Landing access_token={accessToken} verification={verification}/>}/>
           {!accessToken && (
           <>
           <Route path="/login" element={<SignIn location='login'/>}/>

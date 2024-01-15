@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../../contexts/auth/hooks";
 import { setFile, setURL } from "../../../contexts/file/slice";
 import { Link } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
-import { folder, save, saveOutline } from "ionicons/icons";
+import { folder, save } from "ionicons/icons";
 
 type HeaderProps = {
   filename: string;
@@ -19,8 +19,6 @@ const Header = ({ filename, data }: HeaderProps) => {
   const url = useAppSelector((state) => state.file.url);
   const dispatch = useAppDispatch();
   const {
-    showFileDropdown,
-    toggleDropdown,
     showFileUpload,
     setShowFileUpload,
   } = useDropDown();

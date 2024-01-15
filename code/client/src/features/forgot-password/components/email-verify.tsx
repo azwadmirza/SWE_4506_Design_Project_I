@@ -11,7 +11,7 @@ type ForgotPasswordProps = {
 
 const ForgotPasswordEmailVerify = ({ email }: ForgotPasswordProps) => {
     const [otp, setOTP] = useState("");
-    const [isDisabled, setIsDisabled] = useState(true);
+    const [isDisabled] = useState(true);
     const [isLocked, setisLocked] = useState(false);
     const [error, setError] = useState(false);
     const [enterotp, setEnterotp] = useState(true);

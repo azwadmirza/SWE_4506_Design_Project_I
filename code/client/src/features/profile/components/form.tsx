@@ -1,7 +1,6 @@
 import {  useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Loader from "../../../partials/loader";
 import { mailUnreadOutline, personCircleOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import ConfirmPasswordModal from "./confirm-password-modal";
