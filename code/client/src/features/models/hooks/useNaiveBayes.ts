@@ -16,6 +16,8 @@ export const useNaiveBayes=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pca,setPca] = useState<boolean>(true);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   const handleInference = async ()=>{
     console.log("Naive Bayes Inference Time..");
@@ -48,5 +50,10 @@ export const useNaiveBayes=()=>{
     }
   };
 
-  return {normalization,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
+  
+  const handleSwitchChange = (checked: boolean) => {
+    setPca(!checked);
+  };
+
+  return {pcaFeatures,setPcaFeatures,normalization,pca,handleSwitchChange,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
 }

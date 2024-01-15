@@ -15,6 +15,8 @@ export const useKNN=(type:"classification"|"regression")=>{
   const { supervisedML } = useChart();
   const [n_neighbours, setNNeighbours] = useState(5);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pca,setPca] = useState<boolean>(true);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   useEffect(()=>{
     if(distanceMetric==="euclidean"){
@@ -66,5 +68,10 @@ export const useKNN=(type:"classification"|"regression")=>{
       console.error("Error during backend request:");
     }
   };
-  return {handleInference,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,errorMessage, optionsPlot}
+  
+  const handleSwitchChange = (checked: boolean) => {
+    setPca(!checked);
+  };
+
+  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,errorMessage, optionsPlot}
 }

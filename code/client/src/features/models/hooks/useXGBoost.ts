@@ -22,6 +22,8 @@ export const useXGBoost=(type:"regression"|"classification")=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pca,setPca] = useState<boolean>(true);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   const handleInference = async ()=>{
     console.log("XGBoost Classification Inference Time..");
@@ -57,5 +59,10 @@ export const useXGBoost=(type:"regression"|"classification")=>{
     }
   };
 
-  return {handleInference, supervisedML,objective,setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
+  
+  const handleSwitchChange = (checked: boolean) => {
+    setPca(!checked);
+  };
+
+  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,objective,setObjective, supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }
