@@ -33,13 +33,10 @@ const XGBoost = () => {
     optionsPlot,
     supervisedML,
     loader,
-<<<<<<< HEAD
-  } = useXGBoost("regression");
-=======
     errorMessage,
     handleInference,
-  } = useXGBoostRegression();
->>>>>>> f0d3dcb0f393e7dbebc348adf11497ad346b4279
+  } = useXGBoost("regression");
+    
   return (
     <div>
       <div className="model-container-wrapper d-flex">

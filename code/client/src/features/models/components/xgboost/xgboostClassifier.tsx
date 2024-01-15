@@ -8,7 +8,9 @@ const XGBoost = () => {
   const {
     objective,
     setObjective,
-    supervisedML,handleInference,errorMessage,
+    supervisedML,
+    handleInference,
+    errorMessage,
     handleRunXGBoost,
     setTargetVariable,
     setNormalization,
