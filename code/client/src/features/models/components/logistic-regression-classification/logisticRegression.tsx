@@ -17,9 +17,11 @@ const LogisticRegression = () => {
             <select
               id="dropdown"
               className="model-select"
-              value={targetVariable ? targetVariable : ""}
+              value={targetVariable ? targetVariable : "Select a Target"}
               onChange={(e) => setTargetVariable(e.target.value)}
+              required
             >
+              <option key={null} value="Select a Target">Select a Target</option>
               {optionsPlot
                 ?.slice()
                 .reverse()
@@ -80,6 +82,7 @@ const LogisticRegression = () => {
           <button
             className="model-button"
             onClick={handleRunLogisticRegression}
+            disabled={targetVariable==="Select a Target"?true:false}
           >
             Run
           </button>
