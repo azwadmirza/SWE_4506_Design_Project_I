@@ -27,8 +27,6 @@ const RocCurveChart = ({ chartId, data, labels, assigned_labels }: RocCurveChart
     datasets: dataset2,
   };
 
-  console.log("Data 2: ", data2);
-
   return (
     <div className='roc-curve mx-auto w-100 d-flex'>
       <Line
