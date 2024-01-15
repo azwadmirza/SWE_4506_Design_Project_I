@@ -5,7 +5,7 @@ import Loader from "../../../../partials/loader";
 import { useLogisticRegression } from "../../hooks/useLogisticRegression";
 
 const LogisticRegression = () => {
-  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,optionsPlot,supervisedML}=useLogisticRegression();
+  const {normalization,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,optionsPlot,supervisedML}=useLogisticRegression();
 
   return (
     <div>
@@ -79,10 +79,10 @@ const LogisticRegression = () => {
               <option value="l2">L2</option>
             </select>
           </div>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           <button
             className="model-button"
             onClick={handleRunLogisticRegression}
-            disabled={targetVariable==="Select a Target"?true:false}
           >
             Run
           </button>

@@ -14,6 +14,7 @@ export const useKNN=(type:"classification"|"regression")=>{
   const optionsPlot = useAppSelector((state) => state.file.optionsPlot);
   const { supervisedML } = useChart();
   const [n_neighbours, setNNeighbours] = useState(5);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(()=>{
     if(distanceMetric==="euclidean"){
@@ -36,6 +37,11 @@ export const useKNN=(type:"classification"|"regression")=>{
 
   const handleRunKNN = async () => {
     try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
       setLoader(true);
       const response = await axios.post(`${address}/api/knn/${type}/`, {
         file_url: file_url,
@@ -55,5 +61,5 @@ export const useKNN=(type:"classification"|"regression")=>{
       console.error("Error during backend request:");
     }
   };
-  return {normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}
+  return {normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,errorMessage, optionsPlot}
 }

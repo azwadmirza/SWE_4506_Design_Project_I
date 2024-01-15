@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 
@@ -15,9 +15,15 @@ export const useLogisticRegression=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const [loader, setLoader] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRunLogisticRegression = async () => {
     try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
       setLoader(true);
       const response = await axios.post(
         `${address}/api/logistic_regression/start/`,
@@ -38,5 +44,5 @@ export const useLogisticRegression=()=>{
     }
   };
 
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,optionsPlot,supervisedML}
+  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,errorMessage,optionsPlot,supervisedML}
 }

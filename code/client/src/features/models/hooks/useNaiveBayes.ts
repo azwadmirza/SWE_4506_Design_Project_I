@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
@@ -15,9 +15,15 @@ export const useNaiveBayes=()=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRunNaiveBayes = async () => {
     try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
       setLoader(true);
       const response = await axios.post(
         `${address}/api/naive_bayes/start/`,
@@ -38,5 +44,5 @@ export const useNaiveBayes=()=>{
     }
   };
 
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,supervisedML}
+  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
 }

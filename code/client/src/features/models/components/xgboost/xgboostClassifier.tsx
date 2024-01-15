@@ -5,11 +5,11 @@ import { useXGBoostClassification } from "../../hooks/useXGBoostClassification";
 import Loader from "../../../../partials/loader";
 
 const XGBoost = () => {
-  const {supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
+  const {supervisedML,errorMessage,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
-        <div className="model-container">
+        <div className="model-container padding:10px">
           <h5>
             XGBoost
           </h5>
@@ -138,7 +138,8 @@ const XGBoost = () => {
               <option value="lossguide">Lossguide</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunXGBoost} disabled={targetVariable==="Select a Target"?true:false}>
+          {errorMessage && <p style={{ color: 'red', fontSize: '16px' }}>{errorMessage}</p>}
+          <button className="model-button" onClick={handleRunXGBoost}>
             Run
           </button>
         </div>

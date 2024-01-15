@@ -5,7 +5,7 @@ import KNNRegressionResults from "./knnRegressionResults";
 import { useKNN } from "../../hooks/useKNN";
 
 const KNearestNeighbours = () => {
-  const {supervisedML,normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNN("regression");
+  const {supervisedML,errorMessage,normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNN("regression");
 
   return (
     <div>
@@ -117,7 +117,8 @@ const KNearestNeighbours = () => {
               <option value="distance">Distance</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunKNN}  disabled={targetVariable==="Select a Target"?true:false}>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          <button className="model-button" onClick={handleRunKNN}>
             Run
           </button>
         </div>

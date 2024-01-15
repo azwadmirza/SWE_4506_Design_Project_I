@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useAppSelector } from "../../../contexts/file/hooks";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useChart } from "../../visualization/hooks/useChart";
 
 export const useSVM=(type:"classification"|"regression")=>{
@@ -17,9 +17,15 @@ export const useSVM=(type:"classification"|"regression")=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRunSVM = async () => {
     try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
       setLoader(true);
       const response = await axios.post(`${address}/api/svm/${type}/`, {
         file_url: file_url,
@@ -37,5 +43,5 @@ export const useSVM=(type:"classification"|"regression")=>{
       console.error("Error during backend request:");
     }
   };
-  return {normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot}
+  return {normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,errorMessage,handleRunSVM,optionsPlot}
 }

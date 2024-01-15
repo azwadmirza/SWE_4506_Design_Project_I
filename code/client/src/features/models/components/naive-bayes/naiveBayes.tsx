@@ -5,7 +5,7 @@ import Loader from "../../../../partials/loader";
 import { useNaiveBayes } from "../../hooks/useNaiveBayes";
 
 const NaiveBayes = () => {
-  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,supervisedML}=useNaiveBayes();
+  const {normalization,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,supervisedML}=useNaiveBayes();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
@@ -81,7 +81,8 @@ const NaiveBayes = () => {
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
-          <button className="model-button" onClick={handleRunNaiveBayes} disabled={targetVariable==="Select a Target"?true:false}>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          <button className="model-button" onClick={handleRunNaiveBayes}>
             Run
           </button>
         </div>
