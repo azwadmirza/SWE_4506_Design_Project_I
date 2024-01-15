@@ -7,11 +7,10 @@ import { useEffect } from "react";
 
 interface ILanding{
   access_token:string|null,
-  refresh_token:string|null,
   verification:boolean|null
 }
 
-const Landing = ({access_token,refresh_token,verification}:ILanding) => {
+const Landing = ({access_token,verification}:ILanding) => {
   const navigate=useNavigate();
   useEffect(()=>{
     if(access_token){

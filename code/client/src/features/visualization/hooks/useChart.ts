@@ -27,7 +27,7 @@ export const useChart = () => {
   const [labels, setLabels] = useState<string[]>([]);
   const [dataInfo, setDataInfo] = useState<any[]>([]);
   const [statistics, setStatistics] = useState<any[]>([]);
-  const [supervisedML,setSupervisedML]=useState<Map<string,string>>(new Map());
+  const [supervisedML]=useState<Map<string,string>>(new Map());
 
   function filterNumericColumns(table: any[][]): any {
     const number_labels: any[] = [];

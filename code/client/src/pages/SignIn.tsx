@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Login from "../components/login";
 import SignUp from "../components/signup";
 import NavbarLanding from "../partials/navbarLanding";

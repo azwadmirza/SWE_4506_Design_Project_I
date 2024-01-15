@@ -1,7 +1,7 @@
 import Card from "react-bootstrap/Card";
 import { useState } from "react";
 import '../assets/css/change-password.css';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavbarUser from "../../../partials/navbarUser";
 import { IonIcon } from "@ionic/react";
 import { lockClosedOutline, lockOpenOutline } from "ionicons/icons";
@@ -23,7 +23,6 @@ const ChangePassword = () => {
     string
   >("password");
   const [errorPassword, setErrorPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
   const navigate=useNavigate();
   const [isDisabled, setIsDisabled] =useState(false);
@@ -132,6 +131,9 @@ const ChangePassword = () => {
           </Card.Header>
           <Card.Body>
             <form onSubmit={handleSubmit}>
+              <div className="error-password" style={{color:"red"}}>
+                {errorCurrentPassword}
+              </div>
               <div className="inputbox">
               {(currentPasswordVisibility === "password" && (
               <IonIcon
@@ -152,6 +154,9 @@ const ChangePassword = () => {
                   />
                   <label htmlFor="">Current Password</label>
               </div>
+              <div className="error-password" style={{color:"red"}}>
+                {errorPassword}
+              </div>
               <div className="inputbox">
               {(passwordVisibility === "password" && (
               <IonIcon
@@ -171,6 +176,9 @@ const ChangePassword = () => {
                     value={password}
                   />
                   <label htmlFor="">New Password</label>
+              </div>
+              <div className="error-password" style={{color:"red"}}>
+                {errorConfirmPassword}
               </div>
               <div className="inputbox">
               {(confirmPasswordVisibility === "password" && (
