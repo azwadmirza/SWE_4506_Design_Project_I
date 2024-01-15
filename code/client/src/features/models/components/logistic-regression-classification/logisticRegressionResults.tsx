@@ -1,8 +1,8 @@
 import { IClassificationProps } from "../../assets/ts/IClassificationProps";
 import ConfusionMatrix from "../confusionMatrix";
 import DataMatrix from "../dataMatrix";
-import extractRocCurveData from "../rocDataExtraction";
-import { RawData } from "../rocDataExtraction";
+import extractRocCurveData from "../../assets/ts/rocDataExtraction";
+import { RawData } from "../../assets/ts/rocDataExtraction";
 import RocCurveChart, { RocCurveChartProps } from "../rocGenerator";
 
 const LogisticRegressionResults = ({ data }: IClassificationProps) => {

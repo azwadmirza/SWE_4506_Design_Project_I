@@ -10,11 +10,32 @@ export const useSVM=(type:"classification"|"regression")=>{
     const [maxIter, setMaxIter] = useState(20);
     const [kernel, setKernel] = useState("linear");
     const { optionsPlot,supervisedML } = useChart();
+    const [error,setError]=useState<string>();
 
     useEffect(() => {
-        if (optionsPlot && optionsPlot.length > 0) {
-          setTargetVariable(optionsPlot[optionsPlot.length - 1]);
+      if (optionsPlot && optionsPlot.length > 0) {
+        if(type==="classification"){
+          const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Classification");
+          if(filteredOptions.length>0){
+            setTargetVariable(filteredOptions[filteredOptions.length - 1]);
+          }
+          else{
+            setError("No classification variables found");
+          }
         }
+        else{
+          const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Regression");
+          if(filteredOptions.length>0){
+            setTargetVariable(filteredOptions[filteredOptions.length - 1]);
+          }
+          else{
+            setError("No regression variables found");
+          }
+        }
+      }
+      else{
+        setError("No variables found");
+      }
       }, [optionsPlot]);
   
   const [evaluationResults, setEvaluationResults] = useState(null);
