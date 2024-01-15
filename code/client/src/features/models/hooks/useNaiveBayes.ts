@@ -18,7 +18,7 @@ export const useNaiveBayes=()=>{
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleInference = async ()=>{
-    console.log("Inference Time..");
+    console.log("Naive Bayes Inference Time..");
   }
 
   const handleRunNaiveBayes = async () => {
