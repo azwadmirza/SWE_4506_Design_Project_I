@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
@@ -15,9 +15,20 @@ export const useLinearRegression=()=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  
+  const handleInference = async ()=>{
+    console.log("Linear Regression Inference Time..");
+  }
 
   const handleRunLinearRegression = async () => {
     try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
       console.log(targetVariable);
       setLoader(true);
       const response = await axios.post(`${address}/api/linear_regression/start/`, {
@@ -36,5 +47,5 @@ export const useLinearRegression=()=>{
     }
   };
 
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,supervisedML}
+  return {handleInference,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,errorMessage,supervisedML}
 }
