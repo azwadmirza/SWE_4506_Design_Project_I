@@ -165,7 +165,7 @@ class IndexedDBConfig {
       const fileStore = tx.objectStore('file');
       const files = await fileStore.getAll();
       if (files.length == 0) {
-        const res = await axios.get(import.meta.env.VITE_BACKEND_REQ_ADDRESS + "/api/file/getall/" + localStorage.getItem("user_id"));
+        const res = await axios.get(import.meta.env.VITE_BACKEND_REQ_ADDRESS + "/api/file/getall/" + localStorage.getItem("user_id")+"/");
         res.data.map(async(file:any)=>{
           this.getFileByURL('byUrl', file.cloudinary_url, file.id, file.file_name, new Date(file.uploaded_at).toLocaleDateString() + " " + new Date(file.uploaded_at).toLocaleTimeString());
         })

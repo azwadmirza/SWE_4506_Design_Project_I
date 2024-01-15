@@ -27,8 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["frontend","localhost","127.0.0.1","cloudinary"]
-
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -57,15 +56,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -79,13 +76,6 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 
-CORS_ALLOW_HEADERS = [
-    'Content-Type',
-    'Authorization',
-    'Content-Disposition',
-]
-
-
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -94,6 +84,7 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
 TEMPLATES = [
