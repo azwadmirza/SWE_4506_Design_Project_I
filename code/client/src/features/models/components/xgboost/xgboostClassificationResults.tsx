@@ -1,55 +1,15 @@
+import { IClassificationProps } from "../../assets/ts/IClassificationProps";
 import ConfusionMatrix from "../confusionMatrix";
 import DataMatrix from "../dataMatrix";
 import extractRocCurveData from "../rocDataExtraction";
 import { RawData } from "../rocDataExtraction";
 import RocCurveChart, { RocCurveChartProps } from "../rocGenerator";
 
-interface IXGBoostProps {
-  data: {
-    "Accuracy Test": number;
-    "Accuracy Train": number;
-    "Confusion Matrix Test": number[][];
-    categories: string[];
-    "Classification Report Test": {
-      [key: string]: {
-        label: string;
-        precision: number;
-        recall: number;
-        "f1-score": number;
-        support: number;
-      };
-    };
-    "Confusion Matrix Train": number[][];
-    "Classification Report Train": {
-      [key: string]: {
-        precision: number;
-        recall: number;
-        "f1-score": number;
-        support: number;
-      };
-    };
-    auc_scores_test: {
-      [key: string]: number;
-    };
-    auc_scores_train: {
-      [key: string]: number;
-    };
-    fpr_test_per_class: {
-      [key: string]: number[];
-    };
-    fpr_train_per_class: {
-      [key: string]: number[];
-    };
-    tpr_test_per_class: {
-      [key: string]: number[];
-    };
-    tpr_train_per_class: {
-      [key: string]: number[];
-    };
-  } | null;
+interface IXGBoostProps extends IClassificationProps{
+  categories:any;
 }
 
-const XGBoostResults = ({ data }: IXGBoostProps) => {
+const XGBoostResults = ({ data,categories }: IXGBoostProps) => {
   if (!data) return null;
   const labelsArray = [];
   const classificationReportTest = data["Classification Report Test"];
@@ -90,7 +50,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
-    dataTest.push({ label:data.categories[parseInt(label)], metrics });
+    dataTest.push({ label:categories[parseInt(label)], metrics });
   }
   const dataTrain = [];
 
@@ -100,7 +60,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
     if (label.toLowerCase() === "accuracy") {
       break;
     }
-    dataTrain.push({ label:data.categories[parseInt(label)], metrics });
+    dataTrain.push({ label:categories[parseInt(label)], metrics });
   }
 
   return (
@@ -115,7 +75,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         <div style={{ marginBottom: "15px" }}>
           <ConfusionMatrix
             data={data["Confusion Matrix Train"]}
-            labels={data.categories}
+            labels={categories}
             title="Confusion Matrix Train"
           />
         </div>
@@ -124,7 +84,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
-          <RocCurveChart chartId="decision-tree-train" data={rocCurveTrainData} labels={labelsArray} assigned_labels={data.categories}/>
+          <RocCurveChart chartId="decision-tree-train" data={rocCurveTrainData} labels={labelsArray} assigned_labels={categories}/>
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -137,7 +97,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         <div style={{ marginBottom: "15px" }}>
           <ConfusionMatrix
             data={data["Confusion Matrix Test"]}
-            labels={data.categories}
+            labels={categories}
             title="Confusion Matrix Test"
           />
         </div>
@@ -146,7 +106,7 @@ const XGBoostResults = ({ data }: IXGBoostProps) => {
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
         <h2>ROC Curve-Test</h2>
-        <RocCurveChart chartId="decision-tree-test" data={rocCurveTestData} labels={labelsArray} assigned_labels={data.categories}/>
+        <RocCurveChart chartId="decision-tree-test" data={rocCurveTestData} labels={labelsArray} assigned_labels={categories}/>
         </div>
       </div>
     </div>

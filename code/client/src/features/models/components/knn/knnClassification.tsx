@@ -1,8 +1,8 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
-import KNearestNeighboursResults from "./knnClassificationResults";
 import { useKNNClassification } from "../../hooks/useKNNClassification";
+import KNNClassificationResults from "./knnClassificationResults";
 
 const KNearestNeighbours = () => {
   const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNNClassification();
@@ -122,7 +122,7 @@ const KNearestNeighbours = () => {
           {loader ? (
             <Loader />
           ) : (
-            <KNearestNeighboursResults data={evaluationResults} />
+            <KNNClassificationResults data={evaluationResults} />
           )}
         </div>
       </div>

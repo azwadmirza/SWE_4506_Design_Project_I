@@ -2,8 +2,8 @@ import "../assets/css/models.css";
 import { useState } from "react";
 import LinearRegression from "./linear-regression/linearRegression";
 import DecisionTree from "./decision-tree/decisionTreeRegression";
-import KNearestNeighbours from "./knn/knnRegression";
 import XGBoost from "./xgboost/xgboostRegression";
+import KNearestNeighbours from "./knn/knnRegression";
 import SVM from "./svm/svmRegression";
 
 const RegressionModels = () => {

@@ -1,7 +1,7 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
-import KNearestNeighboursResults from "./knnRegressionResults";
+import KNNRegressionResults from "./knnRegressionResults";
 import { useKNNRegression } from "../../hooks/useKNNRegression";
 
 const KNearestNeighbours = () => {
@@ -122,7 +122,7 @@ const KNearestNeighbours = () => {
           {loader ? (
             <Loader />
           ) : (
-            <KNearestNeighboursResults modelData={evaluationResults} target={targetVariable} />
+            <KNNRegressionResults modelData={evaluationResults} target={targetVariable}/>
           )}
         </div>
       </div>
