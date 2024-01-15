@@ -100,3 +100,8 @@
 .inference-button:hover {
   background-color: #f27b04;
 }
+
+.roc-curve{
+  width: 100% !important;
+  height: 100% !important;
+}

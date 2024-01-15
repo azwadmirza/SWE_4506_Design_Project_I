@@ -1,18 +1,46 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import XGBoostResults from "./xgboostClassificationResults";
-import { useXGBoostClassification } from "../../hooks/useXGBoostClassification";
+import { useXGBoost } from "../../hooks/useXGBoost";
 import Loader from "../../../../partials/loader";
 
 const XGBoost = () => {
-  const {supervisedML,handleInference,errorMessage,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
+  const {
+    objective,
+    setObjective,
+    supervisedML,
+    handleInference,
+    errorMessage,
+    handleRunXGBoost,
+    setTargetVariable,
+    setNormalization,
+    setTrainTestSplit,
+    setMaxDepth,
+    setSampleRatio,
+    setRegAlpha,
+    setRegLambda,
+    setBooster,
+    setTreeMethod,
+    setGrowPolicy,
+    evaluationResults,
+    normalization,
+    trainTestSplit,
+    maxDepth,
+    subsampleRatio,
+    regAlpha,
+    regLambda,
+    booster,
+    treeMethod,
+    growPolicy,
+    targetVariable,
+    optionsPlot,
+    loader,
+  } = useXGBoost("classification");
   return (
     <div>
       <div className="model-container-wrapper d-flex">
-        <div className="model-container padding:10px">
-          <h5>
-            XGBoost
-          </h5>
+        <div className="model-container">
+          <h5>XGBoost</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -22,11 +50,15 @@ const XGBoost = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -106,16 +138,16 @@ const XGBoost = () => {
               onChange={(e) => setRegAlpha(parseInt(e.target.value))}
             />
             <div>
-            <label className="model-label">L2 Regularization:</label>
-            <input
-              className="model-input"
-              type="number"
-              value={regLambda}
-              min={10e-6}
-              max={10e6}
-              onChange={(e) => setRegLambda(parseInt(e.target.value))}
-            />
-          </div>
+              <label className="model-label">L2 Regularization:</label>
+              <input
+                className="model-input"
+                type="number"
+                value={regLambda}
+                min={10e-6}
+                max={10e6}
+                onChange={(e) => setRegLambda(parseInt(e.target.value))}
+              />
+            </div>
             <label className="model-label">Tree Method:</label>
             <select
               className="model-select"
@@ -138,8 +170,31 @@ const XGBoost = () => {
               <option value="lossguide">Lossguide</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red', fontSize: '16px' }}>{errorMessage}</p>}
-          <button className="model-button" onClick={handleRunXGBoost}>
+          <div>
+            <label className="model-label">Objective Function:</label>
+            <select
+              className="model-select"
+              value={objective}
+              onChange={(e) => setObjective(e.target.value)}
+            >
+              <option value="binary:logistic">Binary Logistic</option>
+              <option value="binary:logitraw">Binary Logit Raw</option>
+              <option value="multi:softmax">Multiclass Softmax</option>
+              <option value="multi:softprob">Multiclass Softprob</option>
+              <option value="rank:pairwise">Rank Pairwise</option>
+              <option value="rank:ndcg">Rank NDCG</option>
+              <option value="rank:map">Rank MAP</option>
+            </select>
+          </div>
+
+          {errorMessage && (
+            <p style={{ color: "red", fontSize: "16px" }}>{errorMessage}</p>
+          )}
+          <button
+            className="model-button"
+            onClick={handleRunXGBoost}
+            disabled={targetVariable === "Select a Target" ? true : false}
+          >
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
@@ -150,7 +205,10 @@ const XGBoost = () => {
           {loader ? (
             <Loader />
           ) : (
-            <XGBoostResults data={evaluationResults} categories={evaluationResults?.categories}/>
+            <XGBoostResults
+              data={evaluationResults}
+              categories={evaluationResults?.categories}
+            />
           )}
         </div>
       </div>

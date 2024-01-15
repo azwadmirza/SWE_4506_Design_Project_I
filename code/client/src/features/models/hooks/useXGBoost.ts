@@ -3,12 +3,11 @@ import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
 
-export const useXGBoostRegression=()=>{
+export const useXGBoost=(type:"regression"|"classification")=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxDepth, setMaxDepth] = useState(6);
   const [subsampleRatio, setSampleRatio] = useState(0.5);
-  const [objective, setObjective] = useState("reg:squarederror");
   const [regAlpha, setRegAlpha] = useState(0);
   const [regLambda, setRegLambda] = useState(0);
   const [loader,setLoader]=useState(false);
@@ -17,14 +16,15 @@ export const useXGBoostRegression=()=>{
   const [growPolicy, setGrowPolicy] = useState("depthwise");
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const { supervisedML } = useChart();
-  const [evaluationResults, setEvaluationResults] = useState(null);
+  const [evaluationResults, setEvaluationResults] = useState<any>();
   const [targetVariable, setTargetVariable] = useState<string>("Select a Target");
+  const [objective, setObjective] = useState(type==="regression"?"reg:squarederror":"binary:logistic");
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleInference = async ()=>{
-    console.log("XGBoost Regression Inference Time..");
+    console.log("XGBoost Classification Inference Time..");
   }
 
   const handleRunXGBoost = async () => {
@@ -35,7 +35,7 @@ export const useXGBoostRegression=()=>{
       }
       setErrorMessage('');
       setLoader(true);
-      const response = await axios.post(`${address}/api/xgboost/regression/`, {
+      const response = await axios.post(`${address}/api/xgboost/${type}/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
@@ -57,5 +57,5 @@ export const useXGBoostRegression=()=>{
     }
   };
 
-  return {handleInference, supervisedML,objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
+  return {handleInference, supervisedML,objective,setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }
