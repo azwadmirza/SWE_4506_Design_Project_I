@@ -3,9 +3,32 @@ import "../../assets/css/all-model.css";
 import NaiveBayesResults from "./naiveBayesResults";
 import Loader from "../../../../partials/loader";
 import { useNaiveBayes } from "../../hooks/useNaiveBayes";
+import { ColorSwitch } from "../pcaSwitch";
 
 const NaiveBayes = () => {
-  const {normalization,errorMessage,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,supervisedML}=useNaiveBayes();
+  const {
+    normalization,
+    pca,
+    handleSwitchChange,
+    errorMessage,
+    handleInference,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    maxIter,
+    setMaxIter,
+    smoothing,
+    setSmoothing,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunNaiveBayes,
+    optionsPlot,
+    supervisedML,
+    pcaFeatures,
+    setPcaFeatures,
+  } = useNaiveBayes();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
@@ -16,6 +39,32 @@ const NaiveBayes = () => {
             Bayes
           </h5>
           <div className="model-label">
+            <label className="model-label">Apply PCA</label>
+            <div
+              style={{
+                position: "absolute",
+                top: "48px",
+                right: "15px",
+                padding: "5px",
+              }}
+            >
+              <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+            </div>
+            {!pca && (
+              <div>
+                <label className="model-label">Number of Features:</label>
+                <input
+                  className="model-input"
+                  type="number"
+                  min={1}
+                  max={optionsPlot.length-1}
+                  value={pcaFeatures}
+                  onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
+                />
+              </div>
+            )}
+          </div>
+          <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
               id="dropdown"
@@ -24,11 +73,15 @@ const NaiveBayes = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -81,7 +134,7 @@ const NaiveBayes = () => {
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunNaiveBayes}>
             Run
           </button>

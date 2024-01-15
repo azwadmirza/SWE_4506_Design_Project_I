@@ -1,11 +1,12 @@
 import "../assets/css/models.css";
 import { useState } from "react";
 import DecisionTree from "./decision-tree/decisionTreeClassification";
-import LogisticRegression from "./logistic-regression-classification/logisticRegression";
+import LogisticRegression from "./logistic-regression/logisticRegression";
 import SVM from "./svm/svmClassification";
 import NaiveBayes from "./naive-bayes/naiveBayes";
 import XGBoost from "./xgboost/xgboostClassifier";
 import KNearestNeighbours from "./knn/knnClassification";
+
 
 const ClassificationModels = () => {
   const [toggle, setToggle] = useState(1);

@@ -2,6 +2,7 @@ import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
 import XGBoostRegressionResults from "./xgboostRegressionResults";
+import { ColorSwitch } from "../pcaSwitch";
 import { useXGBoost } from "../../hooks/useXGBoost";
 
 const XGBoost = () => {
@@ -35,6 +36,10 @@ const XGBoost = () => {
     loader,
     errorMessage,
     handleInference,
+    pca,
+    handleSwitchChange,
+    pcaFeatures,
+    setPcaFeatures,
   } = useXGBoost("regression");
 
   return (
@@ -42,6 +47,32 @@ const XGBoost = () => {
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
           <h5>XGBoost</h5>
+          <div className="model-label">
+            <label className="model-label">Apply PCA</label>
+            <div
+              style={{
+                position: "absolute",
+                top: "27px",
+                right: "15px",
+                padding: "5px",
+              }}
+            >
+              <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+            </div>
+            {!pca && (
+              <div>
+                <label className="model-label">Number of Features:</label>
+                <input
+                  className="model-input"
+                  type="number"
+                  min={1}
+                  max={optionsPlot.length-1}
+                  value={pcaFeatures}
+                  onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
+                />
+              </div>
+            )}
+          </div>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -185,7 +216,6 @@ const XGBoost = () => {
               <option value="rank:map">Rank MAP</option>
             </select>
           </div>
-
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunXGBoost}>
             Run

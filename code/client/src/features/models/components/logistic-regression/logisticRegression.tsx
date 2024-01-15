@@ -3,15 +3,64 @@ import "../../assets/css/all-model.css";
 import LogisticRegressionResults from "./logisticRegressionResults";
 import Loader from "../../../../partials/loader";
 import { useLogisticRegression } from "../../hooks/useLogisticRegression";
+import { ColorSwitch } from "../pcaSwitch";
 
 const LogisticRegression = () => {
-  const {normalization,handleInference,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,optionsPlot,supervisedML}=useLogisticRegression();
+  const {
+    normalization,
+    pca,
+    handleSwitchChange,
+    handleInference,
+    errorMessage,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    maxIter,
+    setMaxIter,
+    penalty,
+    setPenalty,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunLogisticRegression,
+    optionsPlot,
+    supervisedML,
+    pcaFeatures,
+    setPcaFeatures,
+  } = useLogisticRegression();
 
   return (
     <div>
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
           <h5>Logistic Regression</h5>
+          <div className="model-label">
+            <label className="model-label">Apply PCA</label>
+            <div
+              style={{
+                position: "absolute",
+                top: "48px",
+                right: "15px",
+                padding: "5px",
+              }}
+            >
+              <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+            </div>
+            {!pca && (
+              <div>
+                <label className="model-label">Number of Features:</label>
+                <input
+                  className="model-input"
+                  type="number"
+                  min={1}
+                  max={optionsPlot.length-1}
+                  value={pcaFeatures}
+                  onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
+                />
+              </div>
+            )}
+          </div>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -21,11 +70,15 @@ const LogisticRegression = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -79,7 +132,7 @@ const LogisticRegression = () => {
               <option value="l2">L2</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button
             className="model-button"
             onClick={handleRunLogisticRegression}

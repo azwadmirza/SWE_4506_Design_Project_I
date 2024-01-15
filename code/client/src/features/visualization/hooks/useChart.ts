@@ -213,7 +213,7 @@ export const useChart = () => {
     x: labels,
     y: labels,
     type: "heatmap",
-    colorscale: "Viridis",
+    colorscale: "Greens",
   };
 
   const {

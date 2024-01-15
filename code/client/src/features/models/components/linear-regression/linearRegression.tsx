@@ -3,15 +3,64 @@ import "../../assets/css/all-model.css";
 import LinearRegressionResults from "./linearRegressionResults";
 import Loader from "../../../../partials/loader";
 import { useLinearRegression } from "../../hooks/useLinearRegression";
+import { ColorSwitch } from "../pcaSwitch";
 
 const LinearRegression = () => {
-  const {normalization,handleInference,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,supervisedML}=useLinearRegression();
+  const {
+    normalization,
+    pca,
+    handleSwitchChange,
+    handleInference,
+    errorMessage,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    maxIter,
+    setMaxIter,
+    smoothing,
+    setSmoothing,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunLinearRegression,
+    optionsPlot,
+    supervisedML,
+    pcaFeatures,
+    setPcaFeatures,
+  } = useLinearRegression();
 
   return (
     <div>
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
           <h5>Linear Regression</h5>
+          <div className="model-label">
+            <label className="model-label">Apply PCA</label>
+            <div
+              style={{
+                position: "absolute",
+                top: "48px",
+                right: "15px",
+                padding: "5px",
+              }}
+            >
+              <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+            </div>
+            {!pca && (
+              <div>
+                <label className="model-label">Number of Features:</label>
+                <input
+                  className="model-input"
+                  type="number"
+                  min={1}
+                  max={optionsPlot.length-1}
+                  value={pcaFeatures}
+                  onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
+                />
+              </div>
+            )}
+          </div>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -21,11 +70,13 @@ const LinearRegression = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Regression")
+                .filter((option) => supervisedML.get(option) === "Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -78,7 +129,7 @@ const LinearRegression = () => {
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunLinearRegression}>
             Run
           </button>
@@ -90,7 +141,10 @@ const LinearRegression = () => {
           {loader ? (
             <Loader />
           ) : (
-            <LinearRegressionResults modelData={evaluationResults} target={targetVariable}/>
+            <LinearRegressionResults
+              modelData={evaluationResults}
+              target={targetVariable}
+            />
           )}
         </div>
       </div>
