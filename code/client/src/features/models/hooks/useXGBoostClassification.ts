@@ -22,6 +22,10 @@ export const useXGBoostClassification=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const handleInference = async ()=>{
+    console.log("XGBoost Classification Inference Time..");
+  }
+
   const handleRunXGBoost = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -51,5 +55,5 @@ export const useXGBoostClassification=()=>{
     }
   };
 
-  return {supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
+  return {handleInference, supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }

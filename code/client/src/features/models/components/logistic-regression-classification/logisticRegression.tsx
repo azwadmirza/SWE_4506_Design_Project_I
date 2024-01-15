@@ -5,7 +5,7 @@ import Loader from "../../../../partials/loader";
 import { useLogisticRegression } from "../../hooks/useLogisticRegression";
 
 const LogisticRegression = () => {
-  const {normalization,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,optionsPlot,supervisedML}=useLogisticRegression();
+  const {normalization,handleInference,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,optionsPlot,supervisedML}=useLogisticRegression();
 
   return (
     <div>
@@ -85,6 +85,9 @@ const LogisticRegression = () => {
             onClick={handleRunLogisticRegression}
           >
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">

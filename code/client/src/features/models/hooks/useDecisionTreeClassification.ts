@@ -17,6 +17,11 @@ export const useDecisionTreeClassification = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  
+  const handleInference = async ()=>{
+    console.log("Decision Tree Classification Inference Time..");
+  }
+
   const handleRunDecisionTree = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -40,5 +45,5 @@ export const useDecisionTreeClassification = () => {
     }
   };
 
-  return {supervisedML,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
+  return {handleInference,supervisedML,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
 }

@@ -5,7 +5,7 @@ import { useDecisionTreeRegression } from "../../hooks/useDecisionTreeRegression
 import DecisionTreeResults from "./decisionTreeRegressionResults";
 
 const DecisionTree = () => {
-  const {supervisedML,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults,errorMessage, handleRunDecisionTree, loader}=useDecisionTreeRegression();
+  const {supervisedML,handleInference,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults,errorMessage, handleRunDecisionTree, loader}=useDecisionTreeRegression();
 
   return (
     <div>
@@ -87,6 +87,9 @@ const DecisionTree = () => {
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunDecisionTree}>
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">

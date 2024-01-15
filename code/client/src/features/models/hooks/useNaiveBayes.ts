@@ -17,6 +17,10 @@ export const useNaiveBayes=()=>{
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const handleInference = async ()=>{
+    console.log("Inference Time..");
+  }
+
   const handleRunNaiveBayes = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -44,5 +48,5 @@ export const useNaiveBayes=()=>{
     }
   };
 
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
+  return {normalization,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
 }

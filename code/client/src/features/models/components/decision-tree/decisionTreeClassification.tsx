@@ -5,7 +5,7 @@ import Loader from "../../../../partials/loader";
 import { useDecisionTreeClassification } from "../../hooks/useDecisionTreeClassification";
 
 const DecisionTree = () => {
-  const {targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, errorMessage,loader,supervisedML}=useDecisionTreeClassification();
+  const {targetVariable,handleInference,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, errorMessage,loader,supervisedML}=useDecisionTreeClassification();
 
   return (
     <div>
@@ -87,6 +87,10 @@ const DecisionTree = () => {
           <button className="model-button" onClick={handleRunDecisionTree} >
             Run
           </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
+          </button>
+          
         </div>
         <div className="results-container">
           {loader ? (

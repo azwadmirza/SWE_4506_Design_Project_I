@@ -34,6 +34,7 @@ const XGBoost = () => {
     supervisedML,
     loader,
     errorMessage,
+    handleInference,
   } = useXGBoostRegression();
   return (
     <div>
@@ -187,6 +188,9 @@ const XGBoost = () => {
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunXGBoost}>
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">

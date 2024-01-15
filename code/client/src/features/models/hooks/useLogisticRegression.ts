@@ -17,6 +17,11 @@ export const useLogisticRegression=()=>{
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  
+  const handleInference = async ()=>{
+    console.log("Logistic Regression Inference Time..");
+  }
+
   const handleRunLogisticRegression = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -44,5 +49,5 @@ export const useLogisticRegression=()=>{
     }
   };
 
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,errorMessage,optionsPlot,supervisedML}
+  return {handleInference,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,errorMessage,optionsPlot,supervisedML}
 }

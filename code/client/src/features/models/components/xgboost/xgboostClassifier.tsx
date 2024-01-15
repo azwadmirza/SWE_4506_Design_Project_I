@@ -5,7 +5,7 @@ import { useXGBoostClassification } from "../../hooks/useXGBoostClassification";
 import Loader from "../../../../partials/loader";
 
 const XGBoost = () => {
-  const {supervisedML,errorMessage,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
+  const {supervisedML,handleInference,errorMessage,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
@@ -141,6 +141,9 @@ const XGBoost = () => {
           {errorMessage && <p style={{ color: 'red', fontSize: '16px' }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunXGBoost}>
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">

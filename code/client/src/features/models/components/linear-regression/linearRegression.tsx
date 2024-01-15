@@ -5,7 +5,7 @@ import Loader from "../../../../partials/loader";
 import { useLinearRegression } from "../../hooks/useLinearRegression";
 
 const LinearRegression = () => {
-  const {normalization,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,supervisedML}=useLinearRegression();
+  const {normalization,handleInference,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,supervisedML}=useLinearRegression();
 
   return (
     <div>
@@ -81,6 +81,9 @@ const LinearRegression = () => {
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunLinearRegression}>
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">

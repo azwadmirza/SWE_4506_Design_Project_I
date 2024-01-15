@@ -17,6 +17,11 @@ export const useLinearRegression=()=>{
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  
+  const handleInference = async ()=>{
+    console.log("Linear Regression Inference Time..");
+  }
+
   const handleRunLinearRegression = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -42,5 +47,5 @@ export const useLinearRegression=()=>{
     }
   };
 
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,errorMessage,supervisedML}
+  return {handleInference,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,errorMessage,supervisedML}
 }

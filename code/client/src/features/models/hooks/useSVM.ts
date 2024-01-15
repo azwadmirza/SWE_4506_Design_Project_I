@@ -19,6 +19,10 @@ export const useSVM=(type:"classification"|"regression")=>{
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  
+  const handleInference = async ()=>{
+    console.log( `SVM`+ type +`Inference Time..`);
+  }
   const handleRunSVM = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -43,5 +47,5 @@ export const useSVM=(type:"classification"|"regression")=>{
       console.error("Error during backend request:");
     }
   };
-  return {normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,errorMessage,handleRunSVM,optionsPlot}
+  return {handleInference,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,errorMessage,handleRunSVM,optionsPlot}
 }

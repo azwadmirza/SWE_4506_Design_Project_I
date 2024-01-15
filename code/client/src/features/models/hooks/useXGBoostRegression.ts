@@ -23,6 +23,10 @@ export const useXGBoostRegression=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const handleInference = async ()=>{
+    console.log("XGBoost Regression Inference Time..");
+  }
+
   const handleRunXGBoost = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -53,5 +57,5 @@ export const useXGBoostRegression=()=>{
     }
   };
 
-  return {supervisedML,objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
+  return {handleInference, supervisedML,objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }
