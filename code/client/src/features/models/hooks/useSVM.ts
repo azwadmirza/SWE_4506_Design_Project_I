@@ -12,9 +12,14 @@ export const useSVM=(type:"classification"|"regression")=>{
     const { optionsPlot,supervisedML } = useChart();
 
     useEffect(() => {
-        if (optionsPlot && optionsPlot.length > 0) {
-          setTargetVariable(optionsPlot[optionsPlot.length - 1]);
+      if (optionsPlot && optionsPlot.length > 0) {
+        if(type==="classification"){
+          setTargetVariable(optionsPlot.filter((option)=>supervisedML.get(option)==="Classification")[optionsPlot.length - 1]);
         }
+        else{
+          setTargetVariable(optionsPlot.filter((option)=>supervisedML.get(option)==="Regression")[optionsPlot.length - 1]);
+        }
+      }
       }, [optionsPlot]);
   
   const [evaluationResults, setEvaluationResults] = useState(null);

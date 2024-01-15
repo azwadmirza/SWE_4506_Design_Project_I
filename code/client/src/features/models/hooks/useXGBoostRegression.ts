@@ -23,7 +23,7 @@ export const useXGBoostRegression=()=>{
 
   useEffect(() => {
     if (optionsPlot && optionsPlot.length > 0) {
-      setTargetVariable(optionsPlot[optionsPlot.length - 1]);
+      setTargetVariable(optionsPlot.filter((option)=>supervisedML.get(option)==="Regression")[optionsPlot.length - 1]);
     }
   }, [optionsPlot]);
 

@@ -17,12 +17,13 @@ export const useLinearRegression=()=>{
 
   useEffect(() => {
     if (optionsPlot && optionsPlot.length > 0) {
-      setTargetVariable(optionsPlot[optionsPlot.length - 1]);
+      setTargetVariable(optionsPlot.filter((option)=>supervisedML.get(option)==="Regression")[optionsPlot.length - 1]);
     }
   }, [optionsPlot]);
 
   const handleRunLinearRegression = async () => {
     try {
+      console.log(targetVariable);
       setLoader(true);
       const response = await axios.post(`${address}/api/linear_regression/start/`, {
         file_url: file_url,
