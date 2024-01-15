@@ -1,6 +1,7 @@
 import { useSheets } from "../../../sheets/hooks/useSheets";
 import { IRegressionProps } from "../../assets/ts/IRegressionProps";
 import ParityPlot from "../parityPlotGenerator";
+import MetricsTable from "../regressionMetrics";
 
 
 const XGBoostRegressionResults = ({ modelData, target }: IRegressionProps) => {

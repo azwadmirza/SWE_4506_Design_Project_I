@@ -15,7 +15,7 @@ export const useXGBoostClassification=()=>{
   const [treeMethod, setTreeMethod] = useState("hist");
   const [growPolicy, setGrowPolicy] = useState("depthwise");
   const { optionsPlot } = useChart();
-  const [evaluationResults, setEvaluationResults] = useState(null);
+  const [evaluationResults, setEvaluationResults] = useState<any>();
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
