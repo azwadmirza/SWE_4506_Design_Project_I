@@ -3,14 +3,47 @@ import "../../assets/css/all-model.css";
 import SVMResults from "./svmClassificationResults";
 import Loader from "../../../../partials/loader";
 import { useSVM } from "../../hooks/useSVM";
+import { ColorSwitch } from "../pcaSwitch";
 
 const SVM = () => {
-  const {supervisedML,handleInference,errorMessage,normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVM("classification");
+  const {
+    supervisedML,
+    pca,
+    handleSwitchChange,
+    handleInference,
+    errorMessage,
+    normalization,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    degree,
+    setDegree,
+    maxIter,
+    setMaxIter,
+    kernel,
+    setKernel,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunSVM,
+    optionsPlot,
+  } = useSVM("classification");
   return (
     <div>
       <div className="model-container-wrapper d-flex ">
         <div className="model-container">
-          <h5>Support Vector Machines</h5>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
+          <h5>Support <br/>Vector Machines</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -20,11 +53,15 @@ const SVM = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -91,7 +128,7 @@ const SVM = () => {
               />
             </div>
           )}
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunSVM}>
             Run
           </button>

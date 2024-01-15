@@ -3,14 +3,51 @@ import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
 import KNNClassificationResults from "./knnClassificationResults";
 import { useKNN } from "../../hooks/useKNN";
+import { ColorSwitch } from "../pcaSwitch";
 
 const KNearestNeighbours = () => {
-  const {supervisedML,handleInference,normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,errorMessage,optionsPlot}=useKNN("classification");
+  const {
+    supervisedML,
+    pca,
+    handleSwitchChange,
+    handleInference,
+    normalization,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    minkowskiMetric,
+    setMinkowskiMetric,
+    algorithm,
+    setAlgorithm,
+    distanceMetric,
+    setDistanceMetric,
+    weights,
+    setWeights,
+    n_neighbours,
+    setNNeighbours,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunKNN,
+    errorMessage,
+    optionsPlot,
+  } = useKNN("classification");
 
   return (
     <div>
       <div className=" d-flex model-container-wrapper">
         <div className="model-container">
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
           <h5>
             K Nearest
             <br />
@@ -25,11 +62,15 @@ const KNearestNeighbours = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -70,16 +111,18 @@ const KNearestNeighbours = () => {
               onChange={(e) => setNNeighbours(parseInt(e.target.value))}
             />
           </div>
-          {distanceMetric=="minkowski" &&(<div>
-            <label className="model-label">Minkowski Metric:</label>
-            <input
-              className="model-input"
-              type="number"
-              value={minkowskiMetric}
-              min={1}
-              onChange={(e) => setMinkowskiMetric(parseInt(e.target.value))}
-            />
-          </div>)}
+          {distanceMetric == "minkowski" && (
+            <div>
+              <label className="model-label">Minkowski Metric:</label>
+              <input
+                className="model-input"
+                type="number"
+                value={minkowskiMetric}
+                min={1}
+                onChange={(e) => setMinkowskiMetric(parseInt(e.target.value))}
+              />
+            </div>
+          )}
           <div>
             <label className="model-label">Algorithm:</label>
             <select
@@ -117,7 +160,7 @@ const KNearestNeighbours = () => {
               <option value="distance">Distance</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunKNN}>
             Run
           </button>

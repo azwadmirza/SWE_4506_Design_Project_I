@@ -3,14 +3,45 @@ import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
 import { useDecisionTreeRegression } from "../../hooks/useDecisionTreeRegression";
 import DecisionTreeResults from "./decisionTreeRegressionResults";
+import { ColorSwitch } from "../pcaSwitch";
 
 const DecisionTree = () => {
-  const {supervisedML,handleInference,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults,errorMessage, handleRunDecisionTree, loader}=useDecisionTreeRegression();
+  const {
+    supervisedML,
+    pca,
+    handleSwitchChange,
+    handleInference,
+    targetVariable,
+    setTargetVariable,
+    optionsPlot,
+    normalization,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    maxDepth,
+    setMaxDepth,
+    criterion,
+    setCriterion,
+    evaluationResults,
+    errorMessage,
+    handleRunDecisionTree,
+    loader,
+  } = useDecisionTreeRegression();
 
   return (
     <div>
       <div className="d-flex model-container-wrapper">
         <div className="model-container">
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
           <h5>
             Decision
             <br />
@@ -25,11 +56,13 @@ const DecisionTree = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Regression")
+                .filter((option) => supervisedML.get(option) === "Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -78,13 +111,13 @@ const DecisionTree = () => {
               value={criterion}
               onChange={(e) => setCriterion(e.target.value)}
             >
-            <option value="friedman_mse">Friedman MSE</option>
+              <option value="friedman_mse">Friedman MSE</option>
               <option value="squared_error">Squared Error</option>
               <option value="poisson">Poisson</option>
               <option value="absolute_error">Absolute Error</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunDecisionTree}>
             Run
           </button>
@@ -96,7 +129,10 @@ const DecisionTree = () => {
           {loader ? (
             <Loader />
           ) : (
-            <DecisionTreeResults modelData={evaluationResults} target={targetVariable} />
+            <DecisionTreeResults
+              modelData={evaluationResults}
+              target={targetVariable}
+            />
           )}
         </div>
       </div>

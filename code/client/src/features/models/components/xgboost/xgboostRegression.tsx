@@ -3,6 +3,7 @@ import "../../assets/css/all-model.css";
 import { useXGBoostRegression } from "../../hooks/useXGBoostRegression";
 import Loader from "../../../../partials/loader";
 import XGBoostRegressionResults from "./xgboostRegressionResults";
+import { ColorSwitch } from "../pcaSwitch";
 
 const XGBoost = () => {
   const {
@@ -35,11 +36,23 @@ const XGBoost = () => {
     loader,
     errorMessage,
     handleInference,
+    pca,
+    handleSwitchChange,
   } = useXGBoostRegression();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
           <h5>XGBoost</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
@@ -50,11 +63,13 @@ const XGBoost = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Regression")
+                .filter((option) => supervisedML.get(option) === "Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -185,7 +200,7 @@ const XGBoost = () => {
               <option value="reg:absoluteerror">Absolute Error</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunXGBoost}>
             Run
           </button>

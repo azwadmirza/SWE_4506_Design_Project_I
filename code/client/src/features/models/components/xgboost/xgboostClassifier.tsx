@@ -3,16 +3,55 @@ import "../../assets/css/all-model.css";
 import XGBoostResults from "./xgboostClassificationResults";
 import { useXGBoostClassification } from "../../hooks/useXGBoostClassification";
 import Loader from "../../../../partials/loader";
+import { ColorSwitch } from "../pcaSwitch";
 
 const XGBoost = () => {
-  const {supervisedML,handleInference,errorMessage,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
+  const {
+    supervisedML,
+    handleInference,
+    errorMessage,
+    handleRunXGBoost,
+    setTargetVariable,
+    setNormalization,
+    setTrainTestSplit,
+    setMaxDepth,
+    setSampleRatio,
+    setRegAlpha,
+    setRegLambda,
+    setBooster,
+    setTreeMethod,
+    setGrowPolicy,
+    evaluationResults,
+    normalization,
+    trainTestSplit,
+    maxDepth,
+    subsampleRatio,
+    regAlpha,
+    regLambda,
+    booster,
+    treeMethod,
+    growPolicy,
+    targetVariable,
+    optionsPlot,
+    loader,
+    pca,
+    handleSwitchChange,
+  } = useXGBoostClassification();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
-        <div className="model-container padding:10px">
-          <h5>
-            XGBoost
-          </h5>
+        <div className="model-container">
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
+          <h5>XGBoost</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -22,11 +61,15 @@ const XGBoost = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -106,16 +149,16 @@ const XGBoost = () => {
               onChange={(e) => setRegAlpha(parseInt(e.target.value))}
             />
             <div>
-            <label className="model-label">L2 Regularization:</label>
-            <input
-              className="model-input"
-              type="number"
-              value={regLambda}
-              min={10e-6}
-              max={10e6}
-              onChange={(e) => setRegLambda(parseInt(e.target.value))}
-            />
-          </div>
+              <label className="model-label">L2 Regularization:</label>
+              <input
+                className="model-input"
+                type="number"
+                value={regLambda}
+                min={10e-6}
+                max={10e6}
+                onChange={(e) => setRegLambda(parseInt(e.target.value))}
+              />
+            </div>
             <label className="model-label">Tree Method:</label>
             <select
               className="model-select"
@@ -138,7 +181,9 @@ const XGBoost = () => {
               <option value="lossguide">Lossguide</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red', fontSize: '16px' }}>{errorMessage}</p>}
+          {errorMessage && (
+            <p style={{ color: "red", fontSize: "16px" }}>{errorMessage}</p>
+          )}
           <button className="model-button" onClick={handleRunXGBoost}>
             Run
           </button>
@@ -150,7 +195,10 @@ const XGBoost = () => {
           {loader ? (
             <Loader />
           ) : (
-            <XGBoostResults data={evaluationResults} categories={evaluationResults?.categories}/>
+            <XGBoostResults
+              data={evaluationResults}
+              categories={evaluationResults?.categories}
+            />
           )}
         </div>
       </div>

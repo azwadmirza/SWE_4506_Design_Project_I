@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import { useChart } from "../../visualization/hooks/useChart";
 
+
 export const useDecisionTreeClassification = () => {
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
@@ -16,6 +17,7 @@ export const useDecisionTreeClassification = () => {
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pca,setPca] = useState<boolean>(false);
 
   
   const handleInference = async ()=>{
@@ -45,5 +47,12 @@ export const useDecisionTreeClassification = () => {
     }
   };
 
-  return {handleInference,supervisedML,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
+  const handleSwitchChange = (checked: boolean) => {
+    setPca(!checked);
+    console.log(`Switch is now ${checked ? "checked" : "unchecked"}`);
+    console.log(`pca is ${pca}`);
+    console.log( `trust me sir it works`)
+  };
+
+  return {handleInference,handleSwitchChange,pca,supervisedML,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
 }

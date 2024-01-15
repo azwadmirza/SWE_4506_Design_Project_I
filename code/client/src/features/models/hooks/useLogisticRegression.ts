@@ -16,6 +16,7 @@ export const useLogisticRegression=()=>{
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pca,setPca] = useState<boolean>(false);
 
   
   const handleInference = async ()=>{
@@ -49,5 +50,13 @@ export const useLogisticRegression=()=>{
     }
   };
 
-  return {handleInference,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,errorMessage,optionsPlot,supervisedML}
+  
+  const handleSwitchChange = (checked: boolean) => {
+    setPca(!checked);
+    console.log(`Switch is now ${checked ? "checked" : "unchecked"}`);
+    console.log(`pca is ${pca}`);
+    console.log( `trust me sir it works`)
+  };
+
+  return {handleInference,pca,handleSwitchChange,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,errorMessage,optionsPlot,supervisedML}
 }

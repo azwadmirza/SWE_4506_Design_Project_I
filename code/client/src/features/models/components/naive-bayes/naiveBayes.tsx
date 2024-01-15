@@ -3,13 +3,44 @@ import "../../assets/css/all-model.css";
 import NaiveBayesResults from "./naiveBayesResults";
 import Loader from "../../../../partials/loader";
 import { useNaiveBayes } from "../../hooks/useNaiveBayes";
+import { ColorSwitch } from "../pcaSwitch";
 
 const NaiveBayes = () => {
-  const {normalization,errorMessage,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,supervisedML}=useNaiveBayes();
+  const {
+    normalization,
+    pca,
+    handleSwitchChange,
+    errorMessage,
+    handleInference,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    maxIter,
+    setMaxIter,
+    smoothing,
+    setSmoothing,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunNaiveBayes,
+    optionsPlot,
+    supervisedML,
+  } = useNaiveBayes();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
           <h5>
             Naive
             <br />
@@ -24,11 +55,15 @@ const NaiveBayes = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -81,7 +116,7 @@ const NaiveBayes = () => {
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunNaiveBayes}>
             Run
           </button>

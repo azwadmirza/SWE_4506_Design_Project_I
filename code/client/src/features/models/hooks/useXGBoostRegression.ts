@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
 
 export const useXGBoostRegression=()=>{
-    const [normalization, setNormalization] = useState("MinMaxScaler");
+  const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxDepth, setMaxDepth] = useState(6);
   const [subsampleRatio, setSampleRatio] = useState(0.5);
@@ -22,6 +22,7 @@ export const useXGBoostRegression=()=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pca,setPca] = useState<boolean>(false);
 
   const handleInference = async ()=>{
     console.log("XGBoost Regression Inference Time..");
@@ -57,5 +58,9 @@ export const useXGBoostRegression=()=>{
     }
   };
 
-  return {handleInference, supervisedML,objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
+  const handleSwitchChange = (checked: boolean) => {
+    setPca(!checked);
+  };
+
+  return {handleInference,pca, handleSwitchChange, supervisedML,objective, setObjective,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }

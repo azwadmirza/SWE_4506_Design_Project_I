@@ -3,14 +3,45 @@ import "../../assets/css/all-model.css";
 import DecisionTreeClassificationResults from "./decisionTreeClassificationResults";
 import Loader from "../../../../partials/loader";
 import { useDecisionTreeClassification } from "../../hooks/useDecisionTreeClassification";
+import { ColorSwitch } from "../pcaSwitch";
 
 const DecisionTree = () => {
-  const {targetVariable,handleInference,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, errorMessage,loader,supervisedML}=useDecisionTreeClassification();
+  const {
+    targetVariable,
+    handleInference,
+    setTargetVariable,
+    optionsPlot,
+    normalization,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    maxDepth,
+    setMaxDepth,
+    criterion,
+    setCriterion,
+    evaluationResults,
+    handleRunDecisionTree,
+    errorMessage,
+    loader,
+    supervisedML,
+    pca,
+    handleSwitchChange,
+  } = useDecisionTreeClassification();
 
   return (
     <div>
       <div className="d-flex model-container-wrapper">
         <div className="model-container">
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
           <h5>
             Decision
             <br />
@@ -25,11 +56,15 @@ const DecisionTree = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Classification")
+                .filter(
+                  (option) => supervisedML.get(option) === "Classification"
+                )
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -83,14 +118,13 @@ const DecisionTree = () => {
               <option value="log_loss">Log Loss</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          <button className="model-button" onClick={handleRunDecisionTree} >
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+          <button className="model-button" onClick={handleRunDecisionTree}>
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
             Optimize
           </button>
-          
         </div>
         <div className="results-container">
           {loader ? (

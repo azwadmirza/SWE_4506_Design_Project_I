@@ -3,14 +3,45 @@ import "../../assets/css/all-model.css";
 import LinearRegressionResults from "./linearRegressionResults";
 import Loader from "../../../../partials/loader";
 import { useLinearRegression } from "../../hooks/useLinearRegression";
+import { ColorSwitch } from "../pcaSwitch";
 
 const LinearRegression = () => {
-  const {normalization,handleInference,errorMessage,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,supervisedML}=useLinearRegression();
+  const {
+    normalization,
+    pca,
+    handleSwitchChange,
+    handleInference,
+    errorMessage,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    maxIter,
+    setMaxIter,
+    smoothing,
+    setSmoothing,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunLinearRegression,
+    optionsPlot,
+    supervisedML,
+  } = useLinearRegression();
 
   return (
     <div>
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px",
+            }}
+          >
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+          </div>
           <h5>Linear Regression</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
@@ -21,11 +52,13 @@ const LinearRegression = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Regression")
+                .filter((option) => supervisedML.get(option) === "Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -78,7 +111,7 @@ const LinearRegression = () => {
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunLinearRegression}>
             Run
           </button>
@@ -90,7 +123,10 @@ const LinearRegression = () => {
           {loader ? (
             <Loader />
           ) : (
-            <LinearRegressionResults modelData={evaluationResults} target={targetVariable}/>
+            <LinearRegressionResults
+              modelData={evaluationResults}
+              target={targetVariable}
+            />
           )}
         </div>
       </div>
