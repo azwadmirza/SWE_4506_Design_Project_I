@@ -3,13 +3,13 @@ import { useAppSelector } from "../../../contexts/file/hooks";
 import { useEffect, useState } from "react";
 import { useChart } from "../../visualization/hooks/useChart";
 
-export const useSVMRegression=()=>{
+export const useSVM=(type:"classification"|"regression")=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
     const [trainTestSplit, setTrainTestSplit] = useState(40);
     const [degree, setDegree] = useState(3);
     const [maxIter, setMaxIter] = useState(20);
     const [kernel, setKernel] = useState("linear");
-    const { optionsPlot } = useChart();
+    const { optionsPlot,supervisedML } = useChart();
 
     useEffect(() => {
         if (optionsPlot && optionsPlot.length > 0) {
@@ -32,7 +32,7 @@ export const useSVMRegression=()=>{
   const handleRunSVM = async () => {
     try {
       setLoader(true);
-      const response = await axios.post(`${address}/api/svm/regression/`, {
+      const response = await axios.post(`${address}/api/svm/${type}/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
@@ -48,5 +48,5 @@ export const useSVMRegression=()=>{
       console.error("Error during backend request:");
     }
   };
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot}
+  return {normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot}
 }

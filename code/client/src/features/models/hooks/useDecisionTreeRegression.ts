@@ -8,7 +8,7 @@ export const useDecisionTreeRegression = () => {
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxDepth, setMaxDepth] = useState(3);
   const [criterion, setCriterion] = useState("friedman_mse");
-  const { optionsPlot } = useChart();
+  const { optionsPlot,supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
@@ -39,5 +39,5 @@ export const useDecisionTreeRegression = () => {
     }
   };
 
-  return {targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, loader}
+  return {targetVariable,supervisedML,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, loader}
 }

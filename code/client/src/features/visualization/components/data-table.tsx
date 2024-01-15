@@ -1,17 +1,17 @@
-import {useTable} from "react-table";
-interface IStatTable {
+import { useTable } from "react-table";
+interface IDataTable {
   columns: {
     Header: string;
     accessor: string;
   }[];
   data: any[];
 }
-const StatTable = ({ columns, data }: IStatTable) => {
+const DataTable = ({ columns, data }: IDataTable) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
   return (
     <div className="mt-5">
-      <h3 className="mb-2">Statistical Distribution of Data</h3>
+      <h3 className="mb-2">Data Types of Fields</h3>
       <table
         {...getTableProps()}
         style={{
@@ -22,9 +22,9 @@ const StatTable = ({ columns, data }: IStatTable) => {
         }}
       >
         <thead>
-          {headerGroups.map((headerGroup:any) => (
+          {headerGroups.map((headerGroup: any) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column:any) => (
+              {headerGroup.headers.map((column: any) => (
                 <th
                   {...column.getHeaderProps()}
                   style={{
@@ -40,21 +40,20 @@ const StatTable = ({ columns, data }: IStatTable) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row:any) => {
+          {rows.map((row: any) => {
             prepareRow(row);
             return (
               <tr
                 {...row.getRowProps()}
                 style={{ borderBottom: "1px solid #ddd" }}
               >
-                {row.cells.map((cell:any) => (
+                {row.cells.map((cell: any) => (
                   <td
                     {...cell.getCellProps()}
                     style={{ border: "1px solid #ddd", padding: "8px" }}
                   >
-                        {
-                      cell.render("Cell")
-                    }
+                    {" "}
+                    {cell.render("Cell")}
                   </td>
                 ))}
               </tr>
@@ -66,4 +65,4 @@ const StatTable = ({ columns, data }: IStatTable) => {
   );
 };
 
-export default StatTable;
+export default DataTable;

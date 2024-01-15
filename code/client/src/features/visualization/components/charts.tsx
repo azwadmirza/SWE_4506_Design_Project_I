@@ -9,11 +9,13 @@ import "../assets/css/visualizer.css";
 import { useChart } from "../hooks/useChart";
 import CorrelationHeatmap from "./pearson-corelation";
 import StatTable from "./stat-table";
+import DataTable from "./data-table";
 Chart.register(CategoryScale);
 
 function Charts() {
   const {
     columns,
+    columnsInfo,
     statistics,
     heatmapData,
     loading,
@@ -28,6 +30,7 @@ function Charts() {
     handleIndependant,
     classChartData,
     charterOptions,
+    dataInfo,
     handleCharterSelect,
     selectedCharter,
     charterOptionsPlot,
@@ -52,6 +55,7 @@ function Charts() {
           chartData={chartData}
         />
         <CorrelationHeatmap heatmapData={heatmapData}/>
+        <DataTable columns={columnsInfo} data={dataInfo}/>
         <StatTable columns={columns} data={statistics}/>
         <h3>Class Distribution</h3>
         <AxisSelectorClass

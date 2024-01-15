@@ -5,7 +5,7 @@ import Loader from "../../../../partials/loader";
 import { useDecisionTreeClassification } from "../../hooks/useDecisionTreeClassification";
 
 const DecisionTree = () => {
-  const {targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, loader}=useDecisionTreeClassification();
+  const {targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, loader,supervisedML}=useDecisionTreeClassification();
 
   return (
     <div>
@@ -27,6 +27,7 @@ const DecisionTree = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Classification")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}

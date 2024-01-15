@@ -5,7 +5,7 @@ import { useXGBoostClassification } from "../../hooks/useXGBoostClassification";
 import Loader from "../../../../partials/loader";
 
 const XGBoost = () => {
-  const {handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
+  const {supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,optionsPlot,loader}=useXGBoostClassification();
   return (
     <div>
       <div className="model-container-wrapper d-flex">
@@ -24,6 +24,7 @@ const XGBoost = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Classification")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}

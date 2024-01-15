@@ -1,11 +1,11 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useSVMRegression } from "../../hooks/useSVMRegression";
 import SVMResults from "./svmRegressionResults";
 import Loader from "../../../../partials/loader";
+import { useSVM } from "../../hooks/useSVM";
 
 const SVM = () => {
-  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVMRegression();
+  const {supervisedML,normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVM("regression");
   return (
     <div>
       <div className="model-container-wrapper d-flex ">
@@ -22,6 +22,7 @@ const SVM = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
