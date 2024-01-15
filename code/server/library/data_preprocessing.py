@@ -28,7 +28,7 @@ class DataProcessing:
         return _self.features,_self.labels
     
     def get_processed_data_with_split(__self):
-        X_train, X_test, y_train, y_test = train_test_split(__self.features, __self.labels, test_size=float(__self.train_test_split), random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(__self.features, __self.labels, test_size=__self.train_test_split, random_state=42,shuffle=True)
         return X_train, X_test, y_train, y_test
         
     def __get_dataframe(__self,file_type,delimiter=None):

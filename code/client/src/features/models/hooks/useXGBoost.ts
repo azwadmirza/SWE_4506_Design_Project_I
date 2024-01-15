@@ -3,7 +3,7 @@ import { useChart } from "../../visualization/hooks/useChart";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
 
-export const useXGBoostClassification=()=>{
+export const useXGBoost=(type:"regression"|"classification")=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
   const [maxDepth, setMaxDepth] = useState(6);
@@ -18,6 +18,7 @@ export const useXGBoostClassification=()=>{
   const { supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState<any>();
   const [targetVariable, setTargetVariable] = useState<string>("Select a Target");
+  const [objective, setObjective] = useState(type==="regression"?"reg:squarederror":"binary:logistic");
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
@@ -35,7 +36,7 @@ export const useXGBoostClassification=()=>{
       }
       setErrorMessage('');
       setLoader(true);
-      const response = await axios.post(`${address}/api/xgboost/classification/`, {
+      const response = await axios.post(`${address}/api/xgboost/${type}/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
@@ -46,7 +47,8 @@ export const useXGBoostClassification=()=>{
         grow_policy: growPolicy,
         reg_alpha: regAlpha,
         reg_lambda: regLambda,
-        subsample_ratio: subsampleRatio
+        subsample_ratio: subsampleRatio,
+        objective: objective
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
@@ -61,5 +63,5 @@ export const useXGBoostClassification=()=>{
     setPca(!checked);
   };
 
-  return {handleInference,pca,handleSwitchChange, supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
+  return {handleInference,pca,handleSwitchChange,objective,setObjective, supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }

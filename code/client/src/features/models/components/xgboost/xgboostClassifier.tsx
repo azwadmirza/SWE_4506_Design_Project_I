@@ -1,12 +1,14 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import XGBoostResults from "./xgboostClassificationResults";
-import { useXGBoostClassification } from "../../hooks/useXGBoostClassification";
+import { useXGBoost } from "../../hooks/useXGBoost";
 import Loader from "../../../../partials/loader";
 import { ColorSwitch } from "../pcaSwitch";
 
 const XGBoost = () => {
   const {
+    objective,
+    setObjective,
     supervisedML,
     handleInference,
     errorMessage,
@@ -36,7 +38,7 @@ const XGBoost = () => {
     loader,
     pca,
     handleSwitchChange,
-  } = useXGBoostClassification();
+  } = useXGBoost("classification");
   return (
     <div>
       <div className="model-container-wrapper d-flex">
@@ -181,10 +183,31 @@ const XGBoost = () => {
               <option value="lossguide">Lossguide</option>
             </select>
           </div>
+          <div>
+            <label className="model-label">Objective Function:</label>
+            <select
+              className="model-select"
+              value={objective}
+              onChange={(e) => setObjective(e.target.value)}
+            >
+              <option value="binary:logistic">Binary Logistic</option>
+              <option value="binary:logitraw">Binary Logit Raw</option>
+              <option value="multi:softmax">Multiclass Softmax</option>
+              <option value="multi:softprob">Multiclass Softprob</option>
+              <option value="rank:pairwise">Rank Pairwise</option>
+              <option value="rank:ndcg">Rank NDCG</option>
+              <option value="rank:map">Rank MAP</option>
+            </select>
+          </div>
+
           {errorMessage && (
             <p style={{ color: "red", fontSize: "16px" }}>{errorMessage}</p>
           )}
-          <button className="model-button" onClick={handleRunXGBoost}>
+          <button
+            className="model-button"
+            onClick={handleRunXGBoost}
+            disabled={targetVariable === "Select a Target" ? true : false}
+          >
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
