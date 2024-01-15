@@ -18,7 +18,8 @@ export const useSVM=(type:"classification"|"regression")=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(false);
+  const [pca,setPca] = useState<boolean>(true);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   
   const handleInference = async ()=>{
@@ -54,5 +55,5 @@ export const useSVM=(type:"classification"|"regression")=>{
     setPca(!checked);
   };
 
-  return {handleInference,pca,handleSwitchChange,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,errorMessage,handleRunSVM,optionsPlot}
+  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,errorMessage,handleRunSVM,optionsPlot}
 }

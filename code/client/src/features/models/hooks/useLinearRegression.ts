@@ -16,8 +16,8 @@ export const useLinearRegression=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(false);
-
+  const [pca,setPca] = useState<boolean>(true);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
   
   const handleInference = async ()=>{
     console.log("Linear Regression Inference Time..");
@@ -55,5 +55,5 @@ export const useLinearRegression=()=>{
     console.log( `trust me sir it works`)
   };
 
-  return {handleInference,pca,handleSwitchChange,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,errorMessage,supervisedML}
+  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,errorMessage,supervisedML}
 }

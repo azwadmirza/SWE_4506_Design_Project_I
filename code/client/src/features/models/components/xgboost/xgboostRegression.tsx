@@ -37,24 +37,42 @@ const XGBoost = () => {
     errorMessage,
     handleInference,
     pca,
-    handleSwitchChange
+    handleSwitchChange,
+    pcaFeatures,
+    setPcaFeatures,
   } = useXGBoost("regression");
 
   return (
     <div>
       <div className="model-container-wrapper d-flex">
         <div className="model-container">
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              margin: "10px",
-            }}
-          >
-            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
-          </div>
           <h5>XGBoost</h5>
+          <div className="model-label">
+            <label className="model-label">Apply PCA</label>
+            <div
+              style={{
+                position: "absolute",
+                top: "27px",
+                right: "15px",
+                padding: "5px",
+              }}
+            >
+              <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+            </div>
+            {!pca && (
+              <div>
+                <label className="model-label">Number of Features:</label>
+                <input
+                  className="model-input"
+                  type="number"
+                  min={1}
+                  max={optionsPlot.length-1}
+                  value={pcaFeatures}
+                  onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
+                />
+              </div>
+            )}
+          </div>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
