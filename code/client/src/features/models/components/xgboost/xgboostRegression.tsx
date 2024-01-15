@@ -33,6 +33,8 @@ const XGBoost = () => {
     optionsPlot,
     supervisedML,
     loader,
+    errorMessage,
+    handleInference,
   } = useXGBoostRegression();
   return (
     <div>
@@ -183,8 +185,12 @@ const XGBoost = () => {
               <option value="reg:absoluteerror">Absolute Error</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunXGBoost} disabled={targetVariable==="Select a Target"?true:false}>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          <button className="model-button" onClick={handleRunXGBoost}>
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">

@@ -5,7 +5,7 @@ import KNNClassificationResults from "./knnClassificationResults";
 import { useKNN } from "../../hooks/useKNN";
 
 const KNearestNeighbours = () => {
-  const {supervisedML,normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNN("classification");
+  const {supervisedML,handleInference,normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,errorMessage,optionsPlot}=useKNN("classification");
 
   return (
     <div>
@@ -117,8 +117,12 @@ const KNearestNeighbours = () => {
               <option value="distance">Distance</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunKNN}  disabled={targetVariable==="Select a Target"?true:false}>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          <button className="model-button" onClick={handleRunKNN}>
             Run
+          </button>
+          <button className="inference-button" onClick={handleInference}>
+            Optimize
           </button>
         </div>
         <div className="results-container">
