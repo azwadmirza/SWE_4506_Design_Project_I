@@ -19,10 +19,20 @@ export const useXGBoostClassification=()=>{
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
+  const [error,setError]=useState<string>();
 
   useEffect(() => {
     if (optionsPlot && optionsPlot.length > 0) {
-      setTargetVariable(optionsPlot.filter((option)=>supervisedML.get(option)==="Classification")[optionsPlot.length - 1]);
+      const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Classification");
+      if(filteredOptions.length>0){
+        setTargetVariable(filteredOptions[filteredOptions.length - 1]);
+      }
+      else{
+        setError("No classification variables found");
+      }
+    }
+    else{
+      setError("No variables found");
     }
   }, [optionsPlot]);
 
