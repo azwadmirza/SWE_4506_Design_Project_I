@@ -45,29 +45,38 @@ class ClassificationAnalysis:
         __self.results['Classification Report Train'] = classification_report(__self.y_train, __self.predictions_Xtrain, output_dict=True)
         
     def binary_classification(__self):
-            __self.y_proba_test = __self.model.predict_proba(__self.X_test)[:, 1]
-            __self.y_proba_train = __self.model.predict_proba(__self.X_train)[:, 1]
+        __self.predict() 
+        __self.y_proba_test = __self.model.predict_proba(__self.X_test)[:, 1]
+        __self.y_proba_train = __self.model.predict_proba(__self.X_train)[:, 1]
 
-            __self.results['auc_scores_test'] = roc_auc_score(__self.y_test, __self.y_proba_test)
-            __self.results['auc_scores_train'] = roc_auc_score(__self.y_train, __self.y_proba_train)
+        __self.results['Confusion Matrix Test'] = confusion_matrix(__self.y_test, __self.predictions_Xtest)
+        __self.results['Confusion Matrix Train'] = confusion_matrix(__self.y_train, __self.predictions_Xtrain)
 
-            tpr_test_per_class = []
-            fpr_test_per_class = []
-            tpr_train_per_class = []
-            fpr_train_per_class = []
+        tn_test, fp_test, fn_test, tp_test = __self.results['Confusion Matrix Test'].ravel()
+        tn_train, fp_train, fn_train, tp_train = __self.results['Confusion Matrix Train'].ravel()
 
-            tpr, fpr, _ = roc_curve(label_binarize(__self.y_train, classes=[0, 1]), __self.y_proba_train)
-            tpr_train_per_class.append(json.dumps(tpr.tolist()))
-            fpr_train_per_class.append(json.dumps(fpr.tolist()))
+        tpr_test = tp_test / (tp_test + fn_test)
+        fpr_test = fp_test / (fp_test + tn_test)
+        tpr_train = tp_train / (tp_train + fn_train)
+        fpr_train = fp_train / (fp_train + tn_train)
 
-            tpr, fpr, _ = roc_curve(label_binarize(__self.y_test, classes=[0, 1]), __self.y_proba_test)
-            tpr_test_per_class.append(json.dumps(tpr.tolist()))
-            fpr_test_per_class.append(json.dumps(fpr.tolist()))
+        __self.results['tpr_test'] = [0, 1, tpr_test]
+        __self.results['fpr_test'] = [0, 1, fpr_test]
+        __self.results['tpr_train'] = [0, 1, tpr_train]
+        __self.results['fpr_train'] = [0, 1, fpr_train]
 
-            __self.results['test_avg_tpr'] = tpr_test_per_class
-            __self.results['test_avg_fpr'] = fpr_test_per_class
-            __self.results['train_avg_tpr'] = tpr_train_per_class
-            __self.results['train_avg_fpr'] = fpr_train_per_class
+        __self.results['auc_scores_test'] = roc_auc_score(__self.y_test, __self.y_proba_test)
+        __self.results['auc_scores_train'] = roc_auc_score(__self.y_train, __self.y_proba_train)
+
+        tpr_test_per_class = [0, 1, tpr_test]
+        fpr_test_per_class = [0, 1, fpr_test]
+        tpr_train_per_class = [0, 1, tpr_train]
+        fpr_train_per_class = [0, 1, fpr_train]
+
+        __self.results['test_avg_tpr'] = tpr_test_per_class
+        __self.results['test_avg_fpr'] = fpr_test_per_class
+        __self.results['train_avg_tpr'] = tpr_train_per_class
+        __self.results['train_avg_fpr'] = fpr_train_per_class
 
 
     def multiclass_classification(__self):
@@ -131,6 +140,10 @@ class ClassificationAnalysis:
     def to_json(__self):
         if __self.categories is not None:
             __self.results['categories']=__self.categories.tolist()
+
+        for key, value in __self.results.items():
+            if isinstance(value, np.ndarray):
+                __self.results[key] = value.tolist()
         return json.dumps(__self.results)
 
 

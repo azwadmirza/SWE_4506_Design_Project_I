@@ -11,7 +11,8 @@ export const useKNN=(type:"classification"|"regression")=>{
   const [algorithm, setAlgorithm] = useState("auto");
   const [distanceMetric, setDistanceMetric] = useState("euclidean");
   const [weights, setWeights] = useState("uniform");
-  const { optionsPlot,supervisedML } = useChart();
+  const optionsPlot = useAppSelector((state) => state.file.optionsPlot);
+  const { supervisedML } = useChart();
   const [n_neighbours, setNNeighbours] = useState(5);
 
   useEffect(()=>{
@@ -28,37 +29,10 @@ export const useKNN=(type:"classification"|"regression")=>{
   },[optionsPlot])
   
   const [evaluationResults, setEvaluationResults] = useState(null);
-  const [targetVariable, setTargetVariable] = useState<string | null>();
+  const [targetVariable, setTargetVariable] = useState<string>("Select a Target");
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
-  const [error,setError]=useState<string>();
-
-  useEffect(() => {
-    if (optionsPlot && optionsPlot.length > 0) {
-      if(type==="classification"){
-        const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Classification");
-        if(filteredOptions.length>0){
-          setTargetVariable(filteredOptions[filteredOptions.length - 1]);
-        }
-        else{
-          setError("No classification variables found");
-        }
-      }
-      else{
-        const filteredOptions=optionsPlot.filter((option)=>supervisedML.get(option)==="Regression");
-        if(filteredOptions.length>0){
-          setTargetVariable(filteredOptions[filteredOptions.length - 1]);
-        }
-        else{
-          setError("No regression variables found");
-        }
-      }
-    }
-    else{
-      setError("No variables found");
-    }
-  }, [optionsPlot]);
 
   const handleRunKNN = async () => {
     try {

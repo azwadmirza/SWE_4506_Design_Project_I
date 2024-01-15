@@ -9,7 +9,7 @@ interface FileState {
     type:string|null;
     loading:boolean;
     uploaded_at:string|null;
-
+    optionsPlot:any[];
 }
 
 
@@ -22,6 +22,7 @@ const initialState: FileState = {
     type:localStorage.getItem('type') || null,
     loading:false,
     uploaded_at:localStorage.getItem('uploaded_at') || null,
+    optionsPlot: JSON.parse(localStorage.getItem('optionsPlot')||'[]')
 };
 
 const fileSlice = createSlice({
@@ -39,6 +40,10 @@ const fileSlice = createSlice({
         setURL:(state, action: PayloadAction<string>)=>{
           state.url=action.payload;
           localStorage.setItem('url', action.payload);
+        },
+        setOptionsPlot:(state, action: PayloadAction<any[]>)=>{
+          state.optionsPlot=action.payload;
+          localStorage.setItem('optionsPlot', JSON.stringify(action.payload));
         },
         setLoading:(state, action: PayloadAction<boolean>)=>{
           state.loading=action.payload;
@@ -80,6 +85,6 @@ const fileSlice = createSlice({
     
 });
 
-export const { setFile,setUploadedAt, updateData,setURL,setDelimiter,setType,setLoading,setFileId } = fileSlice.actions;
+export const { setOptionsPlot,setFile,setUploadedAt, updateData,setURL,setDelimiter,setType,setLoading,setFileId } = fileSlice.actions;
 
 export default fileSlice.reducer;
