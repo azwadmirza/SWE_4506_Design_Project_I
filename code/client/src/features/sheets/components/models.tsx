@@ -5,7 +5,7 @@ import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import ClassificationModels from "../../models/components/classificationModels";
 import RegressionModels from "../../models/components/regressionModels";
-import {useState} from 'react';
+import { useState } from "react";
 import Header from "./header";
 import { useSheets } from "../hooks/useSheets";
 import { useChart } from "../../visualization/hooks/useChart";
@@ -14,30 +14,46 @@ const Models = () => {
   const file = useAppSelector((state) => state.file.file);
   const loading = useAppSelector((state) => state.file.loading);
   const [toggle, setToggle] = useState(1);
-  const {supervisedML}=useChart();
-  const {data}=useSheets();
+  const { supervisedML } = useChart();
+  const { data } = useSheets();
   if (!loading) {
     return (
       <Provider store={store}>
         <div className="sheets">
-          <Header filename={`${file !== null ? file : ""}`} data={data}/>
+          <Header filename={`${file !== null ? file : ""}`} data={data} />
           <div className="render-cells">
-          <div className="d-flex align-items center justify-model-center">
-        <div className={toggle === 1 ? "show-model" : "model"}>
-          <ClassificationModels />
-        </div>
-        <div className={toggle === 2 ? "show-model" : "model"}>
-          <RegressionModels/>
-        </div>
-        <ul className="d-flex model-tabs-list">
-          {Array.from(supervisedML.values()).includes("Classification") && (<li className={`flex-fill ${toggle==1?'model-selected':'model-tab'}`} onClick={() => setToggle(1)}>
-            Classification
-          </li>)}
-          {Array.from(supervisedML.values()).includes("Regression") && (<li className={`flex-fill ${toggle==2?'model-selected':'model-tab'}`} onClick={() => setToggle(2)}>
-            Regression
-          </li>)}
-        </ul>
-      </div>
+            <div className="d-flex align-items center justify-model-center">
+              <div className={toggle === 1 ? "show-model" : "model"}>
+                <ClassificationModels />
+              </div>
+              <div className={toggle === 2 ? "show-model" : "model"}>
+                <RegressionModels />
+              </div>
+              <ul className="d-flex model-tabs-list">
+                {Array.from(supervisedML.values()).includes(
+                  "Classification"
+                ) && (
+                  <li
+                    className={`flex-fill ${
+                      toggle == 1 ? "model-selected" : "model-tab"
+                    }`}
+                    onClick={() => setToggle(1)}
+                  >
+                    Classification
+                  </li>
+                )}
+                {Array.from(supervisedML.values()).includes("Regression") && (
+                  <li
+                    className={`flex-fill ${
+                      toggle == 2 ? "model-selected" : "model-tab"
+                    }`}
+                    onClick={() => setToggle(2)}
+                  >
+                    Regression
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       </Provider>

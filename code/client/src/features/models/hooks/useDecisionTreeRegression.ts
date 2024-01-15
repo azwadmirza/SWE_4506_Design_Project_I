@@ -16,6 +16,8 @@ export const useDecisionTreeRegression = () => {
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [pca,setPca] = useState<boolean>(true);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   
   const handleInference = async ()=>{
@@ -44,6 +46,10 @@ export const useDecisionTreeRegression = () => {
       console.error("Error during backend request:");
     }
   };
+  
+  const handleSwitchChange = (checked: boolean) => {
+    setPca(!checked);
+  };
 
-  return {handleInference,targetVariable,supervisedML,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
+  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,targetVariable,supervisedML,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
 }

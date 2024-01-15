@@ -3,9 +3,38 @@ import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
 import KNNRegressionResults from "./knnRegressionResults";
 import { useKNN } from "../../hooks/useKNN";
+import { ColorSwitch } from "../pcaSwitch";
 
 const KNearestNeighbours = () => {
-  const {supervisedML,handleInference,errorMessage,normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNN("regression");
+  const {
+    supervisedML,
+    pca,
+    handleSwitchChange,
+    handleInference,
+    errorMessage,
+    normalization,
+    setNormalization,
+    trainTestSplit,
+    setTrainTestSplit,
+    minkowskiMetric,
+    setMinkowskiMetric,
+    algorithm,
+    setAlgorithm,
+    distanceMetric,
+    setDistanceMetric,
+    weights,
+    setWeights,
+    n_neighbours,
+    setNNeighbours,
+    evaluationResults,
+    targetVariable,
+    setTargetVariable,
+    loader,
+    handleRunKNN,
+    optionsPlot,
+    pcaFeatures,
+    setPcaFeatures,
+  } = useKNN("regression");
 
   return (
     <div>
@@ -17,6 +46,32 @@ const KNearestNeighbours = () => {
             Neighbours
           </h5>
           <div className="model-label">
+            <label className="model-label">Apply PCA</label>
+            <div
+              style={{
+                position: "absolute",
+                top: "48px",
+                right: "15px",
+                padding: "5px",
+              }}
+            >
+              <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+            </div>
+            {!pca && (
+              <div>
+                <label className="model-label">Number of Features:</label>
+                <input
+                  className="model-input"
+                  type="number"
+                  min={1}
+                  max={optionsPlot.length-1}
+                  value={pcaFeatures}
+                  onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
+                />
+              </div>
+            )}
+          </div>
+          <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
               id="dropdown"
@@ -25,11 +80,13 @@ const KNearestNeighbours = () => {
               onChange={(e) => setTargetVariable(e.target.value)}
               required
             >
-              <option key={null} value="Select a Target">Select a Target</option>
+              <option key={null} value="Select a Target">
+                Select a Target
+              </option>
               {optionsPlot
                 ?.slice()
                 .reverse()
-                .filter((option)=>supervisedML.get(option)==="Regression")
+                .filter((option) => supervisedML.get(option) === "Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -70,16 +127,18 @@ const KNearestNeighbours = () => {
               onChange={(e) => setNNeighbours(parseInt(e.target.value))}
             />
           </div>
-          {distanceMetric=="minkowski" &&(<div>
-            <label className="model-label">Minkowski Metric:</label>
-            <input
-              className="model-input"
-              type="number"
-              value={minkowskiMetric}
-              min={1}
-              onChange={(e) => setMinkowskiMetric(parseInt(e.target.value))}
-            />
-          </div>)}
+          {distanceMetric == "minkowski" && (
+            <div>
+              <label className="model-label">Minkowski Metric:</label>
+              <input
+                className="model-input"
+                type="number"
+                value={minkowskiMetric}
+                min={1}
+                onChange={(e) => setMinkowskiMetric(parseInt(e.target.value))}
+              />
+            </div>
+          )}
           <div>
             <label className="model-label">Algorithm:</label>
             <select
@@ -117,7 +176,7 @@ const KNearestNeighbours = () => {
               <option value="distance">Distance</option>
             </select>
           </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunKNN}>
             Run
           </button>
@@ -129,7 +188,10 @@ const KNearestNeighbours = () => {
           {loader ? (
             <Loader />
           ) : (
-            <KNNRegressionResults modelData={evaluationResults} target={targetVariable}/>
+            <KNNRegressionResults
+              modelData={evaluationResults}
+              target={targetVariable}
+            />
           )}
         </div>
       </div>
