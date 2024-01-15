@@ -31,6 +31,7 @@ const XGBoost = () => {
     growPolicy,
     targetVariable,
     optionsPlot,
+    supervisedML,
     loader,
   } = useXGBoostRegression();
   return (
@@ -49,6 +50,7 @@ const XGBoost = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}

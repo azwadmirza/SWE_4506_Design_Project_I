@@ -1,11 +1,11 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useSVMClassification } from "../../hooks/useSVMClassification";
 import SVMResults from "./svmClassificationResults";
 import Loader from "../../../../partials/loader";
+import { useSVM } from "../../hooks/useSVM";
 
 const SVM = () => {
-  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVMClassification();
+  const {supervisedML,normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVM("classification");
   return (
     <div>
       <div className="model-container-wrapper d-flex ">
@@ -22,6 +22,7 @@ const SVM = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Classification")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}

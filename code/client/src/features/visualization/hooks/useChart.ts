@@ -6,11 +6,11 @@ import { indexedDBConfig } from "../../../config/indexeddb";
 import axios from "axios";
 
 
-export const isNumeric=(value: any): boolean=>{
-  try{
+export const isNumeric = (value: any): boolean => {
+  try {
     return value !== "" && !isNaN(Number(value));
   }
-  catch(error){
+  catch (error) {
     return false;
   }
 }
@@ -25,7 +25,9 @@ export const useChart = () => {
   const file_name = useAppSelector((state) => state.file.file);
   const uploaded_at = useAppSelector((state) => state.file.uploaded_at);
   const [labels, setLabels] = useState<string[]>([]);
+  const [dataInfo, setDataInfo] = useState<any[]>([]);
   const [statistics, setStatistics] = useState<any[]>([]);
+  const [supervisedML,setSupervisedML]=useState<Map<string,string>>(new Map());
 
   function filterNumericColumns(table: any[][]): any {
     const number_labels: any[] = [];
@@ -37,9 +39,9 @@ export const useChart = () => {
       const numericValues = columnValues
         .filter((value) => isNumeric(value))
         .map((value) => Number(value));
-        if(numericValues.length>0){
-          number_labels.push(label);
-          dataset.push(numericValues as number[]);
+      if (numericValues.length > 0) {
+        number_labels.push(label);
+        dataset.push(numericValues as number[]);
       }
     }
     return { labels: number_labels, values: dataset };
@@ -63,6 +65,7 @@ export const useChart = () => {
           const matrix = calculatePearsonCorrelationMatrix(result.values);
           setCorrelationMatrix(matrix);
           await getStatistics();
+          await getDataInfo();
           setLoading(false);
         } else {
           throw Error("Database not opened");
@@ -70,6 +73,7 @@ export const useChart = () => {
       }
     } catch (error) {
       await getStatistics();
+      await getDataInfo();
       setLoading(false);
     }
   };
@@ -78,11 +82,22 @@ export const useChart = () => {
     () =>
       statistics.length > 0
         ? Object.keys(statistics[0]).map((field) => ({
-            Header: field,
-            accessor: field,
-          }))
+          Header: field,
+          accessor: field,
+        }))
         : [],
     [statistics]
+  );
+
+  const columnsInfo = useMemo(
+    () =>
+      dataInfo.length > 0
+        ? Object.keys(dataInfo[0]).map((field) => ({
+          Header: field,
+          accessor: field,
+        }))
+        : [],
+    [dataInfo]
   );
 
   const getStatistics = async () => {
@@ -104,6 +119,32 @@ export const useChart = () => {
             }
           );
           setStatistics(dataArray);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  const getDataInfo = async () => {
+    if (url) {
+      await axios
+        .post(
+          import.meta.env.VITE_BACKEND_REQ_ADDRESS + "/api/file/get-data/",
+          {
+            url: url,
+            filetype: type,
+            delimiter: delimiter,
+          }
+        )
+        .then((response) => {
+          const length = response.data.dtypes.length;
+          let dataArray = []
+          for (let i = 0; i < length; i++) {
+            dataArray.push({  "Columns": response.data.columns[i], "Data Types": response.data.dtypes[i],"Applicable Supervised Learning":response.data.dtypes[i] === "int64" || response.data.dtypes[i]=="float64" ? "Regression" : "Classification"})
+            supervisedML.set(response.data.columns[i],response.data.dtypes[i] === "int64" || response.data.dtypes[i]=="float64" ? "Regression" : "Classification")
+          }
+          setDataInfo(dataArray);
         })
         .catch((error) => {
           console.log(error);
@@ -198,6 +239,9 @@ export const useChart = () => {
   } = useClassChart(data ? data : [[]]);
 
   return {
+    supervisedML,
+    dataInfo,
+    columnsInfo,
     columns,
     statistics,
     heatmapData,

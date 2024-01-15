@@ -1,22 +1,14 @@
-import axios from "axios";
-import { useAppSelector } from "../../../contexts/file/hooks";
 import { useEffect, useState } from "react";
 import { useChart } from "../../visualization/hooks/useChart";
+import { useAppSelector } from "../../../contexts/file/hooks";
+import axios from "axios";
 
-export const useSVMClassification=()=>{
+export const useLinearRegression=()=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
-    const [trainTestSplit, setTrainTestSplit] = useState(40);
-    const [degree, setDegree] = useState(3);
-    const [maxIter, setMaxIter] = useState(20);
-    const [kernel, setKernel] = useState("linear");
-    const { optionsPlot } = useChart();
-
-    useEffect(() => {
-        if (optionsPlot && optionsPlot.length > 0) {
-          setTargetVariable(optionsPlot[optionsPlot.length - 1]);
-        }
-      }, [optionsPlot]);
-  
+  const [trainTestSplit, setTrainTestSplit] = useState(40);
+  const [maxIter, setMaxIter] = useState(3);
+  const [smoothing, setSmoothing] = useState<number>(1);
+  const { optionsPlot,supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
   const [targetVariable, setTargetVariable] = useState<string | null>();
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
@@ -29,17 +21,16 @@ export const useSVMClassification=()=>{
     }
   }, [optionsPlot]);
 
-  const handleRunSVM = async () => {
+  const handleRunLinearRegression = async () => {
     try {
       setLoader(true);
-      const response = await axios.post(`${address}/api/svm/classification/`, {
+      const response = await axios.post(`${address}/api/linear_regression/start/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
         train_test_split: trainTestSplit,
         max_iter: maxIter,
-        kernel: kernel,
-        degree: degree,
+        smoothing: smoothing,
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
@@ -48,5 +39,6 @@ export const useSVMClassification=()=>{
       console.error("Error during backend request:");
     }
   };
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot}
+
+  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,supervisedML}
 }

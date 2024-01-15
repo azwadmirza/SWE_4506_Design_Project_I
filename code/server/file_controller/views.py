@@ -153,4 +153,41 @@ class FileDownloadView(generics.RetrieveAPIView):
         file_metadata = get_object_or_404(FileMetadata, pk=pk)
         return Response({'file_url': file_metadata.edited_file , 'file_id': file_metadata.id, 'file_name': file_metadata.file_name}, status=status.HTTP_200_OK)
     
+@authentication_classes([JWTAuthentication])
+class GetDataInfo(APIView):
+    permission_classes=[]
+    queryset = FileMetadata.objects.all()
+    serializer_class = FileMetadataSerializer
+    def post(self,request,*args,**kwargs):
+        try:
+            url=request.data.get("url")
+            filetype=request.data.get("filetype")
+            delimiter=request.data.get("delimiter")
+            print(url,filetype,delimiter)
+            df=None
+            if filetype=="csv" or url.endswith(".csv"):
+                df=pd.read_csv(url)
+            elif filetype=="json" or url.endswith(".json"):
+                df=pd.read_json(url)
+            elif filetype=="excel" or url.endswith(".xlsx"):
+                df=pd.read_excel(url)
+            elif filetype=="txt" and delimiter or url.endswith(".txt") and delimiter:
+                df=pd.read_csv(url,delimiter=delimiter)
+            else:
+                df=pd.read_csv(url)
+            dtypes=[]
+            columns=[]
+            for i in df.dtypes:
+                dtypes.append(str(i))
+            for i in df.columns:
+                columns.append(str(i))
+            result={
+                "dtypes":dtypes,
+                "columns":columns
+            }
+            return Response(result,status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({'error': 'File Server Error Could Not Retrieve File'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
