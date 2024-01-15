@@ -8,11 +8,13 @@ import RegressionModels from "../../models/components/regressionModels";
 import {useState} from 'react';
 import Header from "./header";
 import { useSheets } from "../hooks/useSheets";
+import { useChart } from "../../visualization/hooks/useChart";
 
 const Models = () => {
   const file = useAppSelector((state) => state.file.file);
   const loading = useAppSelector((state) => state.file.loading);
   const [toggle, setToggle] = useState(1);
+  const {supervisedML}=useChart();
   const {data}=useSheets();
   if (!loading) {
     return (
@@ -28,12 +30,12 @@ const Models = () => {
           <RegressionModels/>
         </div>
         <ul className="d-flex model-tabs-list">
-          <li className={`flex-fill ${toggle==1?'model-selected':'model-tab'}`} onClick={() => setToggle(1)}>
+          {Array.from(supervisedML.values()).includes("Classification") && (<li className={`flex-fill ${toggle==1?'model-selected':'model-tab'}`} onClick={() => setToggle(1)}>
             Classification
-          </li>
-          <li className={`flex-fill ${toggle==2?'model-selected':'model-tab'}`} onClick={() => setToggle(2)}>
+          </li>)}
+          {Array.from(supervisedML.values()).includes("Regression") && (<li className={`flex-fill ${toggle==2?'model-selected':'model-tab'}`} onClick={() => setToggle(2)}>
             Regression
-          </li>
+          </li>)}
         </ul>
       </div>
           </div>

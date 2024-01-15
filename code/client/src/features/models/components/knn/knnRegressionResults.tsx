@@ -1,36 +1,20 @@
 import { useSheets } from "../../../sheets/hooks/useSheets";
+import { IRegressionProps } from "../../assets/ts/IRegressionProps";
 import ParityPlot from "../parityPlotGenerator";
 import MetricsTable from "../regressionMetrics";
 
-interface IKNearestNeighboursProps {
-  modelData: {
-    "MAE Test": number;
-    "MAE Train": number;
-    "MSE Test": number;
-    "MSE Train": number;
-    "Predictions Whole": number[];
-    "R2 Accuracy Test": number;
-    "R2 Accuracy Train": number;
-    "RMSE Test": number;
-    "RMSE Train": number;
-  } | null;
-  target: string | null | undefined;
-}
 
-const KNearestNeighboursResults = ({
-  modelData,
-  target,
-}: IKNearestNeighboursProps) => {
-  const { data } = useSheets();
+const KNNRegressionResults = ({ modelData, target }: IRegressionProps) => {
+  const {data}=useSheets();
   if (!modelData) return null;
-  if (!target) return null;
+  if(!target) return null;
 
   const extractColumnValues = (columnName: string | null) => {
     if (!columnName || !data || data.length === 0 || !data[0]) {
-      console.error("Invalid columnName or data");
+      console.error('Invalid columnName or data');
       return [];
     }
-
+  
     let columnIndex = -1;
 
     for (let i = 0; i < data[0].length; i++) {
@@ -84,4 +68,4 @@ const KNearestNeighboursResults = ({
   );
 };
 
-export default KNearestNeighboursResults;
+export default KNNRegressionResults;

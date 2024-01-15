@@ -1,51 +1,11 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
-import { useState, useEffect } from "react";
-import { useChart } from "../../../visualization/hooks/useChart";
-import { useAppSelector } from "../../../../contexts/file/hooks";
-import axios from "axios";
 import LogisticRegressionResults from "./logisticRegressionResults";
 import Loader from "../../../../partials/loader";
+import { useLogisticRegression } from "../../hooks/useLogisticRegression";
 
 const LogisticRegression = () => {
-  const [normalization, setNormalization] = useState("MinMaxScaler");
-  const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [maxIter, setMaxIter] = useState(3);
-  const [penalty, setPenalty] = useState("none");
-  const { optionsPlot } = useChart();
-  const [evaluationResults, setEvaluationResults] = useState(null);
-  const [targetVariable, setTargetVariable] = useState<string | null>();
-  const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-  const file_url = useAppSelector((state) => state.file.url);
-  const [loader, setLoader] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (optionsPlot && optionsPlot.length > 0) {
-      setTargetVariable(optionsPlot[optionsPlot.length - 1]);
-    }
-  }, [optionsPlot]);
-
-  const handleRunLogisticRegression = async () => {
-    try {
-      setLoader(true);
-      const response = await axios.post(
-        `${address}/api/logistic_regression/start/`,
-        {
-          file_url: file_url,
-          target: targetVariable,
-          normalization: normalization,
-          train_test_split: trainTestSplit,
-          max_iter: maxIter,
-          penalty: penalty,
-        }
-      );
-      console.log("Backend response received:", JSON.parse(response.data));
-      setEvaluationResults(JSON.parse(response.data));
-      setLoader(false);
-    } catch (error) {
-      console.error("Error during backend request:");
-    }
-  };
+  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,optionsPlot,supervisedML}=useLogisticRegression();
 
   return (
     <div>
@@ -63,6 +23,7 @@ const LogisticRegression = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Classification")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}

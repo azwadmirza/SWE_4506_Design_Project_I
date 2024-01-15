@@ -1,11 +1,11 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
-import KNearestNeighboursResults from "./knnRegressionResults";
-import { useKNNRegression } from "../../hooks/useKNNRegression";
+import KNNRegressionResults from "./knnRegressionResults";
+import { useKNN } from "../../hooks/useKNN";
 
 const KNearestNeighbours = () => {
-  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNNRegression();
+  const {supervisedML,normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNN("regression");
 
   return (
     <div>
@@ -27,6 +27,7 @@ const KNearestNeighbours = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}
@@ -122,7 +123,7 @@ const KNearestNeighbours = () => {
           {loader ? (
             <Loader />
           ) : (
-            <KNearestNeighboursResults modelData={evaluationResults} target={targetVariable} />
+            <KNNRegressionResults modelData={evaluationResults} target={targetVariable}/>
           )}
         </div>
       </div>

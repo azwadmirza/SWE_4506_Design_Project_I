@@ -5,7 +5,7 @@ import { useDecisionTreeRegression } from "../../hooks/useDecisionTreeRegression
 import DecisionTreeResults from "./decisionTreeRegressionResults";
 
 const DecisionTree = () => {
-  const {targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, loader}=useDecisionTreeRegression();
+  const {supervisedML,targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, loader}=useDecisionTreeRegression();
 
   return (
     <div>
@@ -27,6 +27,7 @@ const DecisionTree = () => {
               {optionsPlot
                 ?.slice()
                 .reverse()
+                .filter((option)=>supervisedML.get(option)==="Regression")
                 .map((option, index) => (
                   <option key={index} value={option}>
                     {option}

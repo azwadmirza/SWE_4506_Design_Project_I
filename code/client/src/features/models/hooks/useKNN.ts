@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { round, sqrt } from "mathjs";
 import { useChart } from "../../visualization/hooks/useChart";
 
-export const useKNNClassification=()=>{
+export const useKNN=(type:"classification"|"regression")=>{
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(20);
   const [minkowskiMetric, setMinkowskiMetric] = useState(2);
   const [algorithm, setAlgorithm] = useState("auto");
   const [distanceMetric, setDistanceMetric] = useState("euclidean");
   const [weights, setWeights] = useState("uniform");
-  const { optionsPlot } = useChart();
+  const { optionsPlot,supervisedML } = useChart();
   const [n_neighbours, setNNeighbours] = useState(5);
 
   useEffect(()=>{
@@ -42,7 +42,7 @@ export const useKNNClassification=()=>{
   const handleRunKNN = async () => {
     try {
       setLoader(true);
-      const response = await axios.post(`${address}/api/knn/classification/`, {
+      const response = await axios.post(`${address}/api/knn/${type}/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,
@@ -60,5 +60,5 @@ export const useKNNClassification=()=>{
       console.error("Error during backend request:");
     }
   };
-  return {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}
+  return {normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}
 }
