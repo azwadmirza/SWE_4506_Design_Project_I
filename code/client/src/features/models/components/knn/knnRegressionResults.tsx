@@ -3,7 +3,7 @@ import { IRegressionProps } from "../../assets/ts/IRegressionProps";
 import ParityPlot from "../parityPlotGenerator";
 
 
-const XGBoostRegressionResults = ({ modelData, target }: IRegressionProps) => {
+const KNNRegressionResults = ({ modelData, target }: IRegressionProps) => {
   const {data}=useSheets();
   if (!modelData) return null;
   if(!target) return null;
@@ -82,4 +82,4 @@ const XGBoostRegressionResults = ({ modelData, target }: IRegressionProps) => {
   );
 };
 
-export default XGBoostRegressionResults;
+export default KNNRegressionResults;

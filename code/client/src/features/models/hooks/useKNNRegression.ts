@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { round, sqrt } from "mathjs";
 import { useChart } from "../../visualization/hooks/useChart";
 
-export const useKNNClassification=()=>{
+export const useKNNRegression=()=>{
   const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(20);
   const [minkowskiMetric, setMinkowskiMetric] = useState(2);
@@ -42,7 +42,7 @@ export const useKNNClassification=()=>{
   const handleRunKNN = async () => {
     try {
       setLoader(true);
-      const response = await axios.post(`${address}/api/knn/classification/`, {
+      const response = await axios.post(`${address}/api/knn/regression/`, {
         file_url: file_url,
         target: targetVariable,
         normalization: normalization,

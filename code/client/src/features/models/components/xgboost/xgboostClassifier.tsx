@@ -143,7 +143,7 @@ const XGBoost = () => {
           {loader ? (
             <Loader />
           ) : (
-            <XGBoostResults data={evaluationResults} />
+            <XGBoostResults data={evaluationResults} categories={evaluationResults?.categories}/>
           )}
         </div>
       </div>

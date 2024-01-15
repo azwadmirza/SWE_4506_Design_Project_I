@@ -1,11 +1,11 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
-import { useKNNClassification } from "../../hooks/useKNNClassification";
-import KNNClassificationResults from "./knnClassificationResults";
+import KNNRegressionResults from "./knnRegressionResults";
+import { useKNNRegression } from "../../hooks/useKNNRegression";
 
 const KNearestNeighbours = () => {
-  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNNClassification();
+  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,optionsPlot}=useKNNRegression();
 
   return (
     <div>
@@ -122,7 +122,7 @@ const KNearestNeighbours = () => {
           {loader ? (
             <Loader />
           ) : (
-            <KNNClassificationResults data={evaluationResults} />
+            <KNNRegressionResults modelData={evaluationResults} target={targetVariable}/>
           )}
         </div>
       </div>

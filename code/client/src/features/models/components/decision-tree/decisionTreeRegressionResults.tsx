@@ -1,22 +1,9 @@
 import { useSheets } from "../../../sheets/hooks/useSheets";
+import { IRegressionProps } from "../../assets/ts/IRegressionProps";
 import ParityPlot from "../parityPlotGenerator";
 
-interface ILinearRegressionProps {
-  modelData: {
-    'MAE Test': number;
-    'MAE Train': number;
-    'MSE Test': number;
-    'MSE Train': number;
-    'Predictions Whole': number[];
-    'R2 Accuracy Test': number;
-    'R2 Accuracy Train': number;
-    'RMSE Test': number;
-    'RMSE Train': number;
-  } | null;
-  target: string|null|undefined; 
-};
 
-const DecisionTreeRegressionResults = ({ modelData, target }: ILinearRegressionProps) => {
+const DecisionTreeRegressionResults = ({ modelData, target }: IRegressionProps) => {
   const {data}=useSheets();
   if (!modelData) return null;
   if(!target) return null;
