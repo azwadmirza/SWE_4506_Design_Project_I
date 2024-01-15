@@ -7,7 +7,7 @@ from library.classification_analysis import ClassificationAnalysis
 from library.regression_analysis import RegressionAnalysis
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 
-class knn_model(APIView):
+class knnClassification(APIView):
     queryset = []
 
     permission_classes = []
@@ -27,11 +27,11 @@ class knn_model(APIView):
         distance_metric=requestBody.get('distance_metric', None)
         weights=requestBody.get('weights', None)
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
-        model = Model(KNeighborsRegressor(n_neighbors=n_neighbours,algorithm=algorithm,p=p,weights=weights,metric=distance_metric),normalisation).get_model()   
+        model = Model(KNeighborsClassifier(n_neighbors=n_neighbours,algorithm=algorithm,p=p,weights=weights,metric=distance_metric),normalisation).get_model()   
         model.fit(X_train,y_train)
         return Response(ClassificationAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)
     
-class knn_regressor(APIView):
+class knnRegression(APIView):
     queryset = []
 
     permission_classes = []
@@ -40,6 +40,7 @@ class knn_regressor(APIView):
     
     def post(self, request):
         requestBody = request.data
+        print(requestBody)
         split_data = requestBody.get('train_test_split', None)
         targetCol = requestBody.get('target', None)
         normalisation = requestBody.get('normalization', None)

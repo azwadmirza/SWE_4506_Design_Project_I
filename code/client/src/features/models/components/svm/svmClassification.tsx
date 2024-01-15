@@ -1,21 +1,16 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
+import { useSVMClassification } from "../../hooks/useSVMClassification";
+import SVMResults from "./svmClassificationResults";
 import Loader from "../../../../partials/loader";
-import { useDecisionTreeRegression } from "../../hooks/useDecisionTreeRegression";
-import DecisionTreeResults from "./decisionTreeRegressionResults";
 
-const DecisionTree = () => {
-  const {targetVariable,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree, loader}=useDecisionTreeRegression();
-
+const SVM = () => {
+  const {normalization,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,handleRunSVM,optionsPlot} = useSVMClassification();
   return (
     <div>
-      <div className="d-flex model-container-wrapper">
+      <div className="model-container-wrapper d-flex ">
         <div className="model-container">
-          <h5>
-            Decision
-            <br />
-            Tree
-          </h5>
+          <h5>Support Vector Machines</h5>
           <div className="model-label">
             <label className="model-label">Target Variable:</label>
             <select
@@ -58,43 +53,51 @@ const DecisionTree = () => {
             />
           </div>
           <div>
-            <label className="model-label">Max Depth:</label>
+            <label className="model-label">Max Iter:</label>
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={maxIter}
               min={1}
               max={100}
-              onChange={(e) => setMaxDepth(parseInt(e.target.value))}
+              onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
           <div>
-            <label className="model-label">Criterion:</label>
+            <label className="model-label">Kernel:</label>
             <select
               className="model-select"
-              value={criterion}
-              onChange={(e) => setCriterion(e.target.value)}
+              value={kernel}
+              onChange={(e) => setKernel(e.target.value)}
             >
-            <option value="friedman_mse">Friedman MSE</option>
-              <option value="squared_error">Squared Error</option>
-              <option value="poisson">Poisson</option>
-              <option value="absolute_error">Absolute Error</option>
+              <option value="linear">Linear</option>
+              <option value="rbf">RBF</option>
+              <option value="sigmoid">Sigmoid</option>
+              <option value="poly">Poly</option>
             </select>
           </div>
-          <button className="model-button" onClick={handleRunDecisionTree}>
+          {kernel === "poly" && (
+            <div>
+              <label className="model-label">Degree:</label>
+              <input
+                className="model-input"
+                type="number"
+                min={0}
+                value={degree}
+                onChange={(e) => setDegree(parseInt(e.target.value))}
+              />
+            </div>
+          )}
+          <button className="model-button" onClick={handleRunSVM}>
             Run
           </button>
         </div>
         <div className="results-container">
-          {loader ? (
-            <Loader />
-          ) : (
-            <DecisionTreeResults modelData={evaluationResults} target={targetVariable} />
-          )}
+          {loader ? <Loader /> : <SVMResults data={evaluationResults} />}
         </div>
       </div>
     </div>
   );
 };
 
-export default DecisionTree;
+export default SVM;
