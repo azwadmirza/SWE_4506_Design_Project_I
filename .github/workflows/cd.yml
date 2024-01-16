@@ -49,6 +49,10 @@ jobs:
           workload_identity_provider: '${{ secrets._WIF_PROVIDER }}'
           service_account: '${{ secrets._WIF_SERVICE_ACCOUNT }}'
 
+      - name: Set up workload identity provider
+        run: echo "_WIF_PROVIDER=${{ secrets._WIF_PROVIDER }}"
+             echo "_WIF_SERVICE_ACCOUNT=${{ secrets._WIF_SERVICE_ACCOUNT }}" 
+
       - name: Docker Auth
         id: docker-auth
         uses: 'docker/login-action@v1'
