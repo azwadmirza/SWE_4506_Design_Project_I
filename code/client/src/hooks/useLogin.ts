@@ -16,7 +16,7 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
 
   const login=async()=>{
     changeLoadingState(true);
-    await axios.post("http://127.0.0.1:8000/api/login/", {
+    await axios.post(import.meta.env.VITE_BACKEND_REQ_ADDRESS+"/api/login/", {
       email: email,
       password: CryptoJS.SHA512(password).toString(),
     },{
@@ -31,7 +31,7 @@ export const useLogin=(changeLoadingState:React.Dispatch<React.SetStateAction<bo
         navigate("/verification");
       }
       else{
-        navigate("/data");
+        navigate("/dashboard");
       }
       setError("");
     }).catch(()=>{

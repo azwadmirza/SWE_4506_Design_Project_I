@@ -16,35 +16,25 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-DB_HOST = config('HOST')
-DB_NAME = config('DB_NAME')
-DB_USER = config('DB_USER')
-DB_PASSWORD = config('DB_PASSWORD')
-SECRET_KEY = config('SECRET_KEY')
-AUTH = config('AUTH')
+DB_HOST = config('_HOST')
+DB_NAME = config('_DB_NAME')
+DB_USER = config('_DB_USER')
+DB_PASSWORD = config('_DB_PASSWORD')
+SECRET_KEY = config('_SECRET_KEY')
+AUTH = config('_AUTH')
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'gateway',
     'normalization',
-    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,22 +44,25 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'user_profile',
-    'file_controller'
-    
+    'file_controller',
+    'decision_tree',
+    'logistic_regression',
+    'svm',
+    'naive_bayes',
+    'xgBoost',
+    'knn'
 ]
 
 MIDDLEWARE = [
     
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -83,13 +76,6 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 
-CORS_ALLOW_HEADERS = [
-    'Content-Type',
-    'Authorization',
-    'Content-Disposition',
-]
-
-
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -98,6 +84,7 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
 TEMPLATES = [
@@ -173,20 +160,20 @@ PASSWORD_HASHERS = [
 
 
 CLOUDINARY = {
-    'cloud_name': 'djbspykue',
-    'api_key': '742646115888849',
-    'api_secret': '6QyPwgx5dn5L9zl5viB7fXJN1VM',
+    'cloud_name': config('_CLOUD_NAME'),
+    'api_key': config('_CLOUD_API_KEY'),
+    'api_secret': config('_CLOUD_API_SECRET'),
 }
 
 CLOUDINARY_URL = f"cloudinary://{CLOUDINARY['api_key']}:{CLOUDINARY['api_secret']}@{CLOUDINARY['cloud_name']}"
 
 
-EMAIL_BACKEND=config('EMAIL_BACKEND')
-EMAIL_HOST= config('EMAIL_HOST')
-EMAIL_PORT= config('EMAIL_PORT')
+EMAIL_BACKEND=config('_EMAIL_BACKEND')
+EMAIL_HOST= config('_EMAIL_HOST')
+EMAIL_PORT= config('_EMAIL_PORT')
 EMAIL_USE_TLS= True
-EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER=config('_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('_EMAIL_HOST_PASSWORD')
 
 
 LANGUAGE_CODE = 'en-us'

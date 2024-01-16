@@ -1,6 +1,5 @@
 import Card from 'react-bootstrap/Card';
 import OtpInput from 'react18-input-otp';
-import { useState } from "react";
 import OTPValidityTimer from '../../../partials/OTPTimer';
 import { IonIcon } from '@ionic/react';
 import { mailUnreadOutline } from 'ionicons/icons';

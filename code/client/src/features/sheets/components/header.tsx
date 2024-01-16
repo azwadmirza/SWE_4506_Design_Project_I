@@ -1,72 +1,79 @@
-import { Navbar, Container, Nav, Dropdown} from "react-bootstrap";
 import { useDropDown } from "../hooks/useDropDown";
 import FileInput from "../../../partials/fileInput";
-import { useAppSelector} from "../../../contexts/file/hooks";
-import convertToCSV from "../../../utils/csvConverter";
+import { useAppSelector } from "../../../contexts/file/hooks";
+import { indexedDBConfig } from "../../../config/indexeddb";
 import saveToBackend from "../../../utils/saveFileToBackend";
-
-
+import { useAppDispatch } from "../../../contexts/auth/hooks";
+import { setFile, setURL } from "../../../contexts/file/slice";
+import { Link } from "react-router-dom";
+import { IonIcon } from "@ionic/react";
+import { folder, save } from "ionicons/icons";
 
 type HeaderProps = {
   filename: string;
+  data: any[] | null;
 };
 
-const Header = ({ filename }: HeaderProps) => {
-  const jsonData = useAppSelector((state)=> state.file.data)
-  const file_id = useAppSelector((state)=> state.file.file_id)
-  const { showFileDropdown,
-    toggleDropdown,
+const Header = ({ filename, data }: HeaderProps) => {
+  const file_id = useAppSelector((state) => state.file.file_id);
+  const url = useAppSelector((state) => state.file.url);
+  const dispatch = useAppDispatch();
+  const {
     showFileUpload,
-    setShowFileUpload } = useDropDown();
-    
+    setShowFileUpload,
+  } = useDropDown();
 
-
-    const handleSave = () => {
-      const file_content = convertToCSV(jsonData);
-      console.log("Began Saving");
-      console.log(file_content);
-      console.log(filename);
-      console.log(file_id);
-      const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
-      console.log(address);
-      saveToBackend(file_content,file_id,filename,address);
-      console.log("Upload to Backend Completed");
-
-    };
+  const handleSave = async () => {
+    if (file_id) {
+      if (url) {
+        const backendRes = await saveToBackend(
+          data,
+          file_id,
+          filename,
+          import.meta.env.VITE_BACKEND_REQ_ADDRESS
+        );
+        await indexedDBConfig.updateFileURL(
+          data,
+          url,
+          backendRes.data.file_url
+        );
+        dispatch(setURL(backendRes.data.file_url));
+        dispatch(setFile(filename));
+        console.log("File Saved");
+      }
+    }
+  };
 
   return (
-    <Navbar className="header fixed-top" variant="dark" expand="lg">
-      <Container
-        fluid
-        className="navbarContents px-0 px-lg-5 d-flex justify-content-between"
+    <div className="header fixed-top d-flex mx-auto w-100">
+      <div className="header-filename">
+        <Link to="/data" className="px-2 navbar-brand">
+          {filename}
+        </Link>
+      </div>
+      <FileInput
+        showFileInput={showFileUpload}
+        setShowFileInput={setShowFileUpload}
+      />
+      <button
+        className="header-buttons"
+        onClick={() => {
+          setShowFileUpload(!showFileUpload);
+        }}
       >
-        <Navbar.Brand className="px-2">{filename}</Navbar.Brand>
-          <Nav
-            className="me-auto my-2 my-lg-0 px-2"
-            style={{ maxHeight: "150px" }}
-            navbarScroll
-          >
-            <div className="option" onClick={() => toggleDropdown("file")}>
-              File
-              <FileInput showFileInput={showFileUpload} setShowFileInput={setShowFileUpload}/>
-              {showFileDropdown && (
-                <Dropdown
-                  show={showFileDropdown}
-                  onClick={() => toggleDropdown("file")}
-                >
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={()=>{
-                      setShowFileUpload(!showFileUpload);
-                    }}>Open</Dropdown.Item>
-                    <Dropdown.Item onClick={handleSave}>Save</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
-            </div>
-            <div className="option">Format</div>
-          </Nav>
-      </Container>
-    </Navbar>
+        <IonIcon icon={folder} style={{marginRight:"2px"}}></IonIcon>
+        <span className="header-buttons-text">Upload</span>
+      </button>
+      <button
+        className="header-buttons"
+        onClick={() => {
+          handleSave();
+        }}
+      >
+        <IonIcon icon={save}  style={{marginRight:"2px"}} />
+        <span className="header-buttons-text">Save</span>
+      </button>
+    </div>
   );
 };
 

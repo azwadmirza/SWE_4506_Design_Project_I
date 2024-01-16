@@ -18,17 +18,18 @@ import Error404 from './partials/error404';
 import { useAppSelector } from './contexts/auth/hooks';
 import Sheets from './features/sheets/pages/sheets';
 import ForgotPassword from './features/forgot-password/pages/forgot-password';
+import Dashboard from './features/dashboard/pages/dashboard';
+// import FileUploadComponent from './pages/FileUploadComponent';
 
 function App() {
   const accessToken = useAppSelector((state) => state.auth.access_token);
   const verification = useAppSelector((state) => state.auth.verification);
-  const refreshToken = useAppSelector((state) => state.auth.refresh_token);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing access_token={accessToken} refresh_token={refreshToken} verification={verification}/>}/>
+          <Route path="/" element={<Landing access_token={accessToken} verification={verification}/>}/>
           {!accessToken && (
           <>
           <Route path="/login" element={<SignIn location='login'/>}/>
@@ -44,6 +45,7 @@ function App() {
               <Route path="/profile" element={<ProfilePage/>}/>
               <Route path="/profile/change-password" element={<ChangePassword/>}/>
               <Route path="/data" element={<Sheets/>}/>
+              <Route path="/dashboard" element={<Dashboard/>}/>
             </>
           )}
           </>

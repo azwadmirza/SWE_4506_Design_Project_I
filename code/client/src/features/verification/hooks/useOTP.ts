@@ -14,7 +14,7 @@ const [otp,setOTP]=useState("");
   const fetchOTP = async () => {
     const user_id = localStorage.getItem("user_id");
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/otp/${user_id}/`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/otp/${user_id}/`);
       setOTP(response.data.otp);
       setEmail(response.data.email);
       setIsDisabled(false);

@@ -1,4 +1,5 @@
 import { Scatter } from "react-chartjs-2";
+import { isNumeric } from "../hooks/useChart";
 
 interface IScatterPlotProps{
     chartData: {
@@ -14,9 +15,9 @@ interface IScatterPlotProps{
 }
 const ScatterPlot = ({chartData}:IScatterPlotProps) => {
   const isValidData = chartData.datasets.every((dataset) =>
-    dataset.data.every((value) => !isNaN(parseFloat(value)))
+    dataset.data.filter((value:any) => isNumeric(value)).length>0
   );
-  const isValidLabel = chartData.labels.every((label) => !isNaN(parseFloat(label)));
+  const isValidLabel = chartData.labels.filter((label) => isNumeric(label)).length>0;
   if(isValidData && isValidLabel){
     return ( 
       <>

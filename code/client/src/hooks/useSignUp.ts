@@ -2,7 +2,6 @@ import { useState } from "react";
 import CryptoJS from "crypto-js";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { setAccessTokens } from "../contexts/auth/slice";
 import { useAppDispatch } from "../contexts/auth/hooks";
 
@@ -71,7 +70,7 @@ export const useSignUp = (changeLoadingState:React.Dispatch<React.SetStateAction
 
   const signup = async () => {
     changeLoadingState(true);
-    axios.post("http://127.0.0.1:8000/api/register/", {
+    axios.post(import.meta.env.VITE_BACKEND_REQ_ADDRESS+"/api/register/", {
       username: username,
       email: email,
       password: CryptoJS.SHA512(password).toString(),

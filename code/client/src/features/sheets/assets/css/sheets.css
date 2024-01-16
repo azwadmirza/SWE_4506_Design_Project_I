@@ -4,10 +4,39 @@
   overflow: auto;
 }
 .header {
+  vertical-align: middle;
   margin-top: 65px;
   background-color: var(--customGreen) !important;
-  height: 30px !important;
+  height: 20px !important;
+  width: 100% !important;
   font-size: 1.2rem;
+}
+
+.header-buttons{
+  background-color: #008631;
+  border-radius: 25px;
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  font-size: medium;
+  color:white;
+}
+
+.header-buttons-text{
+  font-size: medium;
+}
+
+.header-buttons:hover{
+  background-color: var(--customDarkGreen);
+}
+
+.header-filename{
+  padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  color:white;
 }
 
 .cell-name {
@@ -15,6 +44,7 @@
   padding-left: 30px;
   background-color: var(--customGreen) !important;
   border-radius: 25px;
+  margin-right: 10px;
 }
 
 .input-field {
@@ -23,17 +53,16 @@
 }
 
 .value-display {
-  margin-top: 120px;
   background-color: var(--white) !important;
   height: 30px !important;
   color: black;
   font-size: 1.2rem;
-  z-index: -50;
+  display: flex;
+  margin-bottom: 25px !important;
 }
 
 .option {
   padding-right: 50px;
-  background-color: none !important;
   cursor: pointer;
 }
 
@@ -46,4 +75,25 @@
 
 .grid-row {
   display: flex;
+}
+
+@media(max-width:1063px){
+  .input-field{
+    width: 50% !important;
+  }
+}
+
+@media(max-width:443px){
+  .input-field{
+    width: 25% !important;
+  }
+}
+
+@media(max-width:338px){
+  .header-buttons-text{
+    display: none;
+  }
+  .custom-tabs-container{
+    width: 100% !important;
+  }
 }
