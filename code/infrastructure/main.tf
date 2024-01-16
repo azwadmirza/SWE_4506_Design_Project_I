@@ -22,12 +22,21 @@ resource "google_service_account" "sa" {
   account_id = var.service_account_id
 }
 
+resource "google_artifact_registry_repository" "datanalytica-repo" {
+  location      = "us-west1"
+  repository_id = var.repository_id
+  description   = "Data Analytica Repository"
+  format        = "DOCKER"
+}
+
 resource "google_project_iam_member" "default" {
   project = var.gcp_project_id
   for_each = toset([
     "roles/storage.admin",
     "roles/iam.workloadIdentityUser",
-    "roles/compute.viewer"
+    "roles/compute.viewer",
+    "roles/artifactregistry.writer",
+    "roles/run.developer"
   ])
   role = each.key
   member  = "serviceAccount:${google_service_account.sa.email}"
