@@ -23,6 +23,11 @@ variable "pool_name" {
   description = "WIF Pool Name, Check Cloud Service Provided if name already assigned"
 }
 
+variable "repo_name" {
+  type = string
+  description = "Github Repository Name"
+}
+
 
 variable "service_account_id" {
   type = string
