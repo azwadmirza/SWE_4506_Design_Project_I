@@ -19,20 +19,30 @@ provider "google-beta" {
 
 resource "google_service_account" "sa" {
   project    = var.gcp_project_id
-  account_id = "data-analytica-sa"
+  account_id = var.service_account_id
 }
 
 resource "google_project_iam_member" "default" {
   project = var.gcp_project_id
-  role    = "roles/storage.admin"
+  for_each = toset([
+    "roles/cloudsql.admin",
+    "roles/secretmanager.secretAccessor",
+    "roles/datastore.owner",
+    "roles/storage.admin",
+    "roles/iam.serviceAccountTokenCreator",
+    "roles/pubsub.publisher",
+    "roles/iam.workloadIdentityUser",
+    "roles/compute.viewer"
+  ])
+  role = each.key
   member  = "serviceAccount:${google_service_account.sa.email}"
 }
 
 module "oidc" {
   source      = "./.terraform/modules/github-actions-runners/modules/gh-oidc"
   project_id  = var.gcp_project_id
-  pool_id     = "data-analyticaio-io-pool"
-  provider_id = "data-analyticaio-gh-io-provider"
+  pool_id     = "${var.pool_name}-pool"
+  provider_id = "${var.pool_name}-provider"
   sa_mapping = {
     (google_service_account.sa.account_id) = {
       sa_name   = google_service_account.sa.name
