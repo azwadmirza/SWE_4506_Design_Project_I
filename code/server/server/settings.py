@@ -16,6 +16,26 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:3000"
+]
+
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+CORS_ALLOW_HEADERS = [
+    'Content-Type',
+    'Authorization',
+    'Content-Disposition',
+]
+
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173',
+    "http://localhost:3000"
+                        ]
+
 DB_HOST = config('_HOST')
 DB_NAME = config('_DB_NAME')
 DB_USER = config('_DB_USER')
@@ -50,6 +70,8 @@ CSRF_TRUSTED_ORIGINS = ["https://main--dataanalyticaiodp.netlify.app",'http://lo
     "http://localhost:3000"]
 
 
+# Application definition
+
 INSTALLED_APPS = [
     'corsheaders',
     'gateway',
@@ -75,13 +97,15 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -160,7 +184,6 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
 
-
 CLOUDINARY = {
     'cloud_name': config('_CLOUD_NAME'),
     'api_key': config('_CLOUD_API_KEY'),
@@ -190,8 +213,5 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
