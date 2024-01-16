@@ -20,7 +20,7 @@ variable "gcp_zone" {
 
 variable "pool_name" {
   type = string
-  description = "WIF Pool Name"
+  description = "WIF Pool Name, Check Cloud Service Provided if name already assigned"
 }
 
 
