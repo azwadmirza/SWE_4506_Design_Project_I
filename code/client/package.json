@@ -26,6 +26,7 @@
     "@types/crypto-js": "^4.1.2",
     "@types/dompurify": "^3.0.2",
     "@types/jquery": "^3.5.24",
+    "@types/loglevel": "^1.6.3",
     "@types/papaparse": "^5.3.10",
     "@types/plotly.js": "^2.12.32",
     "@types/react-plotly.js": "^2.6.3",
