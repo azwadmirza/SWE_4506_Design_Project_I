@@ -33,3 +33,8 @@ variable "service_account_id" {
   type = string
   description = "New Service Account for WIF User"
 }
+
+variable "repository_id" {
+  type = string
+  description = "Artifact Registry Repository ID"
+}
