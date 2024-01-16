@@ -45,8 +45,6 @@ AUTH = config('_AUTH')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
-
 ALLOWED_HOSTS = ["https://dataanalyticaio-afhjk37pda-uw.a.run.app"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
