@@ -25,12 +25,7 @@ resource "google_service_account" "sa" {
 resource "google_project_iam_member" "default" {
   project = var.gcp_project_id
   for_each = toset([
-    "roles/cloudsql.admin",
-    "roles/secretmanager.secretAccessor",
-    "roles/datastore.owner",
     "roles/storage.admin",
-    "roles/iam.serviceAccountTokenCreator",
-    "roles/pubsub.publisher",
     "roles/iam.workloadIdentityUser",
     "roles/compute.viewer"
   ])
