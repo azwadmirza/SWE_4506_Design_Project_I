@@ -17,3 +17,14 @@ variable "gcp_zone" {
   type = string
   description = "Google Cloud zone"
 }
+
+variable "pool_name" {
+  type = string
+  description = "WIF Pool Name, Check Cloud Service Provided if name already assigned"
+}
+
+
+variable "service_account_id" {
+  type = string
+  description = "New Service Account for WIF User"
+}
