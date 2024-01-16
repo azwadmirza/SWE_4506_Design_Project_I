@@ -6,7 +6,7 @@ from library.data_preprocessing import DataProcessing
 from library.model import Model
 from library.classification_analysis import ClassificationAnalysis
 from sklearn.linear_model import LogisticRegression
-
+from sklearn.decomposition import PCA
 
 class logistic_regression_model(APIView):
     queryset = []
@@ -22,7 +22,12 @@ class logistic_regression_model(APIView):
         split_data = requestBody.get('train_test_split', None)
         targetCol = requestBody.get('target', None)
         normalisation = requestBody.get('normalization', None)
+        pca = requestBody.get('pca', False)
+        pca_features = requestBody.get('pca_features', None)
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
+        if pca is True:
+            X_train=PCA(n_components=pca_features).fit_transform(X_train)
+            X_test=PCA(n_components=pca_features).fit_transform(X_test)
         is_multiclass = DataProcessing(requestBody['file_url'], targetCol, 'class', "text/csv", split_data).isMultiClass()
         if penalty and penalty.lower() in ['l1', 'l2']:
             if is_multiclass:

@@ -15,8 +15,8 @@ export const useKNN=(type:"classification"|"regression")=>{
   const { supervisedML } = useChart();
   const [n_neighbours, setNNeighbours] = useState(5);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(true);
-  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
+  const [pca,setPca] = useState<boolean>(false);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(optionsPlot.length-1);
 
   useEffect(()=>{
     if(distanceMetric==="euclidean"){
@@ -60,6 +60,8 @@ export const useKNN=(type:"classification"|"regression")=>{
         distance_metric: distanceMetric,
         weights: weights,
         n_neighbours: n_neighbours?n_neighbours:5,
+        pca: pca,
+        pca_features: pcaFeatures
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));

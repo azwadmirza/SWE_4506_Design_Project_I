@@ -22,8 +22,8 @@ export const useXGBoost=(type:"regression"|"classification")=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(true);
-  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
+  const [pca,setPca] = useState<boolean>(false);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(optionsPlot.length-1);
 
   const handleInference = async ()=>{
     console.log("XGBoost Classification Inference Time..");
@@ -49,7 +49,9 @@ export const useXGBoost=(type:"regression"|"classification")=>{
         reg_alpha: regAlpha,
         reg_lambda: regLambda,
         subsample_ratio: subsampleRatio,
-        objective: objective
+        objective: objective,
+        pca: pca,
+        pca_features: pcaFeatures
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));
