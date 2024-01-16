@@ -1,2 +1,4 @@
 class grid_search:
-    pass
+    def __init__(self, model, param_grid):
+        self.model = model
+        self.param_grid = param_grid
