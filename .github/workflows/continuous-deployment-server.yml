@@ -18,7 +18,6 @@ jobs:
       id-token: 'write'
     if: |
       (github.event_name == 'pull_request' && github.actor == 'azwadmirza' && github.respository == 'azwadmirza/SWE_4506_Design_Project_I_Production' )
-      echo "Pulled By Mirza Azwad From Dev"
       
     runs-on: ubuntu-latest
     steps:
