@@ -45,7 +45,7 @@ AUTH = config('_AUTH')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = ["https://dataanalyticaio-afhjk37pda-uw.a.run.app","127.0.0.1"]
+ALLOWED_HOSTS = ["dataanalyticaio-afhjk37pda-uw.a.run.app","127.0.0.1"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://main--dataanalyticaiodp.netlify.app",
