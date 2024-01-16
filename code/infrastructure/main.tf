@@ -36,7 +36,8 @@ resource "google_project_iam_member" "default" {
     "roles/iam.workloadIdentityUser",
     "roles/compute.viewer",
     "roles/artifactregistry.writer",
-    "roles/run.developer"
+    "roles/run.admin",
+    "roles/iam.serviceAccountUser"
   ])
   role = each.key
   member  = "serviceAccount:${google_service_account.sa.email}"
