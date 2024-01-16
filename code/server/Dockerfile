@@ -11,5 +11,4 @@ WORKDIR /code
 
 EXPOSE 8080
 
-ENTRYPOINT ["python", "manage.py"]
-CMD ["runserver", "0.0.0.0:8080"]
+CMD ["gunicorn", "server.wsgi:application", "--bind", "0.0.0.0:8080"]
