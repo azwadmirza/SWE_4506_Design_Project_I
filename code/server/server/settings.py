@@ -16,12 +16,12 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-DB_HOST = config('HOST')
-DB_NAME = config('DB_NAME')
-DB_USER = config('DB_USER')
-DB_PASSWORD = config('DB_PASSWORD')
-SECRET_KEY = config('SECRET_KEY')
-AUTH = config('AUTH')
+DB_HOST = config('_HOST')
+DB_NAME = config('_DB_NAME')
+DB_USER = config('_DB_USER')
+DB_PASSWORD = config('_DB_PASSWORD')
+SECRET_KEY = config('_SECRET_KEY')
+AUTH = config('_AUTH')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -160,20 +160,20 @@ PASSWORD_HASHERS = [
 
 
 CLOUDINARY = {
-    'cloud_name': 'djbspykue',
-    'api_key': '742646115888849',
-    'api_secret': '6QyPwgx5dn5L9zl5viB7fXJN1VM',
+    'cloud_name': config('_CLOUD_NAME'),
+    'api_key': config('_CLOUD_API_KEY'),
+    'api_secret': config('_CLOUD_API_SECRET'),
 }
 
 CLOUDINARY_URL = f"cloudinary://{CLOUDINARY['api_key']}:{CLOUDINARY['api_secret']}@{CLOUDINARY['cloud_name']}"
 
 
-EMAIL_BACKEND=config('EMAIL_BACKEND')
-EMAIL_HOST= config('EMAIL_HOST')
-EMAIL_PORT= config('EMAIL_PORT')
+EMAIL_BACKEND=config('_EMAIL_BACKEND')
+EMAIL_HOST= config('_EMAIL_HOST')
+EMAIL_PORT= config('_EMAIL_PORT')
 EMAIL_USE_TLS= True
-EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER=config('_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('_EMAIL_HOST_PASSWORD')
 
 
 LANGUAGE_CODE = 'en-us'

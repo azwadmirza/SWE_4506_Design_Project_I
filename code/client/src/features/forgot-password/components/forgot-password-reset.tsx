@@ -85,7 +85,7 @@ const PasswordReset = ({email}:PasswordResetProps) => {
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();
     setIsDisabled(true);
-    await axios.post('http://127.0.0.1:8000/api/forgot/update/', {
+    await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/forgot/update/`, {
       email: email,
       password: CryptoJS.SHA512(password).toString()
     }).then(() => {

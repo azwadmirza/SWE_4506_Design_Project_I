@@ -25,7 +25,7 @@ const ForgotPasswordEmailVerify = ({ email }: ForgotPasswordProps) => {
 
     const handleSubmit = async () => {
         setEnterotp(false);
-        await axios.post('http://127.0.0.1:8000/api/forgot/otp/verify/', {
+        await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/forgot/otp/verify/`, {
             email: email,
             otp: otp
             }).then((res) => {

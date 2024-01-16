@@ -24,7 +24,7 @@ export const useForm = () => {
   useEffect(() => {
 
     const getProfileInformation = async () => {
-      await axios.get(`http://127.0.0.1:8000/api/profile/get-profile/${user_id}/`, {
+      await axios.get(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/profile/get-profile/${user_id}/`, {
         headers: {
           'Authorization': `Bearer ${access_token}`
         }

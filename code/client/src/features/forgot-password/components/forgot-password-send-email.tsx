@@ -17,7 +17,7 @@ const ForgotPasswordSendEmail = () => {
         e.preventDefault();
         setIsDisabled(true);
         console.log(email);
-        await axios.post('http://127.0.0.1:8000/api/forgot/otp/', {
+        await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/forgot/otp/`, {
             email: email
         }).then(() => {
             isEmailSent(true);
