@@ -46,11 +46,8 @@ jobs:
         uses: 'google-github-actions/auth@v1'
         with:
           token_format: 'access_token'
-          workload_identity_provider: ${{secrets._WIF_PROVIDER}}
-          service_account: ${{secrets._WIF_SERVICE_ACCOUNT}}
-          retries: 10
-
-
+          workload_identity_provider: '${{ secrets._WIF_PROVIDER }}'
+          service_account: '${{ secrets._WIF_SERVICE_ACCOUNT }}'
 
       - name: Docker Auth
         id: docker-auth
@@ -68,7 +65,7 @@ jobs:
 
       - name: Build and Push Container
         run: |-
-          docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}" ./
+          docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}" ./code/server
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}"
 
       - name: Deploy to Cloud Run
