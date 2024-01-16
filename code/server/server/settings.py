@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://localhost:5173","https://main--dataanalyticaiodp.netlify.app","http://localhost:3000","https://dataanalyticaio-afhjk37pda-uw.a.run.app","http://localhost:8080"]
+ALLOWED_HOSTS = ["https://dataanalyticaio-afhjk37pda-uw.a.run.app"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://main--dataanalyticaiodp.netlify.app",
