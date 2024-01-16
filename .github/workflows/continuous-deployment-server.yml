@@ -17,7 +17,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     if: |
-      (github.event_name == 'pull_request' && github.actor == 'azwadmirza' && github.respository == 'azwadmirza/SWE_4506_Design_Project_I_Production' )
+      (github.event_name == 'pull_request' && github.respository == 'azwadmirza/SWE_4506_Design_Project_I_Production' )
       
     runs-on: ubuntu-latest
     steps:
