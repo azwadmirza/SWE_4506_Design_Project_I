@@ -40,6 +40,10 @@ jobs:
 
       - name: Set up port
         run: echo "_PORT=${{ secrets._PORT }}" >> $GITHUB_ENV
+    
+      - name: Set up workload identity provider
+        run: echo "_WIF_PROVIDER=${{ secrets._WIF_PROVIDER }}"
+             echo "_WIF_SERVICE_ACCOUNT=${{ secrets._WIF_SERVICE_ACCOUNT }}" 
 
       - name: Google Auth
         id: auth
