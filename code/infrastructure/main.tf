@@ -31,8 +31,8 @@ resource "google_project_iam_member" "default" {
 module "oidc" {
   source      = "./.terraform/modules/github-actions-runners/modules/gh-oidc"
   project_id  = var.gcp_project_id
-  pool_id     = "dataanalyticaio-pool"
-  provider_id = "dataanalyticaio-gh-provider"
+  pool_id     = "data-analyticaio-io-pool"
+  provider_id = "data-analyticaio-gh-io-provider"
   sa_mapping = {
     (google_service_account.sa.account_id) = {
       sa_name   = google_service_account.sa.name
