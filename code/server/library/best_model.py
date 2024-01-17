@@ -1,6 +1,6 @@
 from sklearn.model_selection import GridSearchCV
-from data_preprocessing import DataProcessing
-from model import Model
+from library.data_preprocessing import DataProcessing
+from library.model import Model
 from sklearn.preprocessing import LabelEncoder
 import json
 class grid_search(Model,DataProcessing):
@@ -17,7 +17,7 @@ class grid_search(Model,DataProcessing):
         _self.model=super().get_model()
         _self.grid_search_results=GridSearchCV(estimator=_self.model,param_grid=_self.param_grid,cv=10)
         _self.X_train, _self.X_test, _self.y_train, _self.y_test=super().get_processed_data_with_split()
-        if _self.process is "class":
+        if _self.process=="class":
             _self.y_train=LabelEncoder().fit_transform(_self.y_train)
             _self.y_test=LabelEncoder().fit_transform(_self.y_test)
         _self.results={}

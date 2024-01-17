@@ -1,4 +1,4 @@
-from best_model import grid_search
+from library.best_model import grid_search
 import numpy as np
 class optimized_hyperparameters:
     def __init__(__self,model,param_grid,data,target_column,process,file_type,delimiter=None):
