@@ -89,8 +89,8 @@ const XGBoostResults = ({ data,categories }: IXGBoostProps) => {
             <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
               AUC greater than 0.5: Model Prediction is better than Random guess.
             </p>
-            <p style={{ color: "red", fontSize: "15px", margin: "0", marginTop: "5px"}}>
-              AUC less than 0.5: Model Prediction is worse than Random guess.
+            <p style={{ color: "green", fontSize: "15px", margin: "0", marginTop: "5px"}}>
+              Higher AUC signifies Effective performance of the model
             </p>
           </div>
         </div>
@@ -119,8 +119,8 @@ const XGBoostResults = ({ data,categories }: IXGBoostProps) => {
             <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
               AUC greater than 0.5: Model Prediction is better than Random guess.
             </p>
-            <p style={{ color: "red", fontSize: "15px", margin: "0", marginTop: "5px"}}>
-              AUC less than 0.5: Model Prediction is worse than Random guess.
+            <p style={{ color: "green", fontSize: "15px", margin: "0", marginTop: "5px"}}>
+              Higher AUC signifies Effective performance of the model
             </p>
           </div>
         </div>
