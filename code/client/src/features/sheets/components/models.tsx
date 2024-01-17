@@ -5,14 +5,24 @@ import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import ClassificationModels from "../../models/components/classificationModels";
 import RegressionModels from "../../models/components/regressionModels";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./header";
 import { useSheets } from "../hooks/useSheets";
 import { useChart } from "../../visualization/hooks/useChart";
+import axios from "axios";
 
 const Models = () => {
   const file = useAppSelector((state) => state.file.file);
   const loading = useAppSelector((state) => state.file.loading);
+  const url = useAppSelector((state) => state.file.url);
+  const retrieve_best_model=async()=>{
+    await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/best/find/`,{
+      file_url:url
+    }).then((res)=>console.log(res))
+  }
+  useEffect(()=>{
+    retrieve_best_model()
+  },[])
   const [toggle, setToggle] = useState(1);
   const { supervisedML } = useChart();
   const { data } = useSheets();
