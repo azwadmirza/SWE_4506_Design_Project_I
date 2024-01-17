@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AutomatedGridSearchConfig(AppConfig):
+class InferenceConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'automated_grid_search'
+    name = 'inference'

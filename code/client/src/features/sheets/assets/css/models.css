@@ -18,8 +18,9 @@
     background-color: #93C47D; 
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 14px; 
+    font-size: 16px !important; 
     border-radius: 5px; 
+    color: white;
   }
 
   .model-selected {
@@ -30,7 +31,7 @@
     background-color: var(--customOrange); 
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 14px; 
+    font-size: 16px !important; 
     border-radius: 5px; 
   }
   
