@@ -23,7 +23,7 @@ class decision_tree_classification_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid={
                 'decisiontreeclassifier__criterion':['gini','entropy','log_loss'],
-                'decisiontreeclassifier__max_depth':[1,5,10,50,100,None],
+                'decisiontreeclassifier__max_depth':[1,5],
             }
             print(param_grid)
             best_combination=optimized_hyperparameters(DecisionTreeClassifier,param_grid,url,target_column,'class',"text/csv")
@@ -44,7 +44,7 @@ class decision_tree_regression_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid={
                 'decisiontreeregressor__criterion':['mse','friedman_mse','mae','poisson'],
-                'decisiontreeregressor__max_depth':[1,5,10,50,100,None],
+                'decisiontreeregressor__max_depth':[1,5],
             }
             best_combination=optimized_hyperparameters(DecisionTreeRegressor,param_grid,data,target_column,'regression',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -62,12 +62,11 @@ class knn_classification_grid_search(APIView):
             target_column=request.data['target_column']
             df=pd.read_csv(data)
             number_of_features=df.shape[1]-1
-            theoretical_optimal_n=np.sqrt(number_of_features)
+            theoretical_optimal_n=int(np.sqrt(number_of_features))
             param_grid = {
-                'kneighborsclassifier__n_neighbors': [i for i in range(max(theoretical_optimal_n-10,1),theoretical_optimal_n+10)],  
+                'kneighborsclassifier__n_neighbors': [i for i in range(max(theoretical_optimal_n-2,1),theoretical_optimal_n+2)],  
                 'kneighborsclassifier__p': [1, 2, 3, 4],  
-                'kneighborsclassifier__algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute'], 
-                'kneighborsclassifier__metric': ['minkowski', 'euclidean', 'manhattan', 'haversine'],  
+                'kneighborsclassifier__metric': ['minkowski', 'euclidean', 'manhattan'],  
                 'kneighborsclassifier__weights': ['uniform', 'distance']  
             }
             best_combination=optimized_hyperparameters(KNeighborsClassifier,param_grid,data,target_column,'class',"text/csv")
@@ -87,12 +86,11 @@ class knn_regression_grid_search(APIView):
             target_column=request.data['target_column']
             df=pd.read_csv(data)
             number_of_features=df.shape[1]-1
-            theoretical_optimal_n=np.sqrt(number_of_features)
+            theoretical_optimal_n=int(np.sqrt(number_of_features))
             param_grid = {
-                'kneighborsregressor__n_neighbors': [i for i in range(max(theoretical_optimal_n-10,1),theoretical_optimal_n+10)],  
+                'kneighborsregressor__n_neighbors': [i for i in range(max(theoretical_optimal_n-2,1),theoretical_optimal_n+2)],  
                 'kneighborsregressor__p': [1, 2, 3, 4],  
-                'kneighborsregressor__algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute'], 
-                'kneighborsregressor__metric': ['minkowski', 'euclidean', 'manhattan', 'haversine'],  
+                'kneighborsregressor__metric': ['minkowski', 'euclidean', 'manhattan'],  
                 'kneighborsregressor__weights': ['uniform', 'distance']  
             }
             best_combination=optimized_hyperparameters(KNeighborsRegressor,param_grid,data,target_column,'regression',"text/csv")
@@ -114,8 +112,8 @@ class svm_regression_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid = {
                 'svr__kernel': ['linear', 'rbf','poly','sigmoid'],   
-                'svr__degree': [i for i in range(1,21)],   
-                'svr__max_iter': [10,20,50,100,1000,10000],        
+                'svr__degree': [0,5,10,15,20],   
+                'svr__max_iter': [10,20],        
             }
             best_combination=optimized_hyperparameters(SVR,param_grid,data,target_column,'regression',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -133,8 +131,8 @@ class svm_classification_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid = {
                 'svc__kernel': ['linear', 'rbf','poly','sigmoid'],   
-                'svc__degree': [i for i in range(1,21)],   
-                'svc__max_iter': [10,20,50,100,1000,10000],        
+                'svc__degree': [0,5,10,15,20],
+                'svc__max_iter': [10,20],        
             }
             best_combination=optimized_hyperparameters(SVC,param_grid,data,target_column,'class',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -167,7 +165,7 @@ class logistic_regression_grid_search(APIView):
             data=request.data['file_url']
             target_column=request.data['target_column']
             best_combination=optimized_hyperparameters(LogisticRegression,{
-                    'logisticregression__max_iter':[10,20,50,100,1000,10000],
+                    'logisticregression__max_iter':[10,20],
                     'logisticregression__penalty':[None,'l1','l2','elasticnet']
                 },data,target_column,'class',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -197,7 +195,7 @@ class xgboost_regression_grid_search(APIView):
             data=request.data['file_url']
             target_column=request.data['target_column']
             param_grid=param_grid = {
-                'xgbregressor__max_depth': [1,5,10,50,100,None],                    
+                'xgbregressor__max_depth': [1,5],                    
                 'xgbregressor__booster': ['gbtree', 'gblinear', 'dart'],
                 'xgbregressor__tree_method': ['hist', 'exact', 'approx'],
                 'xgbregressor__grow_policy': ['depthwise', 'lossguide'], 
@@ -220,7 +218,7 @@ class xgboost_classification_grid_search(APIView):
             data=request.data['file_url']
             target_column=request.data['target_column']
             param_grid=param_grid = {
-                'xgbclassifier__max_depth': [1,5,10,50,100,None],                    
+                'xgbclassifier__max_depth': [1,5],                    
                 'xgbclassifier__booster': ['gbtree', 'gblinear', 'dart'],
                 'xgbclassifier__tree_method': ['hist', 'exact', 'approx'],
                 'xgbclassifier__grow_policy': ['depthwise', 'lossguide'], 

@@ -154,7 +154,6 @@ const KNearestNeighbours = () => {
               <option value="manhattan">Manhattan</option>
               <option value="euclidean">Euclidean</option>
               <option value="minkowski">Minkowski</option>
-              <option value="haversine">Haverside</option>
             </select>
           </div>
           {distanceMetric == "minkowski" && (

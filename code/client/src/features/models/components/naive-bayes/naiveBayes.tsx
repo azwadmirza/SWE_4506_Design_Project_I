@@ -113,14 +113,15 @@ const NaiveBayes = () => {
             />
           </div>
           <div>
-            <label className="model-label">Smoothing (10<sup>-x</sup>):</label>
+            <label className="model-label">Smoothing:</label>
             <input
               className="model-input"
               type="number"
               value={smoothing>10?10:smoothing}
-              min={1}
-              max={10}
-              onChange={(e) => setSmoothing(parseInt(e.target.value))}
+              min={1e-9}
+              max={1-1e-9}
+              step={1e-9}
+              onChange={(e) => setSmoothing(parseFloat(e.target.value))}
             />
           </div>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}

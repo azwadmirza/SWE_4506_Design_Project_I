@@ -9,7 +9,6 @@ interface ConfusionMatrixProps {
 
 const ConfusionMatrix: React.FC<ConfusionMatrixProps> = ({ data, labels, title, className }) => {
   if (!data || !labels) return null;
-
   return (
     <div className={className}>
       <h2>{title}</h2>

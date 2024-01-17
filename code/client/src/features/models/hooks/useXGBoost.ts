@@ -39,11 +39,43 @@ export const useXGBoost=(type:"regression"|"classification")=>{
         file_url: file_url,
         target_column: targetVariable,
       });
-      console.log(response)
-      setLoaderOptimize(false);
+      console.log(response.data);
+      const train_test_split = response.data.best_train_test_split
+      const hyperparametersObject = JSON.parse(response.data.best_hyperparameters);
+      let optimalDepth;
+      let optimalBooster;
+      let optimalTree;
+      let optimalGrow;
+      let optimalAlpha;
+      let optimalLamda;
+      let optimalSubSample;
+      let optimalObjective;
+      
+      if (type == "classification") {
+        optimalDepth = hyperparametersObject.xgbclassifier__max_depth;
+        optimalBooster = hyperparametersObject.xgbclassifier__booster;
+        optimalTree = hyperparametersObject.xgbclassifier__tree_method;
+        optimalGrow = hyperparametersObject.xgbclassifier__grow_policy;
+        optimalAlpha = hyperparametersObject.xgbclassifier__reg_alpha;
+        optimalLamda = hyperparametersObject.xgbclassifier__reg_lambda;
+        optimalSubSample = hyperparametersObject.xgbclassifier__subsample;
+        optimalObjective = hyperparametersObject.xgbclassifier__objective;
+      }else{
+        optimalDepth = hyperparametersObject.xgbregressor__max_depth;
+        optimalBooster = hyperparametersObject.xgbregressor__booster;
+        optimalTree = hyperparametersObject.xgbregressor__tree_method;
+        optimalGrow = hyperparametersObject.xgbregressor__grow_policy;
+        optimalAlpha = hyperparametersObject.xgbregressor__reg_alpha;
+        optimalLamda = hyperparametersObject.xgbregressor__reg_lambda;
+        optimalSubSample = hyperparametersObject.xgbregressor__subsample;
+        optimalObjective = hyperparametersObject.xgbregressor__objective;
+      }
+      setTrainTestSplit(train_test_split * 100);
+
     } catch (error) {
       console.error("Error during backend request:");
     }
+    setLoaderOptimize(false);
   }
 
   const handleRunXGBoost = async () => {

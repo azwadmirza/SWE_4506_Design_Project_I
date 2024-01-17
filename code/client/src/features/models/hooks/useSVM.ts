@@ -36,11 +36,33 @@ export const useSVM=(type:"classification"|"regression")=>{
         file_url: file_url,
         target_column: targetVariable,
       });
-      console.log(response)
-      setLoaderOptimize(false);
+      console.log(response.data);
+      const train_test_split = response.data.best_train_test_split
+      const hyperparametersObject = JSON.parse(response.data.best_hyperparameters);
+      let optimalKernel;
+      let optimalDegree;
+      let optimalIter;
+      console.log("Result Generated")
+      if (type == "classification") {
+        console.log("Classification Result")
+        optimalKernel = hyperparametersObject.svc__kernel;
+        optimalDegree = hyperparametersObject.svc__degree;
+        optimalIter = hyperparametersObject.svc__max_iter;
+      }else{
+        console.log("Regression Result")
+        optimalKernel = hyperparametersObject.svr__kernel;
+        optimalDegree = hyperparametersObject.svr__degree;
+        optimalIter = hyperparametersObject.svr__max_iter;
+      }
+      console.log("I am Here")
+      setTrainTestSplit(train_test_split * 100);
+      setKernel(optimalKernel);
+      setDegree(optimalDegree);
+      setMaxIter(optimalIter);
     } catch (error) {
       console.error("Error during backend request:");
     }
+    setLoaderOptimize(false);
   }
 
   const handleRunSVM = async () => {

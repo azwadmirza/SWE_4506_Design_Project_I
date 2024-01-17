@@ -34,11 +34,20 @@ export const useLogisticRegression=()=>{
         file_url: file_url,
         target_column: targetVariable,
       });
-      console.log(response)
-      setLoaderOptimize(false);
+      console.log(response.data);
+      const train_test_split = response.data.best_train_test_split
+      const hyperparametersObject = JSON.parse(response.data.best_hyperparameters);
+
+      const optimalIter = hyperparametersObject.logisticregression__max_iter;
+      
+      setMaxIter(optimalIter);
+      setPenalty("None");
+      setTrainTestSplit(train_test_split*100);
+
     } catch (error) {
       console.error("Error during backend request:");
     }
+    setLoaderOptimize(false);
   }
 
   const handleRunLogisticRegression = async () => {
