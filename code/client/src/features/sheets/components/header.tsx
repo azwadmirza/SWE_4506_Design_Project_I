@@ -8,6 +8,7 @@ import { setFile, setURL } from "../../../contexts/file/slice";
 import { Link } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
 import { folder, save } from "ionicons/icons";
+import { arrayToCSV, convertToCSV } from "../../../utils/csvConverter";
 
 type HeaderProps = {
   filename: string;
@@ -24,22 +25,23 @@ const Header = ({ filename, data }: HeaderProps) => {
   } = useDropDown();
 
   const handleSave = async () => {
+    console.log(data)
+
     if (file_id) {
       if (url) {
-        const backendRes = await saveToBackend(
-          data,
+        const dataToUpload=await convertToCSV(data);
+        await saveToBackend(
+          dataToUpload,
           file_id,
           filename,
           import.meta.env.VITE_BACKEND_REQ_ADDRESS
-        );
-        await indexedDBConfig.updateFileURL(
-          data,
-          url,
-          backendRes.data.file_url
-        );
-        dispatch(setURL(backendRes.data.file_url));
-        dispatch(setFile(filename));
-        console.log("File Saved");
+        ).then(async(res)=>{
+          await indexedDBConfig.deleteFileByID("byID",file_id);
+          await indexedDBConfig.getFileByURL("byUrl",res.data.url,res.data.id,res.data.name,new Date(res.data.uploaded_at).toLocaleDateString()+" "+new Date(res.data.uploaded_at).toLocaleTimeString())
+          
+          dispatch(setURL(res.data.url));
+          dispatch(setFile(filename));}
+          ).catch(err=>console.log(err));
       }
     }
   };
