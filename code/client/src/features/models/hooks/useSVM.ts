@@ -19,7 +19,7 @@ export const useSVM=(type:"classification"|"regression")=>{
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
-  const [pcaFeatures, setPcaFeatures] = useState<number>(optionsPlot.length-1);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(optionsPlot?optionsPlot.length-1>=1?optionsPlot.length-1:1:1);
 
   
   const handleInference = async ()=>{
