@@ -6,8 +6,7 @@ import axios from "axios";
 export const useNaiveBayes=()=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [maxIter, setMaxIter] = useState(3);
-  const [smoothing, setSmoothing] = useState<number>(1);
+  const [smoothing, setSmoothing] = useState<number>(1e-5);
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const { supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
@@ -16,7 +15,7 @@ export const useNaiveBayes=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(true);
+  const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   const handleInference = async ()=>{
@@ -38,8 +37,9 @@ export const useNaiveBayes=()=>{
           target: targetVariable,
           normalization: normalization,
           train_test_split: trainTestSplit,
-          max_iter: maxIter,
           smoothing: smoothing,
+          pca: pca,
+          pca_features: pcaFeatures
         }
       );
       console.log("Backend response received:", JSON.parse(response.data));
@@ -55,5 +55,5 @@ export const useNaiveBayes=()=>{
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,normalization,pca,handleSwitchChange,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
+  return {pcaFeatures,setPcaFeatures,normalization,pca,handleSwitchChange,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
 }

@@ -6,6 +6,7 @@ from library.model import Model
 from library.classification_analysis import ClassificationAnalysis
 from library.regression_analysis import RegressionAnalysis
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+from sklearn.decomposition import PCA
 
 class knnClassification(APIView):
     queryset = []
@@ -27,6 +28,11 @@ class knnClassification(APIView):
         distance_metric=requestBody.get('distance_metric', None)
         weights=requestBody.get('weights', None)
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
+        pca = requestBody.get('pca', False)
+        pca_features = requestBody.get('pca_features', None)
+        if pca is True:
+            X_train=PCA(n_components=pca_features).fit_transform(X_train)
+            X_test=PCA(n_components=pca_features).fit_transform(X_test)
         model = Model(KNeighborsClassifier(n_neighbors=n_neighbours,algorithm=algorithm,p=p,weights=weights,metric=distance_metric),normalisation).get_model()   
         model.fit(X_train,y_train)
         return Response(ClassificationAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)
@@ -52,6 +58,11 @@ class knnRegression(APIView):
         distance_metric=requestBody.get('distance_metric', None)
         weights=requestBody.get('weights', None)
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
+        pca = requestBody.get('pca', False)
+        pca_features = requestBody.get('pca_features', None)
+        if pca is True:
+            X_train=PCA(n_components=pca_features).fit_transform(X_train)
+            X_test=PCA(n_components=pca_features).fit_transform(X_test)
         model = Model(KNeighborsRegressor(n_neighbors=n_neighbours,algorithm=algorithm,p=p,weights=weights,metric=distance_metric),normalisation).get_model()   
         model.fit(X_train,y_train)
         return Response(RegressionAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)

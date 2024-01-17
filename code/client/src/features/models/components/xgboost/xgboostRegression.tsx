@@ -59,14 +59,14 @@ const XGBoost = () => {
             >
               <ColorSwitch onChange={handleSwitchChange} checked={pca} />
             </div>
-            {!pca && (
+            {pca && (
               <div>
                 <label className="model-label">Number of Features:</label>
                 <input
                   className="model-input"
                   type="number"
                   min={1}
-                  max={optionsPlot.length-1}
+                  max={optionsPlot.length - 1}
                   value={pcaFeatures}
                   onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
                 />
@@ -207,13 +207,15 @@ const XGBoost = () => {
               value={objective}
               onChange={(e) => setObjective(e.target.value)}
             >
-              <option value="binary:logistic">Binary Logistic</option>
-              <option value="binary:logitraw">Binary Logit Raw</option>
-              <option value="multi:softmax">Multiclass Softmax</option>
-              <option value="multi:softprob">Multiclass Softprob</option>
-              <option value="rank:pairwise">Rank Pairwise</option>
-              <option value="rank:ndcg">Rank NDCG</option>
-              <option value="rank:map">Rank MAP</option>
+              <option value="reg:squarederror">
+                Regression: Squared Error
+              </option>
+              <option value="reg:squaredlogerror">
+                Regression: Squared Log Error
+              </option>
+              <option value="reg:linear">Linear Regression</option>
+              <option value="reg:gamma">Gamma Regression</option>
+              <option value="reg:tweedie">Tweedie Regression</option>
             </select>
           </div>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}

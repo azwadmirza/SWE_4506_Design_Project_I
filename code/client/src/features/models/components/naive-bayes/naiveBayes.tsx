@@ -15,8 +15,6 @@ const NaiveBayes = () => {
     setNormalization,
     trainTestSplit,
     setTrainTestSplit,
-    maxIter,
-    setMaxIter,
     smoothing,
     setSmoothing,
     evaluationResults,
@@ -50,7 +48,7 @@ const NaiveBayes = () => {
             >
               <ColorSwitch onChange={handleSwitchChange} checked={pca} />
             </div>
-            {!pca && (
+            {pca && (
               <div>
                 <label className="model-label">Number of Features:</label>
                 <input
@@ -113,24 +111,13 @@ const NaiveBayes = () => {
             />
           </div>
           <div>
-            <label className="model-label">Max Iter:</label>
-            <input
-              className="model-input"
-              type="number"
-              value={maxIter}
-              min={1}
-              max={100}
-              onChange={(e) => setMaxIter(parseInt(e.target.value))}
-            />
-          </div>
-          <div>
             <label className="model-label">Smoothing:</label>
             <input
               className="model-input"
               type="number"
               value={smoothing}
-              min={1}
-              max={10}
+              min={1e-9}
+              max={1-1e-9}
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>

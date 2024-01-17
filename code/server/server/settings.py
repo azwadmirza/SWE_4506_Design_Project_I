@@ -68,12 +68,11 @@ CSRF_TRUSTED_ORIGINS = ["https://main--dataanalyticaiodp.netlify.app",'http://lo
     "http://localhost:3000"]
 
 
-# Application definition
+
 
 INSTALLED_APPS = [
     'corsheaders',
     'gateway',
-    'normalization',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,14 +81,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'library',
     'user_profile',
     'file_controller',
     'decision_tree',
+    'optimized_model_search',
     'logistic_regression',
     'svm',
     'naive_bayes',
     'xgBoost',
-    'knn'
+    'knn',
 ]
 
 MIDDLEWARE = [

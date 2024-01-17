@@ -48,7 +48,7 @@ const SVM = () => {
             >
               <ColorSwitch onChange={handleSwitchChange} checked={pca} />
             </div>
-            {!pca && (
+            {pca && (
               <div>
                 <label className="model-label">Number of Features:</label>
                 <input
@@ -115,7 +115,7 @@ const SVM = () => {
               type="number"
               value={maxIter}
               min={1}
-              max={100}
+              max={10000}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>

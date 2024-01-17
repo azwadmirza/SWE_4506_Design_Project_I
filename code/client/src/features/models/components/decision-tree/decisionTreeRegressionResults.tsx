@@ -3,11 +3,7 @@ import { IRegressionProps } from "../../assets/ts/IRegressionProps";
 import ParityPlot from "../parityPlotGenerator";
 import MetricsTable from "../regressionMetrics";
 
-
-const DecisionTree = ({
-  modelData,
-  target,
-}: IRegressionProps) => {
+const DecisionTree = ({ modelData, target }: IRegressionProps) => {
   const { data } = useSheets();
   if (!modelData) return null;
   if (!target) return null;
@@ -62,10 +58,23 @@ const DecisionTree = ({
         />
       </div>
       <div style={{ marginTop: "50px", width: "800px" }}>
+        <h2>Parity Plot</h2>
         <ParityPlot
           targetColumnValues={originalTargetValues}
           predictedValues={predictedTargetValues}
         />
+        <div style={{ textAlign: "center" }}>
+          <p
+            style={{
+              color: "green",
+              fontSize: "15px",
+              margin: "0",
+              marginTop: "5px",
+            }}
+          >
+            Shows the Variation of the Predicted Data from the Original Data.
+          </p>
+        </div>
       </div>
     </div>
   );

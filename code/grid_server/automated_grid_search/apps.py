@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class NormalizationConfig(AppConfig):
+class AutomatedGridSearchConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'normalization'
+    name = 'automated_grid_search'

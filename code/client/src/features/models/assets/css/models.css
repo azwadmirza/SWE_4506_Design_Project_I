@@ -52,7 +52,7 @@
     flex: 0.5;
     display: block;
     position: absolute;
-    overflow: auto;
+    /* overflow: auto; */
     top: 5%; 
     left: 0%; 
     right: 0%;

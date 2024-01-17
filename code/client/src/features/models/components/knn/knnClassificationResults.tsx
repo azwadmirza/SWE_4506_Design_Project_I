@@ -11,6 +11,11 @@ const KNNClassificationResults = ({ data }: IClassificationProps) => {
   if (!data) return null;
   const labelsArray = [];
   const classificationReportTest = data["Classification Report Test"];
+  const aucScoresTest = data["auc_scores_test"];
+  const aucScoresTrain = data["auc_scores_train"];
+
+  const minAucTest = Math.min(...Object.values(aucScoresTest));
+  const minAucTrain = Math.min(...Object.values(aucScoresTrain));
 
   for (const [label] of Object.entries(classificationReportTest)) {
     if (label.toLowerCase() === "accuracy") {
@@ -84,6 +89,26 @@ const KNNClassificationResults = ({ data }: IClassificationProps) => {
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
           <h2>ROC Curve-Train</h2>
           <RocCurveChart chartId="Decision Tree Train" data={rocCurveTrainData} labels={labelsArray} assigned_labels={labelsArray}/>
+          <div style={{ textAlign: "center" }}>
+            {minAucTrain > 0.5 ? (
+              <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
+                AUC for all is greater than 0.5. Model Prediction is better than
+                guessing randomly.
+              </p>
+            ) : (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "15px",
+                  margin: "0",
+                  marginTop: "5px",
+                }}
+              >
+                AUC less than 0.5 for some labels. Model prediction is not
+                optimal for those cases.
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -106,6 +131,26 @@ const KNNClassificationResults = ({ data }: IClassificationProps) => {
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
         <h2>ROC Curve-Test</h2>
         <RocCurveChart chartId="Decision Tree Test" data={rocCurveTestData} labels={labelsArray} assigned_labels={labelsArray}/>
+        <div style={{ textAlign: "center" }}>
+            {minAucTest > 0.5 ? (
+              <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
+                AUC for all is greater than 0.5. Model Prediction is better than
+                guessing randomly.
+              </p>
+            ) : (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "15px",
+                  margin: "0",
+                  marginTop: "5px",
+                }}
+              >
+                AUC less than 0.5 for some labels. Model prediction is not
+                optimal for those cases.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
