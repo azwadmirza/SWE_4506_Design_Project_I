@@ -11,6 +11,7 @@ export const useXGBoost=(type:"regression"|"classification")=>{
   const [regAlpha, setRegAlpha] = useState(0);
   const [regLambda, setRegLambda] = useState(0);
   const [loader,setLoader]=useState(false);
+  const [loaderOptimize, setLoaderOptimize] = useState<boolean>(false);
   const [booster, setBooster] = useState("dart");
   const [treeMethod, setTreeMethod] = useState("hist");
   const [growPolicy, setGrowPolicy] = useState("depthwise");
@@ -26,7 +27,47 @@ export const useXGBoost=(type:"regression"|"classification")=>{
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   const handleInference = async ()=>{
-    console.log("XGBoost Classification Inference Time..");
+    console.log("XGBoost " + type +" Inference Time..");
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoaderOptimize(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/${type}/xgboost/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response.data);
+      const train_test_split = response.data.best_train_test_split
+      const hyperparametersObject = JSON.parse(response.data.best_hyperparameters);
+      
+      if (type == "classification") {
+        setMaxDepth(hyperparametersObject.xgbclassifier__max_depth)
+        setBooster(hyperparametersObject.xgbclassifier__booster)
+        setTreeMethod(hyperparametersObject.xgbclassifier__tree_method)
+        setGrowPolicy(hyperparametersObject.xgbclassifier__grow_policy)
+        setRegAlpha(hyperparametersObject.xgbclassifier__reg_alpha)
+        setRegLambda(hyperparametersObject.xgbclassifier__reg_lambda)
+        setSampleRatio(hyperparametersObject.xgbclassifier__subsample)
+        setObjective(hyperparametersObject.xgbclassifier__objective)
+      }else{
+        setMaxDepth(hyperparametersObject.xgbregressor__max_depth)
+        setBooster(hyperparametersObject.xgbregressor__booster)
+        setTreeMethod(hyperparametersObject.xgbregressor__tree_method)
+        setGrowPolicy(hyperparametersObject.xgbregressor__grow_policy)
+        setRegAlpha(hyperparametersObject.xgbregressor__reg_alpha)
+        setRegLambda(hyperparametersObject.xgbregressor__reg_lambda)
+        setSampleRatio(hyperparametersObject.xgbregressor__subsample)
+        setObjective(hyperparametersObject.xgbregressor__objective)
+      }
+      setTrainTestSplit(train_test_split * 100);
+
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
+    setLoaderOptimize(false);
   }
 
   const handleRunXGBoost = async () => {
@@ -66,5 +107,5 @@ export const useXGBoost=(type:"regression"|"classification")=>{
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,objective,setObjective, supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
+  return {loaderOptimize,pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,objective,setObjective, supervisedML,handleRunXGBoost,setTargetVariable, setNormalization, setTrainTestSplit, setMaxDepth, setSampleRatio, setRegAlpha, setRegLambda, setBooster, setTreeMethod, setGrowPolicy, evaluationResults,normalization, trainTestSplit, maxDepth, subsampleRatio, regAlpha, regLambda, booster, treeMethod, growPolicy,targetVariable,errorMessage,optionsPlot,loader}
 }

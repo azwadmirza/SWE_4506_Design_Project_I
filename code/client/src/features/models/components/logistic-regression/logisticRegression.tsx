@@ -2,6 +2,7 @@ import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import LogisticRegressionResults from "./logisticRegressionResults";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import { useLogisticRegression } from "../../hooks/useLogisticRegression";
 import { ColorSwitch } from "../pcaSwitch";
 
@@ -28,6 +29,7 @@ const LogisticRegression = () => {
     supervisedML,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useLogisticRegression();
 
   return (
@@ -105,7 +107,7 @@ const LogisticRegression = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -114,9 +116,9 @@ const LogisticRegression = () => {
             <input
               className="model-input"
               type="number"
-              value={maxIter}
               min={1}
-              max={100}
+              max={100000}
+              value={maxIter>100000?100000:maxIter}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
@@ -140,7 +142,7 @@ const LogisticRegression = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">

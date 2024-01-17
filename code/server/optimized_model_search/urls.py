@@ -8,9 +8,9 @@ urlpatterns = [
      path('regression/decision_tree/', views.decision_tree_regression_grid_search.as_view(), name='knn_tree'),
      path('classification/svm/', views.svm_classification_grid_search.as_view(), name='knn_model'),
      path('regression/svm/', views.svm_regression_grid_search.as_view(), name='knn_tree'),
-     path('classification/knn/.', views.knn_classification_grid_search.as_view(), name='knn_model'),
+     path('classification/knn/', views.knn_classification_grid_search.as_view(), name='knn_model'),
      path('regression/knn/', views.knn_regression_grid_search.as_view(), name='knn_tree'),
-     path('classification/logistic/.', views.logistic_regression_grid_search.as_view(), name='knn_model'),
-     path('classification/naive-bayes/.', views.naive_bayes_classification_grid_search.as_view(), name='knn_model'),
+     path('classification/logistic/', views.logistic_regression_grid_search.as_view(), name='knn_model'),
+     path('classification/naive-bayes/', views.naive_bayes_classification_grid_search.as_view(), name='knn_model'),
      path('regression/linear/', views.linear_regression_grid_search.as_view(), name='knn_tree'),
 ]

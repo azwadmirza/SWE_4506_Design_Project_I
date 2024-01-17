@@ -66,10 +66,10 @@ class ClassificationAnalysis:
         test_auc = roc_auc_score(__self.y_test, __self.y_proba_test)
         train_auc =  roc_auc_score(__self.y_train, __self.y_proba_train)
         
-        __self.results['auc_scores_test'][__self.model.classes_[0]] = test_auc
-        __self.results['auc_scores_train'][__self.model.classes_[0]] = train_auc
-        __self.results['auc_scores_test'][__self.model.classes_[1]] = test_auc
-        __self.results['auc_scores_train'][__self.model.classes_[1]] = train_auc
+        __self.results['auc_scores_test'][str(__self.model.classes_[0])] = test_auc
+        __self.results['auc_scores_train'][str(__self.model.classes_[0])] = train_auc
+        __self.results['auc_scores_test'][str(__self.model.classes_[1])] = test_auc
+        __self.results['auc_scores_train'][str(__self.model.classes_[1])] = train_auc
         
         __self.results['tpr_test_per_class'] = {}
         __self.results['fpr_test_per_class'] = {}
@@ -79,18 +79,18 @@ class ClassificationAnalysis:
         tpr_test = tp_test / (tp_test + fn_test)
         fpr_test = fp_test / (fp_test + tn_test)
         
-        __self.results['tpr_test_per_class'][__self.model.classes_[0]]  = [0, tpr_test, 1]
-        __self.results['fpr_test_per_class'][__self.model.classes_[0]]  = [0, fpr_test, 1]
-        __self.results['tpr_test_per_class'][__self.model.classes_[1]]  = [0, tpr_test, 1]
-        __self.results['fpr_test_per_class'][__self.model.classes_[1]]  = [0, fpr_test, 1]
+        __self.results['tpr_test_per_class'][str(__self.model.classes_[0])]  = [0, tpr_test, 1]
+        __self.results['fpr_test_per_class'][str(__self.model.classes_[0])]  = [0, fpr_test, 1]
+        __self.results['tpr_test_per_class'][str(__self.model.classes_[1])]  = [0, tpr_test, 1]
+        __self.results['fpr_test_per_class'][str(__self.model.classes_[1])]  = [0, fpr_test, 1]
         
         tpr_train = tp_train / (tp_train + fn_train)
         fpr_train = fp_train / (fp_train + tn_train)
 
-        __self.results['tpr_train_per_class'][__self.model.classes_[0]]  = [0, tpr_train, 1]
-        __self.results['fpr_train_per_class'][__self.model.classes_[0]]  = [0, fpr_train, 1]
-        __self.results['tpr_train_per_class'][__self.model.classes_[1]]  = [0, tpr_train, 1]
-        __self.results['fpr_train_per_class'][__self.model.classes_[1]]  = [0, fpr_train, 1]
+        __self.results['tpr_train_per_class'][str(__self.model.classes_[0])]  = [0, tpr_train, 1]
+        __self.results['fpr_train_per_class'][str(__self.model.classes_[0])]  = [0, fpr_train, 1]
+        __self.results['tpr_train_per_class'][str(__self.model.classes_[1])]  = [0, tpr_train, 1]
+        __self.results['fpr_train_per_class'][str(__self.model.classes_[1])]  = [0, fpr_train, 1]
 
 
     def multiclass_classification(__self):

@@ -13,12 +13,32 @@ export const useLinearRegression=()=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [loaderOptimize, setLoaderOptimize] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
   
   const handleInference = async ()=>{
     console.log("Linear Regression Inference Time..");
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoaderOptimize(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/regression/linear/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response.data);
+      const train_test_split = response.data.best_train_test_split
+      setTrainTestSplit(train_test_split*100);
+
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
+    setLoaderOptimize(false);
   }
 
   const handleRunLinearRegression = async () => {
@@ -48,10 +68,7 @@ export const useLinearRegression=()=>{
   
   const handleSwitchChange = (checked: boolean) => {
     setPca(!checked);
-    console.log(`Switch is now ${checked ? "checked" : "unchecked"}`);
-    console.log(`pca is ${pca}`);
-    console.log( `trust me sir it works`)
   };
 
-  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,setNormalization,trainTestSplit,setTrainTestSplit,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,errorMessage,supervisedML}
+  return {loaderOptimize,pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,setNormalization,trainTestSplit,setTrainTestSplit,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLinearRegression,optionsPlot,errorMessage,supervisedML}
 }

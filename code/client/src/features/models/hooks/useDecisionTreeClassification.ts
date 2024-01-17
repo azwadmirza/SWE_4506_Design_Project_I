@@ -34,11 +34,22 @@ export const useDecisionTreeClassification = () => {
         file_url: file_url,
         target_column: targetVariable,
       });
-      console.log(response)
-      setLoaderOptimize(false);
+      console.log(response.data);
+
+      const train_test_split = response.data.best_train_test_split
+      const hyperparametersObject = JSON.parse(response.data.best_hyperparameters);
+
+      const optimalCriterion = hyperparametersObject.decisiontreeclassifier__criterion;
+      const optimalMaxDepth = hyperparametersObject.decisiontreeclassifier__max_depth;
+
+      setTrainTestSplit(train_test_split*100);
+      setCriterion(optimalCriterion);
+      setMaxDepth(optimalMaxDepth);
+
     } catch (error) {
       console.error("Error during backend request:");
     }
+    setLoaderOptimize(false);
   }
 
   const handleRunDecisionTree = async () => {

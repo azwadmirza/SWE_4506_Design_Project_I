@@ -1,6 +1,7 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import XGBoostRegressionResults from "./xgboostRegressionResults";
 import { ColorSwitch } from "../pcaSwitch";
 import { useXGBoost } from "../../hooks/useXGBoost";
@@ -40,6 +41,7 @@ const XGBoost = () => {
     handleSwitchChange,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useXGBoost("regression");
 
   return (
@@ -115,7 +117,7 @@ const XGBoost = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -124,7 +126,7 @@ const XGBoost = () => {
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={maxDepth>1000?1000:maxDepth}
               min={1}
               max={100}
               onChange={(e) => setMaxDepth(parseInt(e.target.value))}
@@ -223,7 +225,7 @@ const XGBoost = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">
