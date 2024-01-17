@@ -11,13 +11,13 @@ import { useAppSelector } from "../../../contexts/file/hooks";
 
 const Data = () => {
     const file=useAppSelector((state) => state.file.file);
-    const { data,currentCell, gridRows, viewValue, setViewValue, loading, onCellChange  } = useSheets();
+    const { data,currentCell, gridRows, viewValue, loading, onCellChange  } = useSheets();
     if (!loading) {
         return (
             <Provider store={store}>
                 <div className="sheets">
                 <Header filename={`${file !== null ? file : ""}`} data={data}/>
-                    {currentCell !== "" && (<ValueDisplay currentCell={currentCell} value={viewValue} setValue={setViewValue} />)}
+                    {currentCell !== "" && (<ValueDisplay currentCell={currentCell} value={viewValue}/>)}
                     <div className="render-cells">
                         <RenderCells gridRows={gridRows} onCellChange={onCellChange} />
                     </div>
