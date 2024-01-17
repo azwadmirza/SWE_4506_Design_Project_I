@@ -21,7 +21,7 @@ class logistic_regression_model(APIView):
         penalty = requestBody.get('penalty', None)
         split_data = requestBody.get('train_test_split', None)
         targetCol = requestBody.get('target', None)
-        normalisation = requestBody.get('normalization', None)
+        normalization = requestBody.get('normalization', None)
         pca = requestBody.get('pca', False)
         pca_features = requestBody.get('pca_features', None)
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
@@ -31,10 +31,10 @@ class logistic_regression_model(APIView):
         is_multiclass = DataProcessing(requestBody['file_url'], targetCol, 'class', "text/csv", split_data).isMultiClass()
         if penalty and penalty.lower() in ['l1', 'l2']:
             if is_multiclass:
-                model = Model(LogisticRegression(penalty=penalty,max_iter=iter,solver='saga'),normalisation).get_model()
+                model = Model(LogisticRegression(penalty=penalty,max_iter=iter,solver='saga'),normalization).get_model()
             else:
-                model = Model(LogisticRegression(penalty=penalty,max_iter=iter,solver='liblinear'),normalisation).get_model()
+                model = Model(LogisticRegression(penalty=penalty,max_iter=iter,solver='liblinear'),normalization).get_model()
         else:
-            model = Model(LogisticRegression(max_iter=iter),normalisation).get_model()
+            model = Model(LogisticRegression(max_iter=iter),normalization).get_model()
         model.fit(X_train,y_train)
         return Response(ClassificationAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)

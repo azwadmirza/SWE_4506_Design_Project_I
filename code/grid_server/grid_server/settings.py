@@ -73,7 +73,6 @@ CSRF_TRUSTED_ORIGINS = ["https://main--dataanalyticaiodp.netlify.app",'http://lo
 INSTALLED_APPS = [
     'corsheaders',
     'gateway',
-    'normalization',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

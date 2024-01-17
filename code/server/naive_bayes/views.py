@@ -17,11 +17,10 @@ class naive_bayes_model(APIView):
     
     def post(self, request):
         requestBody = request.data
-        iter = requestBody.get('max_iter', None)
         smoothing = requestBody.get('smoothing', None)
         split_data = requestBody.get('train_test_split', None)
         targetCol = requestBody.get('target', None)
-        normalisation = requestBody.get('normalization', None)
+        normalization = requestBody.get('normalization', None)
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
         pca = requestBody.get('pca', False)
         pca_features = requestBody.get('pca_features', None)
@@ -29,6 +28,6 @@ class naive_bayes_model(APIView):
             X_train=PCA(n_components=pca_features).fit_transform(X_train)
             X_test=PCA(n_components=pca_features).fit_transform(X_test)
         # is_multiclass = DataProcessing(requestBody['file_url'], targetCol, 'class', "text/csv", split_data).isMultiClass()
-        model = Model(GaussianNB(var_smoothing=smoothing),normalisation).get_model()
+        model = Model(GaussianNB(var_smoothing=smoothing),normalization).get_model()
         model.fit(X_train,y_train)
         return Response(ClassificationAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)
