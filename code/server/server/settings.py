@@ -68,7 +68,7 @@ CSRF_TRUSTED_ORIGINS = ["https://main--dataanalyticaiodp.netlify.app",'http://lo
     "http://localhost:3000"]
 
 
-# Application definition
+
 
 INSTALLED_APPS = [
     'corsheaders',

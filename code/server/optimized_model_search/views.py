@@ -22,7 +22,7 @@ class decision_tree_classification_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid={
                 'criterion':['gini','entropy','log_loss'],
-                'max_depth':[None,i for i in range(1,101)],
+                'max_depth':[i for i in range(1,101)].append(None),
             }
             best_combination=optimized_hyperparameters(DecisionTreeClassifier,param_grid,data,target_column,'classification',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -40,7 +40,7 @@ class decision_tree_regression_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid={
                 'criterion':['mse','friedman_mse','mae','poisson'],
-                'max_depth':[None,i for i in range(1,101)],
+                'max_depth':[i for i in range(1,101)].append(None),
             }
             best_combination=optimized_hyperparameters(DecisionTreeRegressor,param_grid,data,target_column,'regression',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
