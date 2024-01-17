@@ -3,18 +3,17 @@ import { IRegressionProps } from "../../assets/ts/IRegressionProps";
 import ParityPlot from "../parityPlotGenerator";
 import MetricsTable from "../regressionMetrics";
 
-
 const KNNRegressionResults = ({ modelData, target }: IRegressionProps) => {
-  const {data}=useSheets();
+  const { data } = useSheets();
   if (!modelData) return null;
-  if(!target) return null;
+  if (!target) return null;
 
   const extractColumnValues = (columnName: string | null) => {
     if (!columnName || !data || data.length === 0 || !data[0]) {
-      console.error('Invalid columnName or data');
+      console.error("Invalid columnName or data");
       return [];
     }
-  
+
     let columnIndex = -1;
 
     for (let i = 0; i < data[0].length; i++) {
@@ -59,7 +58,7 @@ const KNNRegressionResults = ({ modelData, target }: IRegressionProps) => {
         />
       </div>
       <div style={{ marginTop: "50px", width: "800px" }}>
-      <h2>Parity Plot</h2>
+        <h2>Parity Plot</h2>
         <ParityPlot
           targetColumnValues={originalTargetValues}
           predictedValues={predictedTargetValues}

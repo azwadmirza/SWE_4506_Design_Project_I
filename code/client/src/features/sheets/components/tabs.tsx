@@ -13,31 +13,20 @@ function Tabs() {
           <Data />
         </div>
         <div className={toggle === 2 ? "show-content" : "content"}>
-          <Visualization/>
+          <Visualization />
         </div>
-        <ul className="d-flex custom-tabs-list">
-          <li className="flex-fill custom-tab" onClick={() => setToggle(1)}>
-            Sheets
-          </li>
-          <li className="flex-fill custom-tab" onClick={() => setToggle(2)}>
-            Visualization
-          </li>
-        </ul>
-      </div>
-      <div className={toggle === 2 ? "show-content" : "content"}>
-        <Visualization/>
-      </div>
-      <div className={toggle === 3 ? "show-content" : "content"}>
-        <Models/>
+        <div className={toggle === 3 ? "show-content" : "content"}>
+          <Models />
+        </div>
       </div>
       <ul className="d-flex custom-tabs-list">
-        <li className="flex-fill custom-tab" onClick={() => setToggle(1)}>
+        <li className={`flex-fill ${toggle==1?"custom-tab-selected":"custom-tab"}`} onClick={() => setToggle(1)}>
           Sheets
         </li>
-        <li className="flex-fill custom-tab" onClick={() => setToggle(2)}>
+        <li className={`flex-fill ${toggle==2?"custom-tab-selected":"custom-tab"}`} onClick={() => setToggle(2)}>
           Visualization
         </li>
-        <li className="flex-fill custom-tab" onClick={() => setToggle(3)}>
+        <li className={`flex-fill ${toggle==3?"custom-tab-selected":"custom-tab"}`} onClick={() => setToggle(3)}>
           Models
         </li>
       </ul>

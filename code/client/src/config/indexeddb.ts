@@ -43,10 +43,6 @@ class IndexedDBConfig {
     delimiter: string | null;
     data: Blob;
   }) {
-    const foundFile = await this.getFileByName('byName', file.name);
-    if (foundFile) {
-      await this.deleteFileByName('byName', file.name);
-    }
     const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
     const response = await uploadToBackend(file.data, address);
     if (response.data.success === false) {

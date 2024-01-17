@@ -1,6 +1,7 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import { useDecisionTreeRegression } from "../../hooks/useDecisionTreeRegression";
 import DecisionTreeResults from "./decisionTreeRegressionResults";
 import { ColorSwitch } from "../pcaSwitch";
@@ -28,6 +29,7 @@ const DecisionTree = () => {
     loader,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useDecisionTreeRegression();
 
   return (
@@ -59,7 +61,7 @@ const DecisionTree = () => {
                   type="number"
                   min={1}
                   max={optionsPlot.length-1}
-                  value={pcaFeatures}
+                  value={(pcaFeatures>optionsPlot.length-1)?optionsPlot.length-1:pcaFeatures}
                   onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
                 />
               </div>
@@ -107,7 +109,7 @@ const DecisionTree = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -116,7 +118,7 @@ const DecisionTree = () => {
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={maxDepth>1000?1000:maxDepth}
               min={1}
               max={100}
               onChange={(e) => setMaxDepth(parseInt(e.target.value))}
@@ -140,7 +142,7 @@ const DecisionTree = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">

@@ -8,9 +8,10 @@ interface IFileDisplayProps {
   url:string;
   filename: string;
   updatedAt: string;
+  index:number;
 }
 
-const FileDisplayCard = ({ file_id,url,filename, updatedAt }: IFileDisplayProps) => {
+const FileDisplayCard = ({ file_id,url,filename, updatedAt,index }: IFileDisplayProps) => {
   const navigate=useNavigate();
   const dispatch=useAppDispatch();
   return (
@@ -22,7 +23,7 @@ const FileDisplayCard = ({ file_id,url,filename, updatedAt }: IFileDisplayProps)
       navigate("/data");
     }}>
       <Card.Header className="dashboard-card-header">
-        {file_id}
+        {index}
       </Card.Header>
       <Card.Body className="dashboard-card-text">
         <Card.Img className="dashboard-card-image" variant="top" src="/icon.png" />

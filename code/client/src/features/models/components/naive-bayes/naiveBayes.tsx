@@ -2,6 +2,7 @@ import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import NaiveBayesResults from "./naiveBayesResults";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import { useNaiveBayes } from "../../hooks/useNaiveBayes";
 import { ColorSwitch } from "../pcaSwitch";
 
@@ -26,6 +27,7 @@ const NaiveBayes = () => {
     supervisedML,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useNaiveBayes();
   return (
     <div>
@@ -56,7 +58,7 @@ const NaiveBayes = () => {
                   type="number"
                   min={1}
                   max={optionsPlot.length-1}
-                  value={pcaFeatures}
+                  value={(pcaFeatures>optionsPlot.length-1)?optionsPlot.length-1:pcaFeatures}
                   onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
                 />
               </div>
@@ -106,7 +108,7 @@ const NaiveBayes = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -115,10 +117,11 @@ const NaiveBayes = () => {
             <input
               className="model-input"
               type="number"
-              value={smoothing}
+              value={smoothing>10?10:smoothing}
               min={1e-9}
               max={1-1e-9}
-              onChange={(e) => setSmoothing(parseInt(e.target.value))}
+              step={1e-9}
+              onChange={(e) => setSmoothing(parseFloat(e.target.value))}
             />
           </div>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
@@ -126,7 +129,7 @@ const NaiveBayes = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">

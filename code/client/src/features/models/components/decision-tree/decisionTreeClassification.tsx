@@ -2,6 +2,7 @@ import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import DecisionTreeClassificationResults from "./decisionTreeClassificationResults";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import { useDecisionTreeClassification } from "../../hooks/useDecisionTreeClassification";
 import { ColorSwitch } from "../pcaSwitch";
 
@@ -27,6 +28,7 @@ const DecisionTree = () => {
     pca,
     handleSwitchChange,
     pcaFeatures,
+    loaderOptimize,
     setPcaFeatures,
   } = useDecisionTreeClassification();
 
@@ -58,9 +60,13 @@ const DecisionTree = () => {
                   className="model-input"
                   type="number"
                   min={1}
-                  max={optionsPlot.length-1}
-                  value={pcaFeatures}
-                  onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
+                  max={optionsPlot.length - 1}
+                  value={
+                    pcaFeatures > optionsPlot.length - 1
+                      ? optionsPlot.length - 1
+                      : pcaFeatures
+                  }
+                  onChange={(e) => setPcaFeatures(Number(e.target.value))}
                 />
               </div>
             )}
@@ -109,7 +115,7 @@ const DecisionTree = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -118,9 +124,10 @@ const DecisionTree = () => {
             <input
               className="model-input"
               type="number"
-              value={maxDepth}
+              value={maxDepth>1000?1000:maxDepth}
+              
               min={1}
-              max={100}
+              max={1000}
               onChange={(e) => setMaxDepth(parseInt(e.target.value))}
             />
           </div>
@@ -141,7 +148,7 @@ const DecisionTree = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">

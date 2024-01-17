@@ -17,14 +17,54 @@ export const useSVM=(type:"classification"|"regression")=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [loaderOptimize, setLoaderOptimize] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   
   const handleInference = async ()=>{
-    console.log( `SVM`+ type +`Inference Time..`);
+    console.log("SVM " +type+" Inference Time..");
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoaderOptimize(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/${type}/svm/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response.data);
+      const train_test_split = response.data.best_train_test_split
+      const hyperparametersObject = JSON.parse(response.data.best_hyperparameters);
+      let optimalKernel;
+      let optimalDegree;
+      let optimalIter;
+      console.log("Result Generated")
+      if (type == "classification") {
+        console.log("Classification Result")
+        optimalKernel = hyperparametersObject.svc__kernel;
+        optimalDegree = hyperparametersObject.svc__degree;
+        optimalIter = hyperparametersObject.svc__max_iter;
+      }else{
+        console.log("Regression Result")
+        optimalKernel = hyperparametersObject.svr__kernel;
+        optimalDegree = hyperparametersObject.svr__degree;
+        optimalIter = hyperparametersObject.svr__max_iter;
+      }
+      console.log("I am Here")
+      setTrainTestSplit(train_test_split * 100);
+      setKernel(optimalKernel);
+      setDegree(optimalDegree);
+      setMaxIter(optimalIter);
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
+    setLoaderOptimize(false);
   }
+
   const handleRunSVM = async () => {
     try {
       if (targetVariable === 'Select a Target') {
@@ -57,5 +97,5 @@ export const useSVM=(type:"classification"|"regression")=>{
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,errorMessage,handleRunSVM,optionsPlot}
+  return {loaderOptimize,pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,degree,setDegree,maxIter,setMaxIter,kernel,setKernel,evaluationResults,targetVariable,setTargetVariable,loader,errorMessage,handleRunSVM,optionsPlot}
 }

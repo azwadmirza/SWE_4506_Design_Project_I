@@ -18,8 +18,22 @@
     background-color: #93C47D; 
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 14px; 
+    font-size: 16px; 
     border-radius: 5px;
+    color:whitesmoke
+  }
+
+  .custom-tab-selected {
+    text-align: center;
+    padding: 8px 20px; 
+    margin: 0;
+    border: 1px solid #ffffff; 
+    background-color: var(--customOrange); 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px; 
+    border-radius: 5px;
+    color:black
   }
   
   .custom-tab:hover {

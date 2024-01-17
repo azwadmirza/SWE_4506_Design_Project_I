@@ -2,6 +2,7 @@ import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import LinearRegressionResults from "./linearRegressionResults";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import { useLinearRegression } from "../../hooks/useLinearRegression";
 import { ColorSwitch } from "../pcaSwitch";
 
@@ -24,6 +25,7 @@ const LinearRegression = () => {
     supervisedML,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useLinearRegression();
 
   return (
@@ -41,7 +43,7 @@ const LinearRegression = () => {
                 padding: "5px",
               }}
             >
-              <ColorSwitch onChange={handleSwitchChange} checked={pca} />
+            <ColorSwitch onChange={handleSwitchChange} checked={pca} />
             </div>
             {pca && (
               <div>
@@ -51,7 +53,7 @@ const LinearRegression = () => {
                   type="number"
                   min={1}
                   max={optionsPlot.length-1}
-                  value={pcaFeatures}
+                  value={(pcaFeatures>optionsPlot.length-1)?optionsPlot.length-1:pcaFeatures}
                   onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
                 />
               </div>
@@ -99,7 +101,7 @@ const LinearRegression = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -108,7 +110,7 @@ const LinearRegression = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">

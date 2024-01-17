@@ -2,6 +2,7 @@ import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import SVMResults from "./svmRegressionResults";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import { useSVM } from "../../hooks/useSVM";
 import { ColorSwitch } from "../pcaSwitch";
 
@@ -30,6 +31,7 @@ const SVM = () => {
     optionsPlot,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useSVM("regression");
   return (
     <div>
@@ -56,7 +58,7 @@ const SVM = () => {
                   type="number"
                   min={1}
                   max={optionsPlot.length-1}
-                  value={pcaFeatures}
+                  value={(pcaFeatures>optionsPlot.length-1)?optionsPlot.length-1:pcaFeatures}
                   onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
                 />
               </div>
@@ -104,7 +106,7 @@ const SVM = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -113,9 +115,9 @@ const SVM = () => {
             <input
               className="model-input"
               type="number"
-              value={maxIter}
+              value={maxIter>100000?100000:maxIter}
               min={1}
-              max={10000}
+              max={100000}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>
@@ -139,7 +141,7 @@ const SVM = () => {
                 className="model-input"
                 type="number"
                 min={0}
-                value={degree}
+                value={degree>20?20:degree}
                 onChange={(e) => setDegree(parseInt(e.target.value))}
               />
             </div>
@@ -149,7 +151,7 @@ const SVM = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">

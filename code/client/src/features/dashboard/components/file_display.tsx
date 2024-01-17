@@ -11,8 +11,8 @@ const FileDisplay = ({files}:IFileDisplay) => {
   const {displayedarrayComponents,currentPage,totalPages,handlePageChange,handleNextPageClick,handlePrevPageClick,handleFirstPageClick,handleLastPageClick}=usePagination(files?files:undefined,8);
   return (
     <div className="row mx-auto">
-    {displayedarrayComponents && displayedarrayComponents.map((file: any) => (
-      <FileDisplayCard filename={file.file_name} updatedAt={file.uploaded_at} file_id={file.id} url={file.cloudinary_url}/>
+    {displayedarrayComponents && displayedarrayComponents.map((file: any,index) => (
+      <FileDisplayCard filename={file.file_name} updatedAt={file.uploaded_at} file_id={file.id} url={file.cloudinary_url} index={index}/>
     ))}
     <PaginationComponent currentPage={currentPage} totalPages={totalPages} handleFirstPageClick={handleFirstPageClick} handleLastPageClick={handleLastPageClick} handlePageChange={handlePageChange} handleNextPageClick={handleNextPageClick} handlePrevPageClick={handlePrevPageClick}/>
   </div>
