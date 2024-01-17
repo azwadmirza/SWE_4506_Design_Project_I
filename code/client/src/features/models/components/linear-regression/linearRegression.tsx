@@ -15,10 +15,6 @@ const LinearRegression = () => {
     setNormalization,
     trainTestSplit,
     setTrainTestSplit,
-    maxIter,
-    setMaxIter,
-    smoothing,
-    setSmoothing,
     evaluationResults,
     targetVariable,
     setTargetVariable,
@@ -105,28 +101,6 @@ const LinearRegression = () => {
               max={90}
               value={trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
-            />
-          </div>
-          <div>
-            <label className="model-label">Max Iter:</label>
-            <input
-              className="model-input"
-              type="number"
-              value={maxIter}
-              min={1}
-              max={100}
-              onChange={(e) => setMaxIter(parseInt(e.target.value))}
-            />
-          </div>
-          <div>
-            <label className="model-label">Smoothing:</label>
-            <input
-              className="model-input"
-              type="number"
-              value={smoothing}
-              min={1}
-              max={10}
-              onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
