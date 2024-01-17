@@ -23,7 +23,7 @@ export const useXGBoost=(type:"regression"|"classification")=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
-  const [pcaFeatures, setPcaFeatures] = useState<number>(optionsPlot?optionsPlot.length-1>=1?optionsPlot.length-1:1:1);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   const handleInference = async ()=>{
     console.log("XGBoost Classification Inference Time..");

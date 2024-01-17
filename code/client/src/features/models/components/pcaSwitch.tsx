@@ -25,7 +25,7 @@ const ColorSwitch: React.FC<ColorSwitchProps> = ({ onChange, checked }) => {
   return (
     <GreenSwitch
       onChange={() => onChange(checked)}
-      checked={!checked}
+      checked={checked}
       inputProps={{ 'aria-label': 'Green switch demo' }}
     />
   );

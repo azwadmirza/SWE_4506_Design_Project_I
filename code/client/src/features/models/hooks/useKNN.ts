@@ -16,7 +16,7 @@ export const useKNN=(type:"classification"|"regression")=>{
   const [n_neighbours, setNNeighbours] = useState(5);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
-  const [pcaFeatures, setPcaFeatures] = useState<number>(optionsPlot?optionsPlot.length-1>=1?optionsPlot.length-1:1:1);
+  const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   useEffect(()=>{
     if(distanceMetric==="euclidean"){
