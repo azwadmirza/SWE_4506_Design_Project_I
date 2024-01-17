@@ -8,7 +8,7 @@ import { setFile, setURL } from "../../../contexts/file/slice";
 import { Link } from "react-router-dom";
 import { IonIcon } from "@ionic/react";
 import { folder, save } from "ionicons/icons";
-import { arrayToCSV, convertToCSV } from "../../../utils/csvConverter";
+import { convertToCSV } from "../../../utils/csvConverter";
 
 type HeaderProps = {
   filename: string;
