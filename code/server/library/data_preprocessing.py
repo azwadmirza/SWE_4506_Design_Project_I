@@ -4,21 +4,25 @@ import numpy as np
 
 class DataProcessing:
     def __init__(_self,url,target_column,process,file_type,train_test_split=None,delimiter=None):
-        _self.url = url
-        if train_test_split is not None:
-            _self.train_test_split = float(train_test_split/100)
-        else:
-            _self.train_test_split = 0.2
-        _self.target_column = target_column
-        _self.file_type = file_type
-        _self.__get_dataframe(file_type,delimiter)
-        if process == "class":
-            _self.__process_class_data()
-        elif process == "regression":
-            _self.__process_regression_data()
-        else:
-            raise Exception("Operation Type Not Supported: For classification use \"class\" and for regression use \"regression\"")
-        _self.__process_data()
+        try:
+            _self.url = url
+            if train_test_split is not None:
+                _self.train_test_split = float(train_test_split/100)
+            else:
+                _self.train_test_split = 0.2
+            _self.target_column = target_column
+            _self.file_type = file_type
+            _self.__get_dataframe(file_type,delimiter)
+            if process == "class":
+                _self.__process_class_data()
+            elif process == "regression":
+                _self.__process_regression_data()
+            else:
+                raise Exception("Operation Type Not Supported: For classification use \"class\" and for regression use \"regression\"")
+            _self.__process_data()
+        except Exception as e:
+            print("Data Preprocessing: "+str(e))
+            raise Exception(str(e))
     
     def get_categories(_self):
         _self.categories=np.array(pd.Categorical(_self.labels).categories)

@@ -1,17 +1,22 @@
 import pandas as pd
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.metrics import r2_score
+import numpy as np
 import json
 
 class RegressionAnalysis:
     def __init__(__self,model,X_train,X_test,y_train,y_test):
-        __self.model=model
-        __self.X_train=X_train
-        __self.X_test=X_test
-        __self.y_train=y_train
-        __self.y_test=y_test
-        __self.results={}
-        __self.template()
+        try:
+            __self.model=model
+            __self.X_train=X_train
+            __self.X_test=X_test
+            __self.y_train=y_train
+            __self.y_test=y_test
+            __self.results={}
+            __self.template()
+        except Exception as e:
+            print("Regression Analysis: "+str(e))
+            raise Exception(str(e))
         
     def template(__self):
         __self.__get_predictions()
@@ -23,7 +28,7 @@ class RegressionAnalysis:
     def __get_predictions(__self):
         __self.predictions_test = __self.model.predict(__self.X_test)
         __self.predictions_train = __self.model.predict(__self.X_train)
-        __self.predictions_whole = __self.model.predict(pd.concat([__self.X_train, __self.X_test]))
+        __self.predictions_whole = __self.model.predict(np.concatenate((__self.X_train, __self.X_test),axis=0))
         __self.results['Predictions Whole'] = __self.predictions_whole.tolist()
     
     def __get_mse(__self):
