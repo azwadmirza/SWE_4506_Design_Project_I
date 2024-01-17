@@ -49,8 +49,6 @@ const RocCurveChart = ({
             title: {
               display: true,
               text: [
-                'AUC greater than 0.5: Model predicts better than Random.',
-                'AUC less than 0.5: Model predicts worse than Random.',
                 "X-Axis:True Positive Rate",
                 "Y-Axis: False Positive Rate",
               ],

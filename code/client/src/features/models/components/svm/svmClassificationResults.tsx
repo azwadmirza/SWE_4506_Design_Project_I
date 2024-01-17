@@ -63,7 +63,7 @@ const SVMResults = ({ data }: IClassificationProps) => {
 
   return (
     <div style={{ marginBottom: "50px" }}>
-      <div style={{ marginBottom: "120px" }}>
+      <div style={{ marginBottom: "150px" }}>
         <div style={{ marginBottom: "15px" }}>
           <h2>Train Accuracy</h2>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
@@ -88,6 +88,14 @@ const SVMResults = ({ data }: IClassificationProps) => {
             labels={labelsArray}
             assigned_labels={labelsArray}
           />
+          <div style={{ textAlign: "center" }}>
+            <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
+              AUC greater than 0.5: Model Prediction is better than Random guess.
+            </p>
+            <p style={{ color: "red", fontSize: "15px", margin: "0", marginTop: "5px"}}>
+              AUC less than 0.5: Model Prediction is worse than Random guess.
+            </p>
+          </div>
         </div>
       </div>
       <div style={{ marginTop: "50px" }}>
@@ -108,13 +116,16 @@ const SVMResults = ({ data }: IClassificationProps) => {
           <DataMatrix data={dataTest} title="Test" />
         </div>
         <div style={{ marginBottom: "15px", width: "700px", height: "450px" }}>
-          <h2>ROC Curve-Test</h2>
-          <RocCurveChart
-            chartId="SVM Test"
-            data={rocCurveTestData}
-            labels={labelsArray}
-            assigned_labels={labelsArray}
-          />
+        <h2>ROC Curve-Test</h2>
+        <RocCurveChart chartId="SVM Test" data={rocCurveTestData} labels={labelsArray} assigned_labels={labelsArray}/>
+        <div style={{ textAlign: "center" }}>
+            <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
+              AUC greater than 0.5: Model Prediction is better than Random guess.
+            </p>
+            <p style={{ color: "red", fontSize: "15px", margin: "0", marginTop: "5px"}}>
+              AUC less than 0.5: Model Prediction is worse than Random guess.
+            </p>
+          </div>
         </div>
       </div>
     </div>

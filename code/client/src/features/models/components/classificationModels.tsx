@@ -67,7 +67,7 @@ const ClassificationModels = () => {
                 <SVM/>
               </div>
               <div className={toggle === 6 ? "show-model" : "model"}>
-                <h1><XGBoost/></h1>
+                <XGBoost/>
               </div>
             </div>
           </div>

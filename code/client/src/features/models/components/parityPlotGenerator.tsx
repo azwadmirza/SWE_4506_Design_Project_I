@@ -97,7 +97,6 @@ const ParityPlot = ({
                 title: {
                   display: true,
                   text: [
-                    'Shows the variation of the predicted data from the original data',
                     "X-Axis: Original Value",
                     "Y-Axis: Predicted Value",
                   ],

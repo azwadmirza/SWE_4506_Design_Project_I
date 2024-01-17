@@ -224,7 +224,6 @@ const XGBoost = () => {
           <button
             className="model-button"
             onClick={handleRunXGBoost}
-            disabled={targetVariable === "Select a Target" ? true : false}
           >
             Run
           </button>
