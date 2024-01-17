@@ -7,6 +7,7 @@ from library.model import Model
 from library.classification_analysis import ClassificationAnalysis
 from library.regression_analysis import RegressionAnalysis
 from sklearn import svm
+from sklearn.decomposition import PCA
 
 
 class svmClassification(APIView):
@@ -26,7 +27,11 @@ class svmClassification(APIView):
         degree = requestBody.get('degree', None)
         is_multiclass = DataProcessing(requestBody['file_url'], targetCol, 'class', "text/csv", split_data).isMultiClass()
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data).get_processed_data_with_split()
-        
+        pca = requestBody.get('pca', False)
+        pca_features = requestBody.get('pca_features', None)
+        if pca is True:
+            X_train=PCA(n_components=pca_features).fit_transform(X_train)
+            X_test=PCA(n_components=pca_features).fit_transform(X_test)
         if is_multiclass:
             if kernel.lower() in ['poly']:
                 model = Model(svm.SVC(kernel=kernel, degree=degree, max_iter=iter, decision_function_shape='ovr',random_state=42, probability=True ),normalisation).get_model()
@@ -58,7 +63,11 @@ class svmRegression(APIView):
         degree = requestBody.get('degree', None)
 
         X_train, X_test, y_train, y_test = DataProcessing(requestBody['file_url'], targetCol, 'regression', "text/csv", split_data).get_processed_data_with_split()
-
+        pca = requestBody.get('pca', False)
+        pca_features = requestBody.get('pca_features', None)
+        if pca is True:
+            X_train=PCA(n_components=pca_features).fit_transform(X_train)
+            X_test=PCA(n_components=pca_features).fit_transform(X_test)
         if kernel.lower() in ['poly']:
             model = Model(svm.SVR(kernel=kernel, degree=degree, max_iter=iter), normalisation).get_model()
         else:

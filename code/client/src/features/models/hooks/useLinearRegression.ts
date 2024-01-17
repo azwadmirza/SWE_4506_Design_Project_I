@@ -16,7 +16,7 @@ export const useLinearRegression=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(true);
+  const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
   
   const handleInference = async ()=>{
@@ -39,6 +39,8 @@ export const useLinearRegression=()=>{
         train_test_split: trainTestSplit,
         max_iter: maxIter,
         smoothing: smoothing,
+        pca: pca,
+        pca_features: pcaFeatures
       });
       console.log("Backend response received:", JSON.parse(response.data));
       setEvaluationResults(JSON.parse(response.data));

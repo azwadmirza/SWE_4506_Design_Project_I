@@ -51,7 +51,7 @@ const DecisionTree = () => {
             >
               <ColorSwitch onChange={handleSwitchChange} checked={pca} />
             </div>
-            {!pca && (
+            {pca && (
               <div>
                 <label className="model-label">Number of Features:</label>
                 <input
