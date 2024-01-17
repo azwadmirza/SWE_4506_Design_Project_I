@@ -6,7 +6,7 @@ import axios from "axios";
 export const useNaiveBayes=()=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [smoothing, setSmoothing] = useState<number>(1);
+  const [smoothing, setSmoothing] = useState<number>(1e-5);
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const { supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
