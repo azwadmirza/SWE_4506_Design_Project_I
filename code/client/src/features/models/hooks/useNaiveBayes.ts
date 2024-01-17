@@ -4,9 +4,9 @@ import { useAppSelector } from "../../../contexts/file/hooks";
 import axios from "axios";
 
 export const useNaiveBayes=()=>{
-    const [normalization, setNormalization] = useState("MinMaxScaler");
+  const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [smoothing, setSmoothing] = useState<number>(1e-5);
+  const [smoothing, setSmoothing] = useState<number>(1);
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const { supervisedML } = useChart();
   const [evaluationResults, setEvaluationResults] = useState(null);
@@ -14,12 +14,29 @@ export const useNaiveBayes=()=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [loaderOptimize, setLoaderOptimize] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   const handleInference = async ()=>{
     console.log("Naive Bayes Inference Time..");
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoaderOptimize(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/classification/naive-bayes/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response)
+      setLoaderOptimize(false);
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
   }
 
   const handleRunNaiveBayes = async () => {
@@ -37,7 +54,7 @@ export const useNaiveBayes=()=>{
           target: targetVariable,
           normalization: normalization,
           train_test_split: trainTestSplit,
-          smoothing: smoothing,
+          smoothing: Math.pow(10, -smoothing),
           pca: pca,
           pca_features: pcaFeatures
         }
@@ -55,5 +72,5 @@ export const useNaiveBayes=()=>{
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,normalization,pca,handleSwitchChange,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
+  return {loaderOptimize,pcaFeatures,setPcaFeatures,normalization,pca,handleSwitchChange,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
 }

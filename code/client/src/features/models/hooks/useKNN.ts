@@ -36,10 +36,27 @@ export const useKNN=(type:"classification"|"regression")=>{
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [loaderOptimize, setLoaderOptimize] = useState<boolean>(false);
 
   
   const handleInference = async ()=>{
-    console.log( `KNN`+ type +`Inference Time..`);
+    console.log("KNN " +type+" Inference Time..");
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoaderOptimize(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/${type}/knn/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response)
+      setLoaderOptimize(false);
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
   }
 
   const handleRunKNN = async () => {
@@ -75,5 +92,5 @@ export const useKNN=(type:"classification"|"regression")=>{
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,errorMessage, optionsPlot}
+  return {loaderOptimize,pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,supervisedML,setNormalization,trainTestSplit,setTrainTestSplit,minkowskiMetric,setMinkowskiMetric,algorithm,setAlgorithm,distanceMetric,setDistanceMetric,weights,setWeights,n_neighbours,setNNeighbours,evaluationResults,targetVariable,setTargetVariable,loader,handleRunKNN,errorMessage, optionsPlot}
 }

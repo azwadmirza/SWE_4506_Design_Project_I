@@ -2,6 +2,7 @@ import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import NaiveBayesResults from "./naiveBayesResults";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import { useNaiveBayes } from "../../hooks/useNaiveBayes";
 import { ColorSwitch } from "../pcaSwitch";
 
@@ -26,6 +27,7 @@ const NaiveBayes = () => {
     supervisedML,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useNaiveBayes();
   return (
     <div>
@@ -106,18 +108,18 @@ const NaiveBayes = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
           <div>
-            <label className="model-label">Smoothing:</label>
+            <label className="model-label">Smoothing (10<sup>-x</sup>):</label>
             <input
               className="model-input"
               type="number"
-              value={smoothing}
-              min={1e-9}
-              max={1-1e-9}
+              value={smoothing>10?10:smoothing}
+              min={1}
+              max={10}
               onChange={(e) => setSmoothing(parseInt(e.target.value))}
             />
           </div>
@@ -126,7 +128,7 @@ const NaiveBayes = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">

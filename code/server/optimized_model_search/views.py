@@ -23,7 +23,7 @@ class decision_tree_classification_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid={
                 'decisiontreeclassifier__criterion':['gini','entropy','log_loss'],
-                'decisiontreeclassifier__max_depth':[i for i in range(1,21)],
+                'decisiontreeclassifier__max_depth':[1,5,10,50,100,None],
             }
             print(param_grid)
             best_combination=optimized_hyperparameters(DecisionTreeClassifier,param_grid,url,target_column,'class',"text/csv")
@@ -44,7 +44,7 @@ class decision_tree_regression_grid_search(APIView):
             target_column=request.data['target_column']
             param_grid={
                 'decisiontreeregressor__criterion':['mse','friedman_mse','mae','poisson'],
-                'decisiontreeregressor__max_depth':[i for i in range(1,21)].append(None),
+                'decisiontreeregressor__max_depth':[1,5,10,50,100,None],
             }
             best_combination=optimized_hyperparameters(DecisionTreeRegressor,param_grid,data,target_column,'regression',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -98,6 +98,7 @@ class knn_regression_grid_search(APIView):
             best_combination=optimized_hyperparameters(KNeighborsRegressor,param_grid,data,target_column,'regression',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
         except Exception as e:
+            print(str(e))
             return Response(f'Error Occurs: {str(e)}', status=status.HTTP_400_BAD_REQUEST)
         
         
@@ -114,7 +115,7 @@ class svm_regression_grid_search(APIView):
             param_grid = {
                 'svr__kernel': ['linear', 'rbf','poly','sigmoid'],   
                 'svr__degree': [i for i in range(1,21)],   
-                'svr__max_iter': [10,20,50,100],        
+                'svr__max_iter': [10,20,50,100,1000,10000],        
             }
             best_combination=optimized_hyperparameters(SVR,param_grid,data,target_column,'regression',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -133,7 +134,7 @@ class svm_classification_grid_search(APIView):
             param_grid = {
                 'svc__kernel': ['linear', 'rbf','poly','sigmoid'],   
                 'svc__degree': [i for i in range(1,21)],   
-                'svc__max_iter': [10,20,50,100],        
+                'svc__max_iter': [10,20,50,100,1000,10000],        
             }
             best_combination=optimized_hyperparameters(SVC,param_grid,data,target_column,'class',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -166,7 +167,7 @@ class logistic_regression_grid_search(APIView):
             data=request.data['file_url']
             target_column=request.data['target_column']
             best_combination=optimized_hyperparameters(LogisticRegression,{
-                    'logisticregression__max_iter':[100,200],
+                    'logisticregression__max_iter':[10,20,50,100,1000,10000],
                     'logisticregression__penalty':[None,'l1','l2','elasticnet']
                 },data,target_column,'class',"text/csv")
             return Response(best_combination.to_json(), status=status.HTTP_200_OK)
@@ -196,7 +197,7 @@ class xgboost_regression_grid_search(APIView):
             data=request.data['file_url']
             target_column=request.data['target_column']
             param_grid=param_grid = {
-                'xgbregressor__max_depth': [i for i in range(1,21)],                     
+                'xgbregressor__max_depth': [1,5,10,50,100,None],                    
                 'xgbregressor__booster': ['gbtree', 'gblinear', 'dart'],
                 'xgbregressor__tree_method': ['hist', 'exact', 'approx'],
                 'xgbregressor__grow_policy': ['depthwise', 'lossguide'], 
@@ -219,7 +220,7 @@ class xgboost_classification_grid_search(APIView):
             data=request.data['file_url']
             target_column=request.data['target_column']
             param_grid=param_grid = {
-                'xgbclassifier__max_depth': [i for i in range(1,21)],                     
+                'xgbclassifier__max_depth': [1,5,10,50,100,None],                    
                 'xgbclassifier__booster': ['gbtree', 'gblinear', 'dart'],
                 'xgbclassifier__tree_method': ['hist', 'exact', 'approx'],
                 'xgbclassifier__grow_policy': ['depthwise', 'lossguide'], 

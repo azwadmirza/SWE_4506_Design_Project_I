@@ -15,6 +15,7 @@ export const useDecisionTreeRegression = () => {
   const address = import.meta.env.VITE_BACKEND_REQ_ADDRESS;
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
+  const [loaderOptimize, setLoaderOptimize] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
@@ -22,6 +23,22 @@ export const useDecisionTreeRegression = () => {
   
   const handleInference = async ()=>{
     console.log("Decision Tree Regression Inference Time..");
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoaderOptimize(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/regression/decision_tree/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response)
+      setLoaderOptimize(false);
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
   }
 
   const handleRunDecisionTree = async () => {
@@ -53,5 +70,5 @@ export const useDecisionTreeRegression = () => {
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,targetVariable,supervisedML,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
+  return {loaderOptimize,pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,targetVariable,supervisedML,setTargetVariable,optionsPlot,normalization, setNormalization, trainTestSplit, setTrainTestSplit, maxDepth, setMaxDepth, criterion, setCriterion, evaluationResults, handleRunDecisionTree,errorMessage, loader}
 }

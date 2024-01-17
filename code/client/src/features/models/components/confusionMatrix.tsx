@@ -13,12 +13,12 @@ const ConfusionMatrix: React.FC<ConfusionMatrixProps> = ({ data, labels, title, 
   return (
     <div className={className}>
       <h2>{title}</h2>
-      <table style={{ borderCollapse: 'collapse', padding: '10px' }}>
+      <table style={{ borderCollapse: 'collapse', padding: '40px' }}>
         <thead>
           <tr>
-            <th style={{ fontWeight: 'bold', padding: '10px' }}></th>
+            <th style={{ fontWeight: 'bold', padding: '40px' }}></th>
             {labels.map((label, index) => (
-              <th key={index} style={{ fontWeight: 'bold', padding: '10px',fontSize:"12px" }}>
+              <th key={index} style={{ fontWeight: 'bold', padding: '40px',fontSize:"18px" }}>
                 {label}
               </th>
             ))}
@@ -27,7 +27,7 @@ const ConfusionMatrix: React.FC<ConfusionMatrixProps> = ({ data, labels, title, 
         <tbody>
           {data.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              <td style={{ fontWeight: 'bold', padding: '10px',fontSize:"12px" }}>{labels[rowIndex]}</td>
+              <td style={{ fontWeight: 'bold', padding: '40px',fontSize:"18px" }}>{labels[rowIndex]}</td>
               {row.map((count, colIndex) => (
                 <td
                   key={colIndex}

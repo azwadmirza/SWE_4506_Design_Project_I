@@ -15,6 +15,7 @@ export const useLogisticRegression=()=>{
   const file_url = useAppSelector((state) => state.file.url);
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const [loader, setLoader] = useState<boolean>(false);
+  const [loaderOptimize, setLoaderOptimize] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
@@ -22,7 +23,22 @@ export const useLogisticRegression=()=>{
   
   const handleInference = async ()=>{
     console.log("Logistic Regression Inference Time..");
-    console.log(pcaFeatures);
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoaderOptimize(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/classification/logistic/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response)
+      setLoaderOptimize(false);
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
   }
 
   const handleRunLogisticRegression = async () => {
@@ -59,5 +75,5 @@ export const useLogisticRegression=()=>{
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,errorMessage,optionsPlot,supervisedML}
+  return {loaderOptimize,pcaFeatures,setPcaFeatures,handleInference,pca,handleSwitchChange,normalization,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,penalty,setPenalty,evaluationResults,targetVariable,setTargetVariable,loader,handleRunLogisticRegression,errorMessage,optionsPlot,supervisedML}
 }

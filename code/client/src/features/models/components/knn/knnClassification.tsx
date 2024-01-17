@@ -1,6 +1,7 @@
 import "../../assets/css/models.css";
 import "../../assets/css/all-model.css";
 import Loader from "../../../../partials/loader";
+import LoaderOptimized from "../../../../partials/loaderOptimized";
 import KNNClassificationResults from "./knnClassificationResults";
 import { useKNN } from "../../hooks/useKNN";
 import { ColorSwitch } from "../pcaSwitch";
@@ -34,6 +35,7 @@ const KNearestNeighbours = () => {
     optionsPlot,
     pcaFeatures,
     setPcaFeatures,
+    loaderOptimize,
   } = useKNN("classification");
 
   return (
@@ -115,7 +117,7 @@ const KNearestNeighbours = () => {
               type="number"
               min={10}
               max={90}
-              value={trainTestSplit}
+              value={trainTestSplit>90?90:trainTestSplit}
               onChange={(e) => setTrainTestSplit(parseInt(e.target.value))}
             />
           </div>
@@ -124,23 +126,11 @@ const KNearestNeighbours = () => {
             <input
               className="model-input"
               type="number"
-              value={n_neighbours}
+              value={n_neighbours<1?1:n_neighbours}
               min={1}
               onChange={(e) => setNNeighbours(parseInt(e.target.value))}
             />
           </div>
-          {distanceMetric == "minkowski" && (
-            <div>
-              <label className="model-label">Minkowski Metric:</label>
-              <input
-                className="model-input"
-                type="number"
-                value={minkowskiMetric}
-                min={1}
-                onChange={(e) => setMinkowskiMetric(parseInt(e.target.value))}
-              />
-            </div>
-          )}
           <div>
             <label className="model-label">Algorithm:</label>
             <select
@@ -167,6 +157,18 @@ const KNearestNeighbours = () => {
               <option value="haversine">Haverside</option>
             </select>
           </div>
+          {distanceMetric == "minkowski" && (
+            <div>
+              <label className="model-label">Minkowski Metric:</label>
+              <input
+                className="model-input"
+                type="number"
+                value={minkowskiMetric<1?1:minkowskiMetric}
+                min={1}
+                onChange={(e) => setMinkowskiMetric(parseInt(e.target.value))}
+              />
+            </div>
+          )}
           <div>
             <label className="model-label">Weights:</label>
             <select
@@ -183,7 +185,7 @@ const KNearestNeighbours = () => {
             Run
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+              {loaderOptimize ? <LoaderOptimized /> : "Optimize"}
           </button>
         </div>
         <div className="results-container">
