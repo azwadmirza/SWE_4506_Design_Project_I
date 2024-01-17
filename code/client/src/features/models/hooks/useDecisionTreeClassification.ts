@@ -22,6 +22,22 @@ export const useDecisionTreeClassification = () => {
   
   const handleInference = async ()=>{
     console.log("Decision Tree Classification Inference Time..");
+    try {
+      if (targetVariable === 'Select a Target') {
+        setErrorMessage('Please select a target variable');
+        return;
+      }
+      setErrorMessage('');
+      setLoader(true);
+      const response = await axios.post(`${address}/api/optimized_model_search/classification/decision_tree/`, {
+        file_url: file_url,
+        target_column: targetVariable,
+      });
+      console.log(response)
+      setLoader(false);
+    } catch (error) {
+      console.error("Error during backend request:");
+    }
   }
 
   const handleRunDecisionTree = async () => {
