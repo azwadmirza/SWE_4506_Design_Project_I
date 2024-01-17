@@ -75,6 +75,7 @@ const SVMResults = ({
         />
       </div>
       <div style={{ marginTop: "50px", width: "800px" }}>
+      <h2>Parity Plot</h2>
         <ParityPlot
           targetColumnValues={originalTargetValues}
           predictedValues={predictedTargetValues}
