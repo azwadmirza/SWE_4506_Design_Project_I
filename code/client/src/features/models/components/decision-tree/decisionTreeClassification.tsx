@@ -27,6 +27,7 @@ const DecisionTree = () => {
     pca,
     handleSwitchChange,
     pcaFeatures,
+    loaderOptimize,
     setPcaFeatures,
   } = useDecisionTreeClassification();
 
@@ -59,7 +60,7 @@ const DecisionTree = () => {
                   type="number"
                   min={1}
                   max={optionsPlot.length-1}
-                  value={pcaFeatures}
+                  value={(pcaFeatures>optionsPlot.length-1)?optionsPlot.length-1:pcaFeatures}
                   onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
                 />
               </div>
@@ -138,10 +139,16 @@ const DecisionTree = () => {
           </div>
           {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           <button className="model-button" onClick={handleRunDecisionTree}>
-            Run
+          {loader ? (
+            <Loader />
+          ) : "Run"}
           </button>
           <button className="inference-button" onClick={handleInference}>
-            Optimize
+          <button className="model-button" onClick={handleRunDecisionTree}>
+          {loaderOptimize ? (
+            <Loader />
+          ) : "Run"}
+          </button>
           </button>
         </div>
         <div className="results-container">

@@ -59,10 +59,23 @@ const XGBoostRegressionResults = ({ modelData, target }: IRegressionProps) => {
         />
       </div>
       <div style={{ marginTop: "50px", width: "800px" }}>
+      <h2>Parity Plot</h2>
         <ParityPlot
           targetColumnValues={originalTargetValues}
           predictedValues={predictedTargetValues}
         />
+        <div style={{ textAlign: "center" }}>
+          <p
+            style={{
+              color: "green",
+              fontSize: "15px",
+              margin: "0",
+              marginTop: "5px",
+            }}
+          >
+            Shows the Variation of the Predicted Data from the Original Data.
+          </p>
+        </div>
       </div>
     </div>
   );

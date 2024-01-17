@@ -12,7 +12,6 @@ class Model:
             _self.normalization = RobustScaler()
         else:
             raise Exception("Invalid Normalization Must Be Applied")
-        
         _self.model=make_pipeline(_self.normalization,_self.model)
         
     def get_model(_self):

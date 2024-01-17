@@ -56,7 +56,7 @@ const SVM = () => {
                   type="number"
                   min={1}
                   max={optionsPlot.length-1}
-                  value={pcaFeatures}
+                  value={(pcaFeatures>optionsPlot.length-1)?optionsPlot.length-1:pcaFeatures}
                   onChange={(e) => setPcaFeatures(parseInt(e.target.value))}
                 />
               </div>

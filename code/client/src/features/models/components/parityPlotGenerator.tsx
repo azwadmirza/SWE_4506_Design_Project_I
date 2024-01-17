@@ -92,6 +92,16 @@ const ParityPlot = ({
                   },
                 ],
               },
+              plugins: {
+                legend: { display: true, position: "top" },
+                title: {
+                  display: true,
+                  text: [
+                    "X-Axis: Original Value",
+                    "Y-Axis: Predicted Value",
+                  ],
+                },
+              },
             } as any
           }
         />
