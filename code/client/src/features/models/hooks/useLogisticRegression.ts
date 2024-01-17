@@ -16,7 +16,7 @@ export const useLogisticRegression=()=>{
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(true);
+  const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
 
   
@@ -42,6 +42,8 @@ export const useLogisticRegression=()=>{
           train_test_split: trainTestSplit,
           max_iter: maxIter,
           penalty: penalty,
+          pca: pca,
+          pca_features: pcaFeatures
         }
       );
       console.log("Backend response received:", JSON.parse(response.data));

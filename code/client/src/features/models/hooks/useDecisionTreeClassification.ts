@@ -17,7 +17,7 @@ export const useDecisionTreeClassification = () => {
   const file_url = useAppSelector((state) => state.file.url);
   const [loader, setLoader] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [pca,setPca] = useState<boolean>(true);
+  const [pca,setPca] = useState<boolean>(false);
   const [pcaFeatures, setPcaFeatures] = useState<number>(1);
   
   const handleInference = async ()=>{
@@ -39,6 +39,8 @@ export const useDecisionTreeClassification = () => {
         train_test_split: trainTestSplit,
         max_depth: maxDepth,
         criterion: criterion,
+        pca: pca,
+        pca_features: pcaFeatures
       });
       setEvaluationResults(JSON.parse(response.data));
       setLoader(false);

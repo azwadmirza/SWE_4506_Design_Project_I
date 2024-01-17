@@ -8,6 +8,7 @@ import pandas as pd
 from library.classification_analysis import ClassificationAnalysis
 from library.regression_analysis import RegressionAnalysis
 from xgboost import XGBClassifier,XGBRegressor
+from sklearn.decomposition import PCA
 
 
 class xgboost_classification_model(APIView):
@@ -32,6 +33,11 @@ class xgboost_classification_model(APIView):
         objective=requestBody.get('objective', None)
         dataProcessing = DataProcessing(requestBody['file_url'],targetCol,'class',"text/csv",split_data)
         X_train, X_test, y_train, y_test=dataProcessing.get_processed_data_with_split()
+        pca = requestBody.get('pca', False)
+        pca_features = requestBody.get('pca_features', None)
+        if pca is True:
+            X_train=PCA(n_components=pca_features).fit_transform(X_train)
+            X_test=PCA(n_components=pca_features).fit_transform(X_test)
         categories=dataProcessing.get_categories()
         model = Model(XGBClassifier(booster=booster,objective=objective,max_depth=depth,tree_method=tree_method,grow_policy=grow_policy,reg_alpha=reg_alpha,reg_lambda=reg_lambda,subsample=subsample,enable_categorical=True),normalisation).get_model()
         y_test=pd.Series(LabelEncoder().fit_transform(y_test))
@@ -61,6 +67,11 @@ class xgboost_regression_model(APIView):
         subsample = requestBody.get('subsample_ratio', None)
         objective=requestBody.get('objective', None)
         X_train, X_test, y_train, y_test=DataProcessing(requestBody['file_url'],targetCol,'regression',"text/csv",split_data).get_processed_data_with_split()
+        pca = requestBody.get('pca', False)
+        pca_features = requestBody.get('pca_features', None)
+        if pca is True:
+            X_train=PCA(n_components=pca_features).fit_transform(X_train)
+            X_test=PCA(n_components=pca_features).fit_transform(X_test)
         model = Model(XGBRegressor(booster=booster,objective=objective,max_depth=depth,tree_method=tree_method,grow_policy=grow_policy,reg_alpha=reg_alpha,reg_lambda=reg_lambda,subsample=subsample),normalisation).get_model()
         model.fit(X_train,y_train)
         return Response(RegressionAnalysis(model,X_train,X_test,y_train,y_test).to_json(), status=status.HTTP_200_OK)
