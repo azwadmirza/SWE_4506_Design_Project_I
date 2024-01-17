@@ -42,33 +42,25 @@ export const useXGBoost=(type:"regression"|"classification")=>{
       console.log(response.data);
       const train_test_split = response.data.best_train_test_split
       const hyperparametersObject = JSON.parse(response.data.best_hyperparameters);
-      let optimalDepth;
-      let optimalBooster;
-      let optimalTree;
-      let optimalGrow;
-      let optimalAlpha;
-      let optimalLamda;
-      let optimalSubSample;
-      let optimalObjective;
       
       if (type == "classification") {
-        optimalDepth = hyperparametersObject.xgbclassifier__max_depth;
-        optimalBooster = hyperparametersObject.xgbclassifier__booster;
-        optimalTree = hyperparametersObject.xgbclassifier__tree_method;
-        optimalGrow = hyperparametersObject.xgbclassifier__grow_policy;
-        optimalAlpha = hyperparametersObject.xgbclassifier__reg_alpha;
-        optimalLamda = hyperparametersObject.xgbclassifier__reg_lambda;
-        optimalSubSample = hyperparametersObject.xgbclassifier__subsample;
-        optimalObjective = hyperparametersObject.xgbclassifier__objective;
+        setMaxDepth(hyperparametersObject.xgbclassifier__max_depth)
+        setBooster(hyperparametersObject.xgbclassifier__booster)
+        setTreeMethod(hyperparametersObject.xgbclassifier__tree_method)
+        setGrowPolicy(hyperparametersObject.xgbclassifier__grow_policy)
+        setRegAlpha(hyperparametersObject.xgbclassifier__reg_alpha)
+        setRegLambda(hyperparametersObject.xgbclassifier__reg_lambda)
+        setSampleRatio(hyperparametersObject.xgbclassifier__subsample)
+        setObjective(hyperparametersObject.xgbclassifier__objective)
       }else{
-        optimalDepth = hyperparametersObject.xgbregressor__max_depth;
-        optimalBooster = hyperparametersObject.xgbregressor__booster;
-        optimalTree = hyperparametersObject.xgbregressor__tree_method;
-        optimalGrow = hyperparametersObject.xgbregressor__grow_policy;
-        optimalAlpha = hyperparametersObject.xgbregressor__reg_alpha;
-        optimalLamda = hyperparametersObject.xgbregressor__reg_lambda;
-        optimalSubSample = hyperparametersObject.xgbregressor__subsample;
-        optimalObjective = hyperparametersObject.xgbregressor__objective;
+        setMaxDepth(hyperparametersObject.xgbregressor__max_depth)
+        setBooster(hyperparametersObject.xgbregressor__booster)
+        setTreeMethod(hyperparametersObject.xgbregressor__tree_method)
+        setGrowPolicy(hyperparametersObject.xgbregressor__grow_policy)
+        setRegAlpha(hyperparametersObject.xgbregressor__reg_alpha)
+        setRegLambda(hyperparametersObject.xgbregressor__reg_lambda)
+        setSampleRatio(hyperparametersObject.xgbregressor__subsample)
+        setObjective(hyperparametersObject.xgbregressor__objective)
       }
       setTrainTestSplit(train_test_split * 100);
 

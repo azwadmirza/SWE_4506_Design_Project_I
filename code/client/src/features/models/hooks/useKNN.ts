@@ -63,31 +63,19 @@ export const useKNN = (type: "classification" | "regression") => {
       const hyperparametersObject = JSON.parse(
         response.data.best_hyperparameters
       );
-      let optimalNNeighbor;
-      let optimalMinkowski;
-      // let optimalAlgorithm;
-      let optimalMetric;
-      let optimalWeight;
       if (type == "classification") {
-        optimalNNeighbor = hyperparametersObject.kneighborsclassifier__n_neighbors;
-        optimalMinkowski = hyperparametersObject.kneighborsclassifier__p;
-        // optimalAlgorithm = hyperparametersObject.kneighborsclassifier__algorithm;
-        optimalMetric = hyperparametersObject.kneighborsclassifier__metric;
-        optimalWeight = hyperparametersObject.kneighborsclassifier__weights;
+        setNNeighbours(hyperparametersObject.kneighborsclassifier__n_neighbors);
+        setMinkowskiMetric(hyperparametersObject.kneighborsclassifier__p);
+        setDistanceMetric(hyperparametersObject.kneighborsclassifier__metric);
+        setWeights(hyperparametersObject.kneighborsclassifier__weights);
       }else{
-        optimalNNeighbor = hyperparametersObject.kneighborsregressor__n_neighbors;
-        optimalMinkowski = hyperparametersObject.kneighborsregressor__p;
-        // optimalAlgorithm = hyperparametersObject.kneighborsclassifier__algorithm;
-        optimalMetric = hyperparametersObject.kneighborsregressor__metric;
-        optimalWeight = hyperparametersObject.kneighborsregressor__weights;
+        setNNeighbours(hyperparametersObject.kneighborsregressor__n_neighbors);
+        setMinkowskiMetric(hyperparametersObject.kneighborsregressor__p);
+        setDistanceMetric(hyperparametersObject.kneighborsregressor__metric);
+        setWeights(hyperparametersObject.kneighborsregressor__weights);
       }
       console.log("I am Here")
       setTrainTestSplit(train_test_split * 100);
-      setNNeighbours(optimalNNeighbor);
-      setMinkowskiMetric(optimalMinkowski);
-      // setAlgorithm(optimalAlgorithm);
-      setDistanceMetric(optimalMetric);
-      setWeights(optimalWeight);
     } catch (error) {
       console.error("Error during backend request:");
     }
