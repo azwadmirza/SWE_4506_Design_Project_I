@@ -10,6 +10,11 @@ const LogisticRegressionResults = ({ data }: IClassificationProps) => {
 
   const labelsArray = [];
   const classificationReportTest = data["Classification Report Test"];
+  const aucScoresTest = data["auc_scores_test"];
+  const aucScoresTrain = data["auc_scores_train"];
+
+  const minAucTest = Math.min(...Object.values(aucScoresTest));
+  const minAucTrain = Math.min(...Object.values(aucScoresTrain));
 
   for (const [label] of Object.entries(classificationReportTest)) {
     if (label.toLowerCase() === "accuracy") {
@@ -89,12 +94,24 @@ const LogisticRegressionResults = ({ data }: IClassificationProps) => {
             assigned_labels={labelsArray}
           />
           <div style={{ textAlign: "center" }}>
-            <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
-              AUC greater than 0.5: Model Prediction is better than Random guess.
-            </p>
-            <p style={{ color: "green", fontSize: "15px", margin: "0", marginTop: "5px"}}>
-              Higher AUC signifies Effective performance of the model
-            </p>
+            {minAucTrain > 0.5 ? (
+              <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
+                AUC for all is greater than 0.5. Model Prediction is better than
+                guessing randomly.
+              </p>
+            ) : (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "15px",
+                  margin: "0",
+                  marginTop: "5px",
+                }}
+              >
+                AUC less than 0.5 for some labels. Model prediction is not
+                optimal for those cases.
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -124,12 +141,24 @@ const LogisticRegressionResults = ({ data }: IClassificationProps) => {
             assigned_labels={labelsArray}
           />
           <div style={{ textAlign: "center" }}>
-            <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
-              AUC greater than 0.5: Model Prediction is better than Random guess.
-            </p>
-            <p style={{ color: "green", fontSize: "15px", margin: "0", marginTop: "5px"}}>
-              Higher AUC signifies Effective performance of the model
-            </p>
+            {minAucTest > 0.5 ? (
+              <p style={{ color: "green", fontSize: "15px", margin: "0" }}>
+                AUC for all is greater than 0.5. Model Prediction is better than
+                guessing randomly.
+              </p>
+            ) : (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "15px",
+                  margin: "0",
+                  marginTop: "5px",
+                }}
+              >
+                AUC less than 0.5 for some labels. Model prediction is not
+                optimal for those cases.
+              </p>
+            )}
           </div>
         </div>
       </div>
