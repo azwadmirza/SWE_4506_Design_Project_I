@@ -117,7 +117,7 @@ const SVM = () => {
               type="number"
               value={maxIter}
               min={1}
-              max={100}
+              max={10000}
               onChange={(e) => setMaxIter(parseInt(e.target.value))}
             />
           </div>

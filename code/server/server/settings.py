@@ -89,7 +89,8 @@ INSTALLED_APPS = [
     'svm',
     'naive_bayes',
     'xgBoost',
-    'knn'
+    'knn',
+    'optimized_model_search',
 ]
 
 MIDDLEWARE = [

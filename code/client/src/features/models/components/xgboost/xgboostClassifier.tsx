@@ -212,9 +212,6 @@ const XGBoost = () => {
               <option value="binary:logitraw">Binary Logit Raw</option>
               <option value="multi:softmax">Multiclass Softmax</option>
               <option value="multi:softprob">Multiclass Softprob</option>
-              <option value="rank:pairwise">Rank Pairwise</option>
-              <option value="rank:ndcg">Rank NDCG</option>
-              <option value="rank:map">Rank MAP</option>
             </select>
           </div>
 

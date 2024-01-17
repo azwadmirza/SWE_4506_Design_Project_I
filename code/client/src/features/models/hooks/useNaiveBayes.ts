@@ -6,7 +6,6 @@ import axios from "axios";
 export const useNaiveBayes=()=>{
     const [normalization, setNormalization] = useState("MinMaxScaler");
   const [trainTestSplit, setTrainTestSplit] = useState(40);
-  const [maxIter, setMaxIter] = useState(3);
   const [smoothing, setSmoothing] = useState<number>(1);
   const optionsPlot=useAppSelector((state)=>state.file.optionsPlot);
   const { supervisedML } = useChart();
@@ -38,7 +37,6 @@ export const useNaiveBayes=()=>{
           target: targetVariable,
           normalization: normalization,
           train_test_split: trainTestSplit,
-          max_iter: maxIter,
           smoothing: smoothing,
           pca: pca,
           pca_features: pcaFeatures
@@ -57,5 +55,5 @@ export const useNaiveBayes=()=>{
     setPca(!checked);
   };
 
-  return {pcaFeatures,setPcaFeatures,normalization,pca,handleSwitchChange,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,maxIter,setMaxIter,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
+  return {pcaFeatures,setPcaFeatures,normalization,pca,handleSwitchChange,handleInference,setNormalization,trainTestSplit,setTrainTestSplit,smoothing,setSmoothing,evaluationResults,targetVariable,setTargetVariable,loader,handleRunNaiveBayes,optionsPlot,errorMessage,supervisedML}
 }
