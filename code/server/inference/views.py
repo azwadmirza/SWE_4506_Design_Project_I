@@ -10,12 +10,10 @@ import pandas as pd
 
     
 class best_model_performance(APIView):
-    queryset = []
-
     permission_classes = []
-    
     def post(self, request):
         try:
+            print("Comes Here")
             data=request.data['file_url']
             df=pd.read_csv(data)
             number_of_features=df.shape[1]-1
