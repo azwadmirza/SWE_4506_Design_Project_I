@@ -23,6 +23,11 @@
     color: white;
   }
 
+  .modal-header{
+    background-color: var(--customFont);
+    color: white;
+  }
+
   .model-selected {
     text-align: center;
     padding: 5px 10px; 
