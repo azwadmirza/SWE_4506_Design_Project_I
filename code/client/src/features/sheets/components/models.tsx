@@ -5,14 +5,30 @@ import { store } from "../../../contexts/file/store";
 import { useAppSelector } from "../../../contexts/file/hooks";
 import ClassificationModels from "../../models/components/classificationModels";
 import RegressionModels from "../../models/components/regressionModels";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./header";
 import { useSheets } from "../hooks/useSheets";
 import { useChart } from "../../visualization/hooks/useChart";
+import axios from "axios";
+import BestModal from "./best-modal";
 
 const Models = () => {
   const file = useAppSelector((state) => state.file.file);
   const loading = useAppSelector((state) => state.file.loading);
+  const url = useAppSelector((state) => state.file.url);
+  const [best_model,setBestModel]=useState<any|null>(null);
+  const [show,setShow]=useState(false);
+  const retrieve_best_model=async()=>{
+    await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/best/find/`,{
+      file_url:url
+    }).then((res)=>{
+      setShow(true);
+      setBestModel(res.data)
+    }).catch((err)=>console.log(err))
+  }
+  useEffect(()=>{
+    retrieve_best_model()
+  },[])
   const [toggle, setToggle] = useState(1);
   const { supervisedML } = useChart();
   const { data } = useSheets();
@@ -22,6 +38,7 @@ const Models = () => {
         <div className="sheets">
           <Header filename={`${file !== null ? file : ""}`} data={data} />
           <div className="render-cells">
+            {best_model && (<BestModal show={show} setShow={setShow} result={best_model}/>)}
             <div className="d-flex align-items center justify-model-center">
               <div className={toggle === 1 ? "show-model" : "model"}>
                 <ClassificationModels />

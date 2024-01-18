@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     'naive_bayes',
     'xgBoost',
     'knn',
+    'inference'
 ]
 
 MIDDLEWARE = [

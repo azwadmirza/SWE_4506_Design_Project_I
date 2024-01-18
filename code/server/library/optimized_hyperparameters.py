@@ -20,6 +20,8 @@ class optimized_hyperparameters:
     def get_best_model(__self):
         return __self.best_model
     
+    def get_best_score(__self):
+        return __self.best_model.get_best_score_test()
     def get_best_hyperparameter_combination(__self):
         return __self.best_hyperparameter_combination
     
