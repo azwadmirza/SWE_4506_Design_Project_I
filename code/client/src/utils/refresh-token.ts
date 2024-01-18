@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const getRefreshToken=async(refresh_token:string)=>{
-    const result=await axios.post('http://127.0.0.1:8000/api/refresh-token/',{
+    const result=await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/refresh-token/`,{
         refresh:refresh_token
     },{
         headers:{

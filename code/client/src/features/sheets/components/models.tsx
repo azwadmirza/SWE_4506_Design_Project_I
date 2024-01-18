@@ -19,7 +19,7 @@ const Models = () => {
   const [best_model,setBestModel]=useState<any|null>(null);
   const [show,setShow]=useState(false);
   const retrieve_best_model=async()=>{
-    await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/best/find/`,{
+    axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/best/find/`,{
       file_url:url
     }).then((res)=>{
       setShow(true);
