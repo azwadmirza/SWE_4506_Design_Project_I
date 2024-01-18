@@ -19,7 +19,7 @@ export const useImageUpload=(image:File|undefined,setImageURL:React.Dispatch<Rea
       ).then(async(res)=>{
         setErrorImage("");
         setImageURL(res.data.secure_url);
-        await axios.put(`http://127.0.0.1:8000/api/profile/update-profile/${uid}/`,{image: res.data.secure_url},{
+        await axios.put(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/profile/update-profile/${uid}/`,{image: res.data.secure_url},{
         headers: {
           'Authorization': `Bearer ${access_token}`
         }

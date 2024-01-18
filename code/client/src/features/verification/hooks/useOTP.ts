@@ -29,7 +29,7 @@ const [otp,setOTP]=useState("");
   
 
   const handleSubmit = async() =>{
-    await axios.post(`http://127.0.0.1:8000/api/otp/verify/`,{
+    await axios.post(`${import.meta.env.VITE_BACKEND_REQ_ADDRESS}/api/otp/verify/`,{
       otp:otp,
       email:email
     }).then(()=>{
